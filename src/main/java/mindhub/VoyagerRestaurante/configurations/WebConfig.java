@@ -1,6 +1,7 @@
 package mindhub.VoyagerRestaurante.configurations;
 
-import com.mindhub.homebanking.filters.JwtRequestFilter;
+
+import mindhub.VoyagerRestaurante.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
