@@ -1,13 +1,14 @@
 package mindhub.VoyagerRestaurante.repositories;
 
 import mindhub.VoyagerRestaurante.models.Client;
+import mindhub.VoyagerRestaurante.models.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
-    Client findByEmail(String email);
+public interface OrderRepository extends JpaRepository<Order, Long> {
+    List<Order> findByClient(Client client);
 }
 

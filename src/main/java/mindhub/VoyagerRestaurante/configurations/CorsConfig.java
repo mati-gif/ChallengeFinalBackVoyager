@@ -16,15 +16,13 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/", "http://localhost:5173/", "https://homebankingfrontenddeploy.onrender.com/", "https://homebanking-luisibanez-deply-back.onrender.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173")); // Elimina el string vacío
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
 
-        // Configura la fuente de configuración de CORS con las reglas especificadas.
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
-        // Retorna la fuente de configuración de CORS.
         return source;
     }
+
 }

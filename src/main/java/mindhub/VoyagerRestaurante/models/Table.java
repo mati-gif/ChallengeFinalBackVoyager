@@ -1,11 +1,14 @@
 package mindhub.VoyagerRestaurante.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@jakarta.persistence.Table(name = "\"table\"")  // Usamos comillas dobles para escapar la palabra reservada
 public class Table {
 
     @Id
@@ -13,19 +16,17 @@ public class Table {
     private long id;
 
     private boolean state;
-
     private int capacity;
 
+    @Enumerated
     private SectorType sectorType;
 
-    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
-    private List<ClientTable> clientTables;
+    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ClientTable> clientTables = new ArrayList<>();
 
-    public Table() {
-    }
+    public Table() {}
 
-    public Table(long id, boolean state, int capacity, SectorType sectorType) {
-        this.id = id;
+    public Table(boolean state, int capacity, SectorType sectorType) {
         this.state = state;
         this.capacity = capacity;
         this.sectorType = sectorType;
@@ -65,16 +66,6 @@ public class Table {
 
     public void setClientTables(List<ClientTable> clientTables) {
         this.clientTables = clientTables;
-    }
-
-    @Override
-    public String toString() {
-        return "Table{" +
-                "id=" + id +
-                ", state=" + state +
-                ", capacity=" + capacity +
-                ", sectorType=" + sectorType +
-                '}';
     }
 
     public void addClientTable(ClientTable clientTable){
