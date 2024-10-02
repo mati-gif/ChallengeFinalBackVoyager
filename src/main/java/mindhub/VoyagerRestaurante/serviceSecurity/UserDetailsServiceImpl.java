@@ -3,7 +3,6 @@ package mindhub.VoyagerRestaurante.serviceSecurity;
 
 
 import mindhub.VoyagerRestaurante.models.Client;
-import mindhub.VoyagerRestaurante.repositories.ClientRepository;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -11,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -20,20 +21,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Client client = clientService.findByEmail(username);
-        if (client == null){
+        Optional<Client> client = clientService.findByEmail(username);
+        if (client.isEmpty()){
             throw new UsernameNotFoundException(username);
         }
-        if (client.getEmail().contains("admin")){
+        if (client.get().getEmail().contains("admin")){
             return User
                     .withUsername(username)
-                    .password(client.getPassword())
+                    .password(client.get().getPassword())
                     .roles("ADMIN")
                     .build();
         }
         return User
                 .withUsername(username)
-                .password(client.getPassword())
+                .password(client.get().getPassword())
                 .roles("CLIENT")
                 .build();
     }

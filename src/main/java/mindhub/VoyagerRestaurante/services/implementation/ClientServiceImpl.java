@@ -36,8 +36,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findByEmail(String email) {
-        return clientRepository.findByEmail(email); // No se utiliza orElse(null) aquí
+    public Optional<Client> findByEmail(String email) {
+        return clientRepository.findByEmail(email); // Retornar Optional
     }
 
 }

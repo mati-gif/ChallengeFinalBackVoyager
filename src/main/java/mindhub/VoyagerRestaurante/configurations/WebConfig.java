@@ -4,6 +4,7 @@ import mindhub.VoyagerRestaurante.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,13 +40,22 @@ public class WebConfig {
                         authorize
                                 // Rutas públicas permitidas
                                 .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
-                                // Rutas que requieren autenticación con el rol de CLIENT
-                                .requestMatchers("/api/auth/current", "/api/orders/create", "/api/reviews/create", "/api/tables/create", "/api/products/create", "/api/clientTables/create").hasRole("CLIENT")
-                                // Rutas que requieren autenticación con el rol de ADMIN
-                                .requestMatchers("/api/clients/**", "/api/tables/**", "/api/reviews/**", "/api/products/**", "/api/orders/**").hasRole("ADMIN")
+
+                                // Rutas de lectura accesibles a CLIENT y ADMIN
+                                .requestMatchers(HttpMethod.GET, "/api/products/**","/api/orders/**", "/api/reviews/**").permitAll()
+
+                                // Rutas de escritura (creación, actualización, eliminación) solo accesibles a ADMIN
+                                .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
+
+                                // Rutas que requieren autenticación con el rol de CLIENT (para crear cosas específicas)
+                                .requestMatchers(HttpMethod.POST, "/api/orders/create", "/api/clientTables/create","/api/products/purchase" ).permitAll()
+
                                 // Cualquier otra ruta requiere autenticación
                                 .anyRequest().authenticated()
                 )
+
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Client {
@@ -160,6 +161,5 @@ public class Client {
     public void addAdress(Adress adress) {
         this.adress = adress;
     }
-
 
 }

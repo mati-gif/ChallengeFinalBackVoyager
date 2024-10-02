@@ -2,6 +2,8 @@ package mindhub.VoyagerRestaurante.dtos;
 
 import mindhub.VoyagerRestaurante.models.Client;
 
+import java.util.Optional;
+
 public class ClientDTO {
 
     private Long id;
@@ -14,6 +16,9 @@ public class ClientDTO {
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
         this.email = client.getEmail();
+    }
+
+    public ClientDTO(Optional<Client> byEmail) {
     }
 
     public Long getId() {

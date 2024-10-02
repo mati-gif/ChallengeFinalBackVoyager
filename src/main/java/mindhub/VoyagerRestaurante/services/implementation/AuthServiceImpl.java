@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -51,8 +52,8 @@ public class AuthServiceImpl implements AuthService {
         validatePassword(loginDTO.password());
 
         // Verificar si el cliente existe
-        Client existingClient = clientService.findByEmail(loginDTO.email());
-        if (existingClient == null) {
+        Optional<Client> existingClient = clientService.findByEmail(loginDTO.email());
+        if (existingClient.isEmpty()) {
             throw new IllegalArgumentException("Email not registered");
         }
 
@@ -77,30 +78,35 @@ public class AuthServiceImpl implements AuthService {
         validatePassword(registerDTO.password());
 
         // Verificar si el cliente ya existe
-        Client existingClient = clientService.findByEmail(registerDTO.email());
-        if (existingClient != null) {
+        Optional<Client> existingClient = clientService.findByEmail(registerDTO.email());
+        if (existingClient.isPresent()) {
             throw new IllegalArgumentException("Email already in use");
         }
 
-        // Crear nuevo cliente
+        // Crear nuevo cliente y asignar los datos correctamente
         Client client = new Client(
                 registerDTO.firstName(),
                 registerDTO.lastName(),
                 registerDTO.email(),
-                passwordEncoder.encode(registerDTO.password()));
-                registerDTO.phoneNumbers();
+                passwordEncoder.encode(registerDTO.password()),
+                registerDTO.phoneNumbers() // Ahora los números de teléfono son List<String>
+        );
+
+        // Guardar el nuevo cliente en la base de datos
         clientRepository.save(client);
 
         return client;
     }
 
+
+
     @Override
     public ClientDTO getCurrentClient(String email) {
-        Client client = clientService.findByEmail(email);
-        if (client == null) {
+        Optional<Client> client = clientService.findByEmail(email);
+        if (client.isEmpty()) {
             throw new IllegalArgumentException("Client with email " + email + " not found");
         }
-        return new ClientDTO(client);
+        return new ClientDTO(client.orElse(null));
     }
 
     // Métodos de validación
