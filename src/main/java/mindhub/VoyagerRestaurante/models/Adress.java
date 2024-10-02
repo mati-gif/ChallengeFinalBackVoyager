@@ -1,6 +1,7 @@
 package mindhub.VoyagerRestaurante.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,16 +24,25 @@ public class Adress {
 
 
     @OneToMany( mappedBy = "adress",fetch = FetchType.EAGER)
+    @JsonManagedReference // Esta parte de la relación sí se serializa
     private List<Client> clients = new ArrayList<>();
 
-    public Adress(String nameStreet, String zipCode, String betweenStreets, int streetNumber, TypeHome typeHome, int floorNumber, String aparmentNumber) {
+    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome ,int floorNumber, String aparmentNumber, String zipCode) {
         this.nameStreet = nameStreet;
-        this.zipCode = zipCode;
         this.betweenStreets = betweenStreets;
         this.streetNumber = streetNumber;
         this.typeHome = typeHome;
         this.floorNumber = floorNumber;
         this.aparmentNumber = aparmentNumber;
+        this.zipCode = zipCode;
+    }
+
+    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, String zipCode){
+        this.nameStreet = nameStreet;
+        this.betweenStreets = betweenStreets;
+        this.streetNumber = streetNumber;
+        this.typeHome = typeHome;
+        this.zipCode = zipCode;
     }
 
     public Adress() {
@@ -111,10 +121,6 @@ public class Adress {
         this.clients = clients;
     }
 
-    public void addClients(Client client){
-        client.setAdress(this);
-        clients.add(client);
-   }
 }
 
 

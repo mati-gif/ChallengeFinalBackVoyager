@@ -1,6 +1,5 @@
 package mindhub.VoyagerRestaurante.configurations;
 
-
 import mindhub.VoyagerRestaurante.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
+@Configuration  // Agregamos la anotación para marcar esta clase como de configuración
 public class WebConfig {
+
     @Autowired
     private JwtRequestFilter jwtRequestFilter; // Filtro personalizado para manejar la autenticación JWT.
 
@@ -28,47 +29,36 @@ public class WebConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                // Configuración de CORS utilizando la fuente de configuración proporcionada.
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                // Desactiva la protección CSRF (Cross-Site Request Forgery).
                 .csrf(AbstractHttpConfigurer::disable)
-                // Desactiva la autenticación básica HTTP.
                 .httpBasic(AbstractHttpConfigurer::disable)
-                // Desactiva el formulario de inicio de sesión.
                 .formLogin(AbstractHttpConfigurer::disable)
-
-                // Configura los encabezados de seguridad, desactivando la protección contra marcos (frame options).
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable))
-
-                // Configura las reglas de autorización para las solicitudes HTTP.
                 .authorizeHttpRequests(authorize ->
-                                authorize
-                                        .requestMatchers("/api/auth/current", "/api/clients/current/accounts", "/api/loans/currentClient" ,"/api/clients/current/cards", "/api/transactions", "/api/clients/accounts/**").hasRole("CLIENT")
-                                        .requestMatchers("/api/clients/","/api/clients/**","/api/clients/accounts/", "/api/clients/accounts/**", "/h2-console/**").hasRole("ADMIN")
-                                        // Permite el acceso sin autenticación a las rutas especificadas (login, registro, y consola H2).
-                                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                                        // Permite el acceso sin autenticación a cualquier otra solicitud (esto puede ser modificado según los requisitos).
-                                        .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
+                        authorize
+                                // Rutas públicas permitidas
+                                .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
+                                // Rutas que requieren autenticación con el rol de CLIENT
+                                .requestMatchers("/api/auth/current", "/api/orders/create", "/api/reviews/create", "/api/tables/create", "/api/products/create", "/api/clientTables/create").hasRole("CLIENT")
+                                // Rutas que requieren autenticación con el rol de ADMIN
+                                .requestMatchers("/api/clients/**", "/api/tables/**", "/api/reviews/**", "/api/products/**", "/api/orders/**").hasRole("ADMIN")
+                                // Cualquier otra ruta requiere autenticación
+                                .anyRequest().authenticated()
                 )
-
-                // Agrega el filtro JWT antes del filtro de autenticación por nombre de usuario y contraseña.
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-                // Configura la política de creación de sesiones como sin estado (stateless), sin crear sesiones en el servidor.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // Construye y retorna la configuración de seguridad.
         return httpSecurity.build();
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }

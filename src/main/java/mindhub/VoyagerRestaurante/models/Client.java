@@ -1,6 +1,7 @@
 package mindhub.VoyagerRestaurante.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -9,45 +10,63 @@ import java.util.List;
 @Entity
 public class Client {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String fistName;
+    private String firstName;
     private String lastName;
     private String email;
     private String password;
 
     @ElementCollection
     @Column(name = "phoneNumber")
-    private List<Integer> phoneNumbers = new ArrayList<>();
+    private List<String> phoneNumbers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "adress_id")
+    @JoinColumn(name = "adress_id")// No serializa esta relación en el lado del cliente
     private Adress adress;
 
-    public Client(String fistName, String lastName, String email, String password,  List<Integer> phoneNumbers) {
-        this.fistName = fistName;
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ClientTable> clientTables = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ReviewClientProduct> reviews = new ArrayList<>();
+
+    public Client() {
+    }
+
+    public Client(String firstName, String lastName, String email, String password, List<String> phoneNumbers) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phoneNumbers = phoneNumbers;
     }
 
-    public Client() {
-    }
+    public Client(String s, String string, String email, String encode) {}
+
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFistName() {
-        return fistName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFistName(String fistName) {
-        this.fistName = fistName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public List<ClientTable> getClientTables() {
+        return clientTables;
+    }
+
+    public void setClientTables(List<ClientTable> clientTables) {
+        this.clientTables = clientTables;
     }
 
     public String getEmail() {
@@ -74,11 +93,11 @@ public class Client {
         this.password = password;
     }
 
-    public List<Integer> getPhoneNumbers() {
+    public List<String> getPhoneNumbers() {
         return phoneNumbers;
     }
 
-    public void setPhoneNumbers(List<Integer> phoneNumbers) {
+    public void setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
 
@@ -93,4 +112,54 @@ public class Client {
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<ReviewClientProduct> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewClientProduct> reviews) {
+        this.reviews = reviews;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumbers=" + phoneNumbers +
+                '}';
+    }
+
+    public void addClientTable(ClientTable clientTable){
+        this.clientTables.add(clientTable);
+        clientTable.setClient(this);
+    }
+
+    public void addOrder(Order order) {
+        this.orders.add(order);
+        order.setClient(this);
+    }
+
+    public void addReview(ReviewClientProduct review) {
+        this.reviews.add(review);
+        review.setClient(this);
+    }
+
+    // Método para agregar una dirección
+    public void addAdress(Adress adress) {
+        this.adress = adress;
+    }
+
+
 }

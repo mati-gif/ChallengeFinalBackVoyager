@@ -1,9 +1,9 @@
 package mindhub.VoyagerRestaurante.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class ClientTable {
@@ -13,23 +13,28 @@ public class ClientTable {
     private long id;
 
     private LocalDateTime initialDate;
-
     private LocalDateTime finalDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
-    private List<Client> dinners;
+    @JsonManagedReference
+    private Client client;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "table_id")
+    @JsonManagedReference
     private Table table;
 
     public ClientTable() {
     }
 
-    public ClientTable(long id, LocalDateTime initialDate, LocalDateTime finalDate) {
-        this.id = id;
+    public ClientTable(LocalDateTime now, LocalDateTime localDateTime) {}
+
+    public ClientTable(LocalDateTime initialDate, LocalDateTime finalDate, Client client, Table table) {
         this.initialDate = initialDate;
         this.finalDate = finalDate;
+        this.client = client;
+        this.table = table;
     }
 
     public long getId() {
@@ -52,12 +57,12 @@ public class ClientTable {
         this.finalDate = finalDate;
     }
 
-    public List<Client> getDinners() {
-        return dinners;
+    public Client getClient() {
+        return client;
     }
 
-    public void setDinners(List<Client> dinners) {
-        this.dinners = dinners;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Table getTable() {
@@ -66,14 +71,5 @@ public class ClientTable {
 
     public void setTable(Table table) {
         this.table = table;
-    }
-
-    @Override
-    public String toString() {
-        return "ClientTable{" +
-                "id=" + id +
-                ", initialDate=" + initialDate +
-                ", finalDate=" + finalDate +
-                '}';
     }
 }
