@@ -4,7 +4,6 @@ import mindhub.VoyagerRestaurante.dtos.OrderTicketDTO;
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.Order;
-import mindhub.VoyagerRestaurante.models.Product;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.OrderService;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,7 +38,7 @@ public class OrderController {
 
         // Buscar el cliente autenticado por su email
         Client client = clientService.findByEmail(email)
-                ;
+                .orElseThrow(() -> new RuntimeException("Client not found"));
 
         // Obtener todas las órdenes del cliente
         List<Order> orders = orderService.getOrdersByClient(client);
@@ -62,23 +60,23 @@ public class OrderController {
         return ResponseEntity.ok(ticketDTO);
     }
 
-//// Obtener todas las órdenes
-//    @GetMapping("/")
-//    public List<Order> getAllOrders() {
-//        return orderService.getAllOrders();
-//    }
-//
-//    // Obtener una orden por ID
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-//        Optional<Order> order = orderService.getOrderById(id);
-//        return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // Eliminar una orden por ID
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-//        orderService.deleteOrder(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    // Obtener todas las órdenes
+    @GetMapping("/")
+    public List<Order> getAllOrders() {
+        return orderService.getAllOrders();
+    }
+
+    // Guardar una nueva orden (puedes integrar esto dentro del flujo de compra del cliente)
+    @PostMapping("/create")
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+        Order newOrder = orderService.saveOrder(order);
+        return ResponseEntity.ok(newOrder);
+    }
+
+    // Eliminar una orden por ID
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
+    }
 }

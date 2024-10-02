@@ -20,6 +20,8 @@ public class Product {
 
     private String details;
 
+    // String imagen
+
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ReviewClientProduct> reviews = new ArrayList<>();
 

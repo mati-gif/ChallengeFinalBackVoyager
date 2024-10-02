@@ -51,7 +51,6 @@ public class AuthController {
         }
     }
 
-    // Endpoint para registrar un nuevo cliente.
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
         try {
@@ -61,6 +60,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     // El objeto Authentication proporciona información sobre el usuario actualmente autenticado, como su nombre de usuario, roles, y otros atributos.
     @GetMapping("/current")

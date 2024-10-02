@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 public class VoyagerRestauranteApplication {
@@ -66,15 +67,20 @@ public class VoyagerRestauranteApplication {
 			tableRepository.save(table2);
 
 			// Creación de reservas (ClientTable)
-			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(2), clientLuz, table1);
+			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
 			clientTableRepository.save(reservation1);
 			clientLuz.addClientTable(reservation1);
 			clientRepository.save(clientLuz);
 			table1.addClientTable(reservation1);
 			tableRepository.save(table1);
-			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(3), clientMaria, table2);
+			clientTableRepository.save(reservation1);
 
-
+			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientMaria, table2);
+			clientTableRepository.save(reservation2);
+			clientMaria.addClientTable(reservation2);
+			clientRepository.save(clientMaria);
+			table2.addClientTable(reservation2);
+			tableRepository.save(table2);
 			clientTableRepository.save(reservation2);
 
 			// Creación de productos
@@ -113,11 +119,17 @@ public class VoyagerRestauranteApplication {
 			jugoExprimidoNaranja.addOrder(order1);
 			papasFritasNoussete.addOrder(order1);
 			rogel.addOrder(order1);
-			productRepository.save(burgerDobleAmerican);
+			orderRepository.save(order1);
 
 			Order order2 = new Order(LocalDateTime.now(), 29.99, clientMaria);
 			orderRepository.save(order2);
-
+			burgerTripleCompleta.addOrder(order2);
+			cocaCola.addOrder(order2);
+			papasFritasCheddarBaccon.addOrder(order2);
+			flanDulceLeche.addOrder(order2);
+			burgerDobleAmerican.addOrder(order2);
+			jugoExprimidoNaranja.addOrder(order2);
+			orderRepository.save(order2);
 
 
 			// Creación de reseñas (ReviewClientProduct)
