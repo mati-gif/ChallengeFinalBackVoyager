@@ -24,10 +24,12 @@ public class Client {
     private List<String> phoneNumbers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference  // Ignora la serialización en el lado de Client
     @JoinColumn(name = "adress_id")// No serializa esta relación en el lado del cliente
     private Adress adress;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference  // No serializará la relación inversa cuando serialices un Client
     private List<ClientTable> clientTables = new ArrayList<>();
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

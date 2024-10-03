@@ -18,7 +18,7 @@ public class ClientTable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
-    @JsonManagedReference
+    @JsonManagedReference  // Serializará esta parte cuando se serializa un ClientTable
     private Client client;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -24,7 +24,7 @@ public class Adress {
 
 
     @OneToMany( mappedBy = "adress",fetch = FetchType.EAGER)
-    @JsonManagedReference // Esta parte de la relación sí se serializa
+    @JsonManagedReference  // Permite la serialización en el lado de Adress
     private List<Client> clients = new ArrayList<>();
 
     public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome ,int floorNumber, String aparmentNumber, String zipCode) {

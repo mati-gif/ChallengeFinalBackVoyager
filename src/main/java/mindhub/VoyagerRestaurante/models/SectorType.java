@@ -1,7 +1,7 @@
 package mindhub.VoyagerRestaurante.models;
 
 public enum SectorType {
-    UP,
-    DOWN,
-    OUTSIDE,
+    GROUND_FLOOR,
+    FIRST_FLOOR,
+    OUTDOOR,
 }

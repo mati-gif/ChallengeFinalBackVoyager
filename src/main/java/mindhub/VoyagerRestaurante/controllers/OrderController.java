@@ -2,11 +2,14 @@ package mindhub.VoyagerRestaurante.controllers;
 
 import mindhub.VoyagerRestaurante.dtos.OrderTicketDTO;
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
+import mindhub.VoyagerRestaurante.dtos.PurchaseRequestDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.Order;
+import mindhub.VoyagerRestaurante.models.Product;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.OrderService;
+import mindhub.VoyagerRestaurante.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +28,14 @@ public class OrderController {
     private ClientService clientService;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private JwtUtilService jwtUtilService;
 
-    // Método para retornar el ticket al cliente autenticado
-    @GetMapping("/ticket")
-    public ResponseEntity<OrderTicketDTO> getOrderTicket(@RequestHeader("Authorization") String token) {
+    // Método para retornar el ticket al cliente autenticado basándose en los productos comprados
+    @PostMapping("/ticket")
+    public ResponseEntity<OrderTicketDTO> getOrderTicket(@RequestHeader("Authorization") String token, @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
         // Extraer el token sin el prefijo "Bearer "
         String jwtToken = token.substring(7);
 
@@ -40,25 +46,31 @@ public class OrderController {
         Client client = clientService.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
 
-        // Obtener todas las órdenes del cliente
-        List<Order> orders = orderService.getOrdersByClient(client);
+        // Validar si los productos existen en la base de datos
+        List<Product> products = productService.getProductsByIds(purchaseRequestDTO.getProductIds());
+        if (products.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
 
-        // Calcular el total de la compra
-        double totalAmount = orders.stream()
-                .mapToDouble(Order::getTotalAmount)
-                .sum();
+        // Usamos un array para permitir la modificación de `totalAmount` dentro de la lambda
+        final double[] totalAmount = {0};
 
-        // Convertir los productos de las órdenes a ProductDTO
-        List<ProductDTO> productList = orders.stream()
-                .map(Order::getProduct)
-                .map(product -> new ProductDTO(product.getNameProduct(), product.getPriceProduct()))
+        // Calcular el total de la compra y crear la lista de ProductDTO
+        List<ProductDTO> productDTOList = products.stream()
+                .map(product -> {
+                    int quantity = purchaseRequestDTO.getQuantities().get(purchaseRequestDTO.getProductIds().indexOf(product.getId()));
+                    totalAmount[0] += product.getPriceProduct() * quantity;
+                    return new ProductDTO(product.getNameProduct(), product.getPriceProduct());
+                })
                 .collect(Collectors.toList());
 
-        // Crear el DTO de la respuesta
-        OrderTicketDTO ticketDTO = new OrderTicketDTO(productList, totalAmount);
+        // Crear el DTO del ticket de la compra
+        OrderTicketDTO orderTicketDTO = new OrderTicketDTO(productDTOList, totalAmount[0]);
 
-        return ResponseEntity.ok(ticketDTO);
+        // Retornar el ticket con los productos y el total
+        return ResponseEntity.ok(orderTicketDTO);
     }
+
 
     // Obtener todas las órdenes
     @GetMapping("/")
