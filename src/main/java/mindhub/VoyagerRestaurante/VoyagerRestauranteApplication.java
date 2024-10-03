@@ -62,7 +62,7 @@ public class VoyagerRestauranteApplication {
 //			ClientAdress clientAdress2Maria = new ClientAdress();
 //			clientAdressRepository.save(clientAdress2Maria); // Gu
 
-			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY);
+			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY, OrderStatusType.DELIVERED);
 			clientLuz.addOrder(order1);
 			adressLuz.addOrder(order1);
 			orderRepository.save(order1);
