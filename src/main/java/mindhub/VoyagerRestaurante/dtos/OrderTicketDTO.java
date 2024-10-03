@@ -3,7 +3,6 @@ package mindhub.VoyagerRestaurante.dtos;
 import java.util.List;
 
 public class OrderTicketDTO {
-
     private List<ProductDTO> products;
     private double totalAmount;
 
@@ -28,3 +27,4 @@ public class OrderTicketDTO {
         this.totalAmount = totalAmount;
     }
 }
+

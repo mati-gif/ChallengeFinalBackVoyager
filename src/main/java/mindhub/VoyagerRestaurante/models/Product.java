@@ -20,6 +20,8 @@ public class Product {
 
     private String details;
 
+    private String img;
+
     // String imagen
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
@@ -31,11 +33,12 @@ public class Product {
     public Product() {
     }
 
-    public Product(String nameProduct, Double priceProduct, Category category, String details) {
+    public Product(String nameProduct, Double priceProduct, Category category, String details, String img) {
         this.nameProduct = nameProduct;
         this.priceProduct = priceProduct;
         this.category = category;
         this.details = details;
+        this.img = img;
     }
 
     // Getters y setters
@@ -77,6 +80,14 @@ public class Product {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public List<ReviewClientProduct> getReviews() {

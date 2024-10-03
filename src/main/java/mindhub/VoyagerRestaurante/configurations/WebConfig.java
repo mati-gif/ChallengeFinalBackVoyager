@@ -39,18 +39,22 @@ public class WebConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 // Rutas públicas permitidas
+
+                                
+
                                 .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**","/api/clients").permitAll()
 
+
                                 // Rutas de lectura accesibles a CLIENT y ADMIN
-                                .requestMatchers(HttpMethod.GET, "/api/products/**","/api/orders/**", "/api/reviews/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket").permitAll()
 
                                 // Rutas de escritura (creación, actualización, eliminación) solo accesibles a ADMIN
                                 .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
-                                .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
 
                                 // Rutas que requieren autenticación con el rol de CLIENT (para crear cosas específicas)
-                                .requestMatchers(HttpMethod.POST, "/api/orders/create", "/api/clientTables/create","/api/products/purchase" ).permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/orders/create", "/api/clientTables/create","/api/products/purchase").permitAll()
 
                                 // Cualquier otra ruta requiere autenticación
                                 .anyRequest().authenticated()

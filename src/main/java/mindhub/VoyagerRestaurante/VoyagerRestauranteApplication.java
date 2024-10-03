@@ -9,10 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootApplication
 public class VoyagerRestauranteApplication {
@@ -33,6 +31,7 @@ public class VoyagerRestauranteApplication {
 									  OrderRepository orderRepository) {
 		return (args) -> {
 
+
 			//DireccionLuz
 			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
 			adressRepository.save(adressLuz);
@@ -48,24 +47,68 @@ public class VoyagerRestauranteApplication {
 			clientRepository.save(clientLuz); // Asegúrate de guardar el cliente nuevamente
 //			adressRepository.save(adressLuz);
 
+
 			// ClienteMaria
 			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
 			clientRepository.save(clientMaria);
 
-			// DireccionMaria
-			Adress adressMaria = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
-			adressRepository.save(adressMaria);
+			//Direcciones
+			Adress adress1 = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
+			adressRepository.save(adress1);
+
+
+			Adress adress2 = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
+			adressRepository.save(adress2);
 
 			// Asignar la dirección a Maria
 //			clientMaria.addAdress(adressMaria);
 //			clientRepository.save(clientMaria); // Asegúrate de guardar el cliente nuevamente
 
 
-			// Creación de mesas
-			Table table1 = new Table(true, 4, SectorType.DOWN);
-			Table table2 = new Table(true, 6, SectorType.OUTSIDE);
 
-			tableRepository.save(table1);
+			// Creación de mesas
+            //15 mesas sector planta baja
+            Table table1 = new Table(true, 2, SectorType.GROUND_FLOOR, 1);
+            Table table2 = new Table(true, 4, SectorType.GROUND_FLOOR, 2);
+            Table table3 = new Table(true, 6, SectorType.GROUND_FLOOR, 3);
+            Table table4 = new Table(true, 8, SectorType.GROUND_FLOOR, 4);
+            Table table5 = new Table(true, 3, SectorType.GROUND_FLOOR, 5);
+            Table table6 = new Table(true, 5, SectorType.GROUND_FLOOR, 6);
+            Table table7 = new Table(true, 7, SectorType.GROUND_FLOOR, 7);
+            Table table8 = new Table(true, 2, SectorType.GROUND_FLOOR, 8);
+            Table table9 = new Table(true, 4, SectorType.GROUND_FLOOR, 9);
+            Table table10 = new Table(true, 6, SectorType.GROUND_FLOOR, 10);
+            Table table11 = new Table(true, 8, SectorType.GROUND_FLOOR, 11);
+            Table table12 = new Table(true, 3, SectorType.GROUND_FLOOR, 12);
+            Table table13 = new Table(true, 5, SectorType.GROUND_FLOOR, 13);
+            Table table14 = new Table(true, 7, SectorType.GROUND_FLOOR, 14);
+            Table table15 = new Table(true, 2, SectorType.GROUND_FLOOR, 15);
+
+            //9 meses sector exterior
+            Table table16 = new Table(true, 2, SectorType.OUTDOOR, 16);
+            Table table17 = new Table(true, 4, SectorType.OUTDOOR, 17);
+            Table table18 = new Table(true, 6, SectorType.OUTDOOR, 18);
+            Table table19 = new Table(true, 8, SectorType.OUTDOOR, 19);
+            Table table20 = new Table(true, 3, SectorType.OUTDOOR, 20);
+            Table table21 = new Table(true, 5, SectorType.OUTDOOR, 21);
+            Table table22 = new Table(true, 7, SectorType.OUTDOOR, 22);
+            Table table23 = new Table(true, 2, SectorType.OUTDOOR, 23);
+			Table table24 = new Table(true, 4, SectorType.OUTDOOR, 24);
+
+			//7 mesas sector primer piso
+			Table table25 = new Table(true, 2, SectorType.FIRST_FLOOR, 25);
+			Table table26 = new Table(true, 4, SectorType.FIRST_FLOOR, 26);
+			Table table27 = new Table(true, 6, SectorType.FIRST_FLOOR, 27);
+			Table table28 = new Table(true, 8, SectorType.FIRST_FLOOR, 28);
+			Table table29 = new Table(true, 3, SectorType.FIRST_FLOOR, 29);
+			Table table30 = new Table(true, 5, SectorType.FIRST_FLOOR, 30);
+			Table table31 = new Table(true, 7, SectorType.FIRST_FLOOR, 31);
+			tableRepository.saveAll(List.of(table1, table2, table3, table4,table5,
+					table6, table7, table8, table9, table10, table11, table12, table13,
+					table14, table15, table16, table17, table18, table19, table20,
+					table21, table22, table23, table24, table25, table26, table27,
+					table28, table29, table30, table31));
+
 
 
 			tableRepository.save(table2);
@@ -75,7 +118,7 @@ public class VoyagerRestauranteApplication {
 			clientTableRepository.save(reservation1);
 //			clientLuz.addClientTable(reservation1);
 			clientRepository.save(clientLuz);
-			table1.addClientTable(reservation1);
+			//table1.addClientTable(reservation1);
 			tableRepository.save(table1);
 			clientTableRepository.save(reservation1);
 
@@ -83,67 +126,51 @@ public class VoyagerRestauranteApplication {
 			clientTableRepository.save(reservation2);
 //			clientMaria.addClientTable(reservation2);
 			clientRepository.save(clientMaria);
-			table2.addClientTable(reservation2);
+			//table2.addClientTable(reservation2);
 			tableRepository.save(table2);
 			clientTableRepository.save(reservation2);
 
+
 			// Creación de productos
-			//Papas Fritas
-			Product papasFritasCheddarBaccon = new Product("Papas fritas cheddar y  baccon", 8.99, Category.FRIED_FOOD, "Porción de papas con chedar, bacon y cebolla de verdeo");
-			productRepository.save(papasFritasCheddarBaccon);
+			// Hamburguesas
+			Product product1 = new Product("Oklahoma", 8.99, Category.BURGER, "Juicy burger with caramelized onions and cheddar cheese.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749502/oklahoma1_kyqed5.png");
+			Product product2 = new Product("American", 7.49, Category.BURGER, "Classic American burger with lettuce, tomato, and mayonnaise.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749543/american1_haeqpf.png");
+			Product product3 = new Product("Voyager", 9.99, Category.BURGER, "Gourmet burger with avocado, bacon, and special sauce.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749532/cheeseBuger1_trckvo.png");
+			Product product4 = new Product("Cheeseburger", 10.49, Category.BURGER, "Delicious burger with double cheese and fresh onion.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749479/voyager1_wqem9z.png");
+			Product product5 = new Product("Veggie Burger", 8.99, Category.BURGER, "Vegetarian burger with chickpeas and avocado sauce.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727723685/big-sandwich-hamburger-burger-with-beef-red-onion-tomato-fried-bacon_lthzrk.jpg");
 
-			Product papasFritasNoussete = new Product("Papas Fritas Noussete", 7.99, Category.FRIED_FOOD, "Porción de papas noussete, salsa de preferancia");
-			productRepository.save(papasFritasNoussete);
+			// Frituras
+			Product product6 = new Product("Cheddar Fries", 5.99, Category.FRYING, "Crispy French fries topped with melted cheddar cheese and crispy bacon.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753875/papasChedarPS_xbpzmi.png");
+			Product product7 = new Product("Fries", 2.99, Category.FRYING, "Crispy golden French fries.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753876/papas1PS_kh6rye.png");
+			Product product8 = new Product("Onion Fries", 3.49, Category.FRYING, "Crispy fried onion strips.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753876/friesOnionPS_ziqavq.png");
 
-			//Hamburguesas
-			Product burgerDobleAmerican = new Product("Burger", 10.99, Category.HAMBURGER, "Pan integral, doble medallon de carne, queso chedar, bacon y cebolla caramelizada");
-			productRepository.save(burgerDobleAmerican);
+			// Bebidas
+			Product product9 = new Product("Coca Bottle", 1.99, Category.DRINK, "Classic bottle cola soda.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727757754/cocaBotellaPS_bhhhao.png");
+			Product product10 = new Product("Coca Can", 1.49, Category.DRINK, "Classic can cola soda.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727757755/cocaLataPS_zrwjyx.png");
+			Product product11 = new Product("Fanta Bottle", 1.99, Category.DRINK, "Orange flavored soda in a bottle.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727757754/fantaBotellaPS_exinu7.png");
+			Product product12 = new Product("Fanta Can", 1.49, Category.DRINK, "Orange flavored soda in a can.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727757753/lataFantaPS_abr5jv.png");
 
-			Product burgerTripleCompleta = new Product("Burger Triple Completa", 15.45, Category.HAMBURGER, "Pan, triple medallon de carne, lechuga, tomate, cebolla, huevo, jamon y queso");
-			productRepository.save(burgerTripleCompleta);
+			// Postres
+			Product product13 = new Product("Chocolate Cupcake", 2.99, Category.DESSERT, "Rich chocolate cupcake with creamy frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753895/postre1PS_cka425.png");
+			Product product14 = new Product("Strawberry Cupcake", 2.99, Category.DESSERT, "Light and fluffy cupcake with strawberry frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753897/postre3PS_u9fzfd.png");
+			Product product15 = new Product("Chocolate Cake Slice", 4.99, Category.DESSERT, "A slice of rich chocolate cake with layers of creamy frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753898/postre2PS_bfbigw.png");
+			Product product16 = new Product("Strawberry Cake Slice", 4.99, Category.DESSERT, "A slice of light and fruity strawberry cake with whipped cream.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753896/postre5PS_nychtd.png");
+			Product product17 = new Product("Strawberry Pie", 5.49, Category.DESSERT, "Delicious strawberry pie with a flaky crust.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753896/postre4PS_u6i2ja.png");
 
-			//Bebidas
-			Product jugoExprimidoNaranja = new Product("Jugo Exprimido de Naranja", 3.99, Category.DRINK, "Jugo 100% natural de naranja");
-			productRepository.save(jugoExprimidoNaranja);
+			// Guardar productos en la base de datos
+			productRepository.saveAll(List.of(
+					// Hamburguesas
+					product1, product2, product3, product4, product6,
 
-			Product cocaCola = new Product("CocaColaZero", 3.46, Category.DRINK, "Cocacola zero");
-			productRepository.save(cocaCola);
+					// Frituras
+					product5, product11, product12,
 
-			//Postres
-			Product flanDulceLeche = new Product("Flan", 4.86, Category.DESERT, "Flan napolitano sabor dulce de leche con crema");
-			productRepository.save(flanDulceLeche);
+					// Bebidas
+					product7, product8, product9, product10,
 
-			Product rogel = new Product("Rogel", 6.65, Category.DESERT, "Masa de hojaldre, dulce de leche repostero y merengue italiano");
-			productRepository.save(rogel);
-
-			// Creación de órdenes (Order)
-			Order order1 = new Order(LocalDateTime.now(), 35.99, clientLuz);
-			orderRepository.save(order1);
-			burgerDobleAmerican.addOrder(order1);
-			jugoExprimidoNaranja.addOrder(order1);
-			papasFritasNoussete.addOrder(order1);
-			rogel.addOrder(order1);
-			orderRepository.save(order1);
-
-			Order order2 = new Order(LocalDateTime.now(), 29.99, clientMaria);
-			orderRepository.save(order2);
-			burgerTripleCompleta.addOrder(order2);
-			cocaCola.addOrder(order2);
-			papasFritasCheddarBaccon.addOrder(order2);
-			flanDulceLeche.addOrder(order2);
-			burgerDobleAmerican.addOrder(order2);
-			jugoExprimidoNaranja.addOrder(order2);
-			orderRepository.save(order2);
-
-
-			// Creación de reseñas (ReviewClientProduct)
-			ReviewClientProduct review1 = new ReviewClientProduct("Excelente comida", "La burger triple completa fue increíble, definitivamente la mejor que he probado.", clientMaria, papasFritasCheddarBaccon);
-			reviewRepository.save(review1);
-
-			ReviewClientProduct review2 = new ReviewClientProduct("Muy bueno", "La hamburguesa estaba jugosa y las papas fritas bien crujientes.", clientLuz, burgerDobleAmerican);
-			reviewRepository.save(review2);
-
-
+					// Postres
+					product13, product14, product15, product16, product17
+			));
 			System.out.println(clientLuz);
 			System.out.println(clientMaria);
 		};

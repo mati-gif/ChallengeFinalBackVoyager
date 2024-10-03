@@ -14,7 +14,7 @@ public class Table {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    private int tableNumber;
     private boolean state;
     private int capacity;
 
@@ -22,14 +22,15 @@ public class Table {
     private SectorType sectorType;
 
     @OneToMany(mappedBy = "table", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<ClientTable> clientTables = new ArrayList<>();
+    private List<ClientTable> clientTables = new ArrayList<>();//LISTA DE RESERVAS
 
     public Table() {}
 
-    public Table(boolean state, int capacity, SectorType sectorType) {
+    public Table(boolean state, int capacity, SectorType sectorType, int tableNumber) {
         this.state = state;
         this.capacity = capacity;
         this.sectorType = sectorType;
+        this.tableNumber = tableNumber;
     }
 
     public long getId() {
@@ -58,6 +59,14 @@ public class Table {
 
     public void setSectorType(SectorType sectorType) {
         this.sectorType = sectorType;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 
     public List<ClientTable> getClientTables() {

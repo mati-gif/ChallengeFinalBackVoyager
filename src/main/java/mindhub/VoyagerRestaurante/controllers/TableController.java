@@ -24,7 +24,7 @@ public class TableController {
     }
 
     // Obtener todas las mesas
-    @GetMapping
+    @GetMapping("/")
     public List<Table> getAllTables() {
         return tableService.getAllTables();
     }

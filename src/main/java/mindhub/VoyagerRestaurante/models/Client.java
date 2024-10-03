@@ -25,6 +25,19 @@ public class Client {
     @JsonBackReference // Evita la recursividad inversa hacia Adress
     private Adress adress;
 
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference  // No serializará la relación inversa cuando serialices un Client
+    private List<ClientTable> clientTables = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ReviewClientProduct> reviews = new ArrayList<>();
+
+    public Client() {
+    }
+
     public Client(String firstName, String lastName, String email, String password, List<String> phoneNumbers) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,16 +46,9 @@ public class Client {
         this.phoneNumbers = phoneNumbers;
     }
 
-    public Client() {
-    }
-
     // Getters y setters
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {

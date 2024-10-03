@@ -1,8 +1,8 @@
 package mindhub.VoyagerRestaurante.models;
 
 public enum Category {
-    HAMBURGER,
+    BURGER,
     DRINK,
-    FRIED_FOOD,
-    DESERT,
+    FRYING,
+    DESSERT,
 }

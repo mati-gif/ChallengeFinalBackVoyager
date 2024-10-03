@@ -3,7 +3,7 @@ package mindhub.VoyagerRestaurante.dtos;
 import java.util.List;
 
 public class PurchaseRequestDTO {
-    private List<Long> productIds;  // Lista de productos que el cliente desea comprar
+    private List<Long> productIds;  // IDs de los productos que el cliente desea comprar
     private List<Integer> quantities;  // Cantidad de cada producto
 
     public PurchaseRequestDTO() {}
@@ -29,4 +29,3 @@ public class PurchaseRequestDTO {
         this.quantities = quantities;
     }
 }
-
