@@ -24,7 +24,7 @@ public class ClientDTO {
         this.lastName = client.getLastName();
         this.email = client.getEmail();
         this.phoneNumbers = client.getPhoneNumbers();
-        this.addressDTOS = client.getAdress().stream().map(adress -> new AddressDTO(adress)).collect(Collectors.toList());
+//        this.addressDTOS = client.getAdress().stream().map(adress -> new AddressDTO(adress)).collect(Collectors.toList());
         this.order = client.getOrders();
     }
 
