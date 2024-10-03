@@ -25,8 +25,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
+
             // Intentar login y generar token
             String token = authService.login(loginDTO);
+
             return ResponseEntity.ok(token);
         } catch (IllegalArgumentException e) {
             // Devolver mensaje de error en caso de fallas
