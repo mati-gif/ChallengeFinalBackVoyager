@@ -60,7 +60,7 @@ public class OrderController {
                 .map(product -> {
                     int quantity = purchaseRequestDTO.getQuantities().get(purchaseRequestDTO.getProductIds().indexOf(product.getId()));
                     totalAmount[0] += product.getPriceProduct() * quantity;
-                    return new ProductDTO(product.getNameProduct(), product.getPriceProduct());
+                    return new ProductDTO(product);
                 })
                 .collect(Collectors.toList());
 

@@ -1,29 +1,65 @@
 package mindhub.VoyagerRestaurante.dtos;
 
+import mindhub.VoyagerRestaurante.models.Category;
+import mindhub.VoyagerRestaurante.models.Product;
+
 public class ProductDTO {
 
-    private String name;
-    private double price;
+    private String nameProduct;
 
-    public ProductDTO(String name, double price) {
-        this.name = name;
-        this.price = price;
+    private double priceProduct;
+
+    private Category category;
+
+    private String details;
+
+    private String img;
+
+    public ProductDTO(Product product) {
+        this.nameProduct = product.getNameProduct();
+        this.priceProduct = product.getPriceProduct();
+        this.category = product.getCategory();
+        this.details = product.getDetails();
+        this.img = product.getImg();
     }
 
-    public String getName() {
-        return name;
+    public String getNameProduct() {
+        return nameProduct;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameProduct(String nameProduct) {
+        this.nameProduct = nameProduct;
     }
 
-    public double getPrice() {
-        return price;
+    public double getPriceProduct() {
+        return priceProduct;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPriceProduct(double priceProduct) {
+        this.priceProduct = priceProduct;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }
-

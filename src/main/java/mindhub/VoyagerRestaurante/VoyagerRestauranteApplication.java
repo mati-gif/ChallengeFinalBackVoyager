@@ -53,7 +53,7 @@ public class VoyagerRestauranteApplication {
 			Adress adress1Maria = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
 
 			Adress adress2Maria = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
-//			clientMaria.addAddress(adress1Maria);
+//			clientMaria.addAddress(adress1Maari);
 //			clientMaria.addAddress(adress2Maria);
 
 			adressRepository.save(adress1Maria);

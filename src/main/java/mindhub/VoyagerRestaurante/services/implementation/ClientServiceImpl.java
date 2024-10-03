@@ -1,10 +1,12 @@
 package mindhub.VoyagerRestaurante.services.implementation;
 
 import mindhub.VoyagerRestaurante.dtos.ClientDTO;
+import mindhub.VoyagerRestaurante.dtos.RegisterDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.repositories.ClientRepository;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 
     @Override
     public Client saveClient(Client client) {
@@ -50,9 +56,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientDTO> getAllClientDto() {
-        return getAllClient().stream()
-                .map(ClientDTO::new)
-                .collect(Collectors.toList());
+        return getAllClient().stream().map(ClientDTO::new).collect(Collectors.toList());
     }
 
     @Override
@@ -63,6 +67,21 @@ public class ClientServiceImpl implements ClientService {
     //No interactúa con la base de datos.
     //Es útil cuando quieres transformar un cliente en un DTO sin modificar ni guardar el cliente en la base de datos.
 
+    @Override
+    public String encodedPassword(RegisterDTO registerDTO) {
 
+        return passwordEncoder.encode(registerDTO.password());
+    }
+
+    @Override
+    public Client createNewClient(RegisterDTO registerDTO) {
+        // Codifica la contraseña del cliente
+        String encodedPassword = encodedPassword(registerDTO);
+
+        // Crea un nuevo objeto Client con los datos proporcionados
+        return new Client(registerDTO.firstName(), registerDTO.lastName(), registerDTO.email(), encodedPassword, registerDTO.phoneNumbers()) ;
+    }
 
 }
+
+

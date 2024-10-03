@@ -20,10 +20,6 @@ public class ClientAdress {
     public ClientAdress() {
     }
 
-    public ClientAdress(Client client, Adress adress) {
-        this.client = client;
-        this.adress = adress;
-    }
 
     // Getters y setters
     public Client getClient() {
