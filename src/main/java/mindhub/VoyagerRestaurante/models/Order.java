@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "papa")  // Cambié el nombre de la tabla a "orders"
+@Table(name = "orders")  // Cambié el nombre de la tabla a "orders"
 public class Order {
 
     @Id
@@ -32,7 +32,8 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.EAGER)  // Añadí la relación ManyToOne con Adress
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "adress_id")
     private Adress adress;
 

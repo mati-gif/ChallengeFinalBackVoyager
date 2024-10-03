@@ -3,8 +3,11 @@ package mindhub.VoyagerRestaurante.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Client {
@@ -20,9 +23,8 @@ public class Client {
     @ElementCollection
     private List<String> phoneNumbers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private List<Adress> adress = new ArrayList<>();
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ClientAdress> clientAdress = new HashSet<>();
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference  // No serializará la relación inversa cuando serialices un Client
@@ -90,28 +92,34 @@ public class Client {
         return orders;
     }
 
+    public Set<ClientAdress> getClientAdress() {
+        return clientAdress;
+    }
+
+    public List<ClientTable> getClientTables() {
+        return clientTables;
+    }
+
+    public List<ReviewClientProduct> getReviews() {
+        return reviews;
+    }
+
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
-    public List<Adress> getAdress() {
-        return adress;
-    }
-
-    public void setAdress(List<Adress> adress) {
-        this.adress = adress;
-    }
 
     public void setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
 
 
-    public void addAddress(Adress adress){
-        adress.setClient(this);
-        this.adress.add(adress);
+    public void addClientAdress(ClientAdress clientAdress) {
+        clientAdress.setClient(this); // Set the client reference in ClientAdress
+        this.clientAdress.add(clientAdress); // Add to the client's addresses
     }
-    public void addOrder(Order order){
+
+    public void addOrder(Order order) {
         order.setClient(this);
         this.orders.add(order);
     }

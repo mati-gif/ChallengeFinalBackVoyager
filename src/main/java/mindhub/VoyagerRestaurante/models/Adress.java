@@ -3,6 +3,9 @@ package mindhub.VoyagerRestaurante.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Adress {
 
@@ -18,10 +21,12 @@ public class Adress {
     private int floorNumber;
     private String aparmentNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id", nullable = false)
-    @JsonBackReference
-    private Client client;
+    @OneToMany(mappedBy = "adress", fetch = FetchType.EAGER)
+    private Set<Order> orders = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "adress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ClientAdress> clientAdress = new HashSet<>();
 
     public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, int floorNumber, String aparmentNumber, String zipCode) {
         this.nameStreet = nameStreet;
@@ -41,7 +46,8 @@ public class Adress {
         this.zipCode = zipCode;
     }
 
-    public Adress() {}
+    public Adress() {
+    }
 
     // Getters y setters
     public Long getId() {
@@ -54,6 +60,14 @@ public class Adress {
 
     public String getNameStreet() {
         return nameStreet;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public Set<ClientAdress> getClientAdress() {
+        return clientAdress;
     }
 
     public void setNameStreet(String nameStreet) {
@@ -108,11 +122,23 @@ public class Adress {
         this.aparmentNumber = aparmentNumber;
     }
 
-    public Client getClient() {
-        return client;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientAdress(Set<ClientAdress> clientAdress) {
+        this.clientAdress = clientAdress;
     }
+
+    public void addClientAdress(ClientAdress clientAdress) {
+        clientAdress.setAdress(this);
+        this.clientAdress.add(clientAdress);
+    }
+
+    public void addOrder(Order order){
+        order.setAdress(this);
+        this.orders.add(order);
+    }
+
+
 }

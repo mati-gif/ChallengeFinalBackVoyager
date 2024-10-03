@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.controllers;
 
+import mindhub.VoyagerRestaurante.dtos.ClientDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> getAllClients() {
-        return clientService.getAllClients();
+    public List<ClientDTO> getAllClients() {
+        return clientService.getAllClientDto();
     }
 
     @GetMapping("/{id}")
