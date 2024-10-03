@@ -31,6 +31,7 @@ public class ClientTableController {
     @Autowired
     private JwtUtilService jwtUtilService;
 
+
     // Crear una nueva reserva de mesa (ClientTable)
     @PostMapping("/create")
     public ResponseEntity<ClientTable> createClientTable(@RequestHeader("Authorization") String token,

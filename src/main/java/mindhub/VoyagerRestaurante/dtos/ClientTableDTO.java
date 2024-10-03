@@ -4,6 +4,7 @@ import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.SectorType;
 import mindhub.VoyagerRestaurante.models.Table;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
-public record ClientTableDTO ( Set<Client> comensales, Table table, SectorType sectorType ) {}
+public record ClientTableDTO (Long mesaId, LocalDateTime localDateTime) {}

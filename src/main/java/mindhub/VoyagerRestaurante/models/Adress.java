@@ -14,11 +14,11 @@ public class Adress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nameStreet;
-    private String zipCode;
-    private String betweenStreets;
-    private int streetNumber;
-    private TypeHome typeHome;
+    private String nameStreet;  //peru
+    private String zipCode;     //40107
+    private String betweenStreets;  //quntana y belgrano
+    private int streetNumber;   // 5000
+    private TypeHome typeHome; //Casa
     private int floorNumber;
     private String aparmentNumber;
 
