@@ -40,7 +40,7 @@ public class ClientTableController {
 
         // Extraer el cliente autenticado desde el token
         String email = jwtUtilService.extractUsername(jwtToken);
-        Optional<Client> client = clientService.findByEmail(email);
+        Client client = clientService.findByEmail(email);
 
         // Validar la mesa escogida
         Table table = tableService.getTableById(clientTableDTO.table().getId())
@@ -48,7 +48,7 @@ public class ClientTableController {
 
         // Crear la nueva reserva (ClientTable)
         ClientTable clientTable = new ClientTable();
-        clientTable.setClient(client.orElse(null)); // El cliente autenticado
+        clientTable.setClient(client); // El cliente autenticado
         clientTable.setTable(table); // La mesa elegida
         clientTable.setInitialDate(LocalDateTime.now()); // Fecha de inicio de la reserva
         clientTable.setFinalDate(LocalDateTime.now().plusHours(2)); // Ejemplo de duración de la reserva

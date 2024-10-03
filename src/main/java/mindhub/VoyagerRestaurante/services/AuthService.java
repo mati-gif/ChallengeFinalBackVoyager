@@ -6,7 +6,16 @@ import mindhub.VoyagerRestaurante.dtos.ClientDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 
 public interface AuthService {
-    String login(LoginDTO loginDTO);
     Client register(RegisterDTO registerDTO);
-    ClientDTO getCurrentClient(String email);
+    void validateRegisterDto(RegisterDTO registerDTO);
+    void validateEmail(RegisterDTO registerDTO);
+    Client createClient(RegisterDTO registerDTO);
+    Client saveClient(Client client);
+
+//    Boolean existsByNumber(String number);
+//    String generateUniqueAccountNumber();
+
+    String generateJwtForUser(String email);
+    void authenticateUser(LoginDTO loginDTO);
+    String loginAndGenerateToken(LoginDTO loginDTO);
 }

@@ -35,7 +35,7 @@ public class ProductController {
 
     @PostMapping("/purchase")
     public ResponseEntity<?> purchaseProducts(@RequestBody PurchaseRequestDTO purchaseRequestDTO, Authentication authentication) {
-        Optional<Client> client = clientService.findByEmail(authentication.getName());
+        Client client = clientService.findByEmail(authentication.getName());
 
         // Validar si los productos existen
         List<Product> products = productService.getProductsByIds(purchaseRequestDTO.getProductIds());
@@ -50,7 +50,7 @@ public class ProductController {
             int quantity = purchaseRequestDTO.getQuantities().get(i);
 
             // Crear y guardar la orden
-            Order order = new Order(LocalDateTime.now(), product.getPriceProduct() * quantity, client.orElse(null));
+            Order order = new Order(LocalDateTime.now(), product.getPriceProduct() * quantity, client);
             order.setProduct(product);
             orderService.saveOrder(order);
 

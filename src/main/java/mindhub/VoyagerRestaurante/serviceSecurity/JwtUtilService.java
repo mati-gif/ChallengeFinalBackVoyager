@@ -18,11 +18,11 @@ public class JwtUtilService{
 
     private static final long EXPIRATION_TOKEN = 1000 * 60 * 60;
 
-    public static Claims extractAllClaims(String token){
+    public static  Claims extractAllClaims(String token){
         return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
     }
 
-    public static <T> T extractClaim(String token, Function<Claims, T> claimsTFunction){
+    public static  <T> T extractClaim(String token, Function<Claims, T> claimsTFunction){
         final Claims claims = extractAllClaims(token);
         return claimsTFunction.apply(claims);
     }
