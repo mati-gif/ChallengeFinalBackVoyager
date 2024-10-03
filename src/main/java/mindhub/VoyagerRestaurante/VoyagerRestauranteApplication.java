@@ -29,113 +29,116 @@ public class VoyagerRestauranteApplication {
 									  ClientTableRepository clientTableRepository,
 									  ProductRepository productRepository,
 									  ReviewClientProductRepository reviewRepository,
-									  OrderRepository orderRepository) {
+									  OrderRepository orderRepository, ClientAdressRepository clientAdressRepository) {
 		return (args) -> {
 
 
-			// ClienteLuz
+// Crear cliente Luz
 			Client clientLuz = new Client("Luz", "Mieres", "luzmieres@gmail.com", passwordEncoder.encode("Luz1234."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
-//			clientRepository.save(clientLuz);
 			clientRepository.save(clientLuz); // Asegúrate de guardar el cliente nuevamente
-//			adressRepository.save(adressLuz);
 
-
-			//DireccionLuz
+// Crear dirección Luz
 			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-			clientLuz.addAddress(adressLuz);
-			adressRepository.save(adressLuz);
+			adressRepository.save(adressLuz); // Guarda la dirección antes de crear la relación
 
-			// ClienteMaria
-			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
-			clientRepository.save(clientMaria);
+// Crear relación entre cliente y dirección
+			ClientAdress clientAdressLuz = new ClientAdress();
+			clientLuz.addClientAdress(clientAdressLuz);
+			adressLuz.addClientAdress(clientAdressLuz);
+			clientAdressRepository.save(clientAdressLuz); // Guarda la relación
 
-			//Direcciones
-			Adress adress1Maria = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-
-			Adress adress2Maria = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
-			clientMaria.addAddress(adress1Maria);
-			clientMaria.addAddress(adress2Maria);
-
-			adressRepository.save(adress1Maria);
-			adressRepository.save(adress2Maria);
+// Crear cliente Maria
+//			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
+//			clientRepository.save(clientMaria); // Asegúrate de guardar el cliente nuevamente
+//
+//// Crear direcciones para Maria
+//			Adress adress1Maria = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
+//			adressRepository.save(adress1Maria); // Guarda la dirección 1 antes de crear la relación
+//			ClientAdress clientAdress1Maria = new ClientAdress();
+//			clientAdressRepository.save(clientAdress1Maria); // Guarda la relación
+//
+//			Adress adress2Maria = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
+//			adressRepository.save(adress2Maria); // Guarda la dirección 2 antes de crear la relación
+//			ClientAdress clientAdress2Maria = new ClientAdress();
+//			clientAdressRepository.save(clientAdress2Maria); // Gu
 
 			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY);
-			order1.setAdress(adressLuz);
 			clientLuz.addOrder(order1);
+			adressLuz.addOrder(order1);
 			orderRepository.save(order1);
-
-			// Asignar la dirección a Maria
-//			clientMaria.addAdress(adressMaria);
-//			clientRepository.save(clientMaria); // Asegúrate de guardar el cliente nuevamente
-
-
-
-			// Creación de mesas
-            //15 mesas sector planta baja
-            Table table1 = new Table(true, 2, SectorType.GROUND_FLOOR, 1);
-            Table table2 = new Table(true, 4, SectorType.GROUND_FLOOR, 2);
-            Table table3 = new Table(true, 6, SectorType.GROUND_FLOOR, 3);
-            Table table4 = new Table(true, 8, SectorType.GROUND_FLOOR, 4);
-            Table table5 = new Table(true, 3, SectorType.GROUND_FLOOR, 5);
-            Table table6 = new Table(true, 5, SectorType.GROUND_FLOOR, 6);
-            Table table7 = new Table(true, 7, SectorType.GROUND_FLOOR, 7);
-            Table table8 = new Table(true, 2, SectorType.GROUND_FLOOR, 8);
-            Table table9 = new Table(true, 4, SectorType.GROUND_FLOOR, 9);
-            Table table10 = new Table(true, 6, SectorType.GROUND_FLOOR, 10);
-            Table table11 = new Table(true, 8, SectorType.GROUND_FLOOR, 11);
-            Table table12 = new Table(true, 3, SectorType.GROUND_FLOOR, 12);
-            Table table13 = new Table(true, 5, SectorType.GROUND_FLOOR, 13);
-            Table table14 = new Table(true, 7, SectorType.GROUND_FLOOR, 14);
-            Table table15 = new Table(true, 2, SectorType.GROUND_FLOOR, 15);
-
-            //9 meses sector exterior
-            Table table16 = new Table(true, 2, SectorType.OUTDOOR, 16);
-            Table table17 = new Table(true, 4, SectorType.OUTDOOR, 17);
-            Table table18 = new Table(true, 6, SectorType.OUTDOOR, 18);
-            Table table19 = new Table(true, 8, SectorType.OUTDOOR, 19);
-            Table table20 = new Table(true, 3, SectorType.OUTDOOR, 20);
-            Table table21 = new Table(true, 5, SectorType.OUTDOOR, 21);
-            Table table22 = new Table(true, 7, SectorType.OUTDOOR, 22);
-            Table table23 = new Table(true, 2, SectorType.OUTDOOR, 23);
-			Table table24 = new Table(true, 4, SectorType.OUTDOOR, 24);
-
-			//7 mesas sector primer piso
-			Table table25 = new Table(true, 2, SectorType.FIRST_FLOOR, 25);
-			Table table26 = new Table(true, 4, SectorType.FIRST_FLOOR, 26);
-			Table table27 = new Table(true, 6, SectorType.FIRST_FLOOR, 27);
-			Table table28 = new Table(true, 8, SectorType.FIRST_FLOOR, 28);
-			Table table29 = new Table(true, 3, SectorType.FIRST_FLOOR, 29);
-			Table table30 = new Table(true, 5, SectorType.FIRST_FLOOR, 30);
-			Table table31 = new Table(true, 7, SectorType.FIRST_FLOOR, 31);
-			tableRepository.saveAll(List.of(table1, table2, table3, table4,table5,
-					table6, table7, table8, table9, table10, table11, table12, table13,
-					table14, table15, table16, table17, table18, table19, table20,
-					table21, table22, table23, table24, table25, table26, table27,
-					table28, table29, table30, table31));
-
-
-
-			tableRepository.save(table2);
-
-			// Creación de reservas (ClientTable)
-			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
-			clientTableRepository.save(reservation1);
-//			clientLuz.addClientTable(reservation1);
-			clientRepository.save(clientLuz);
-			//table1.addClientTable(reservation1);
-			tableRepository.save(table1);
-			clientTableRepository.save(reservation1);
-
-			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientMaria, table2);
-			clientTableRepository.save(reservation2);
-//			clientMaria.addClientTable(reservation2);
-			clientRepository.save(clientMaria);
-			//table2.addClientTable(reservation2);
-			tableRepository.save(table2);
-			clientTableRepository.save(reservation2);
-
-
-			// Creación de productos
+//
+//			// Asignar la dirección a Maria
+////			clientMaria.addAdress(adressMaria);
+////			clientRepository.save(clientMaria); // Asegúrate de guardar el cliente nuevamente
+//
+//
+//
+//			// Creación de mesas
+//            //15 mesas sector planta baja
+//            Table table1 = new Table(true, 2, SectorType.GROUND_FLOOR, 1);
+//            Table table2 = new Table(true, 4, SectorType.GROUND_FLOOR, 2);
+//            Table table3 = new Table(true, 6, SectorType.GROUND_FLOOR, 3);
+//            Table table4 = new Table(true, 8, SectorType.GROUND_FLOOR, 4);
+//            Table table5 = new Table(true, 3, SectorType.GROUND_FLOOR, 5);
+//            Table table6 = new Table(true, 5, SectorType.GROUND_FLOOR, 6);
+//            Table table7 = new Table(true, 7, SectorType.GROUND_FLOOR, 7);
+//            Table table8 = new Table(true, 2, SectorType.GROUND_FLOOR, 8);
+//            Table table9 = new Table(true, 4, SectorType.GROUND_FLOOR, 9);
+//            Table table10 = new Table(true, 6, SectorType.GROUND_FLOOR, 10);
+//            Table table11 = new Table(true, 8, SectorType.GROUND_FLOOR, 11);
+//            Table table12 = new Table(true, 3, SectorType.GROUND_FLOOR, 12);
+//            Table table13 = new Table(true, 5, SectorType.GROUND_FLOOR, 13);
+//            Table table14 = new Table(true, 7, SectorType.GROUND_FLOOR, 14);
+//            Table table15 = new Table(true, 2, SectorType.GROUND_FLOOR, 15);
+//
+//            //9 meses sector exterior
+//            Table table16 = new Table(true, 2, SectorType.OUTDOOR, 16);
+//            Table table17 = new Table(true, 4, SectorType.OUTDOOR, 17);
+//            Table table18 = new Table(true, 6, SectorType.OUTDOOR, 18);
+//            Table table19 = new Table(true, 8, SectorType.OUTDOOR, 19);
+//            Table table20 = new Table(true, 3, SectorType.OUTDOOR, 20);
+//            Table table21 = new Table(true, 5, SectorType.OUTDOOR, 21);
+//            Table table22 = new Table(true, 7, SectorType.OUTDOOR, 22);
+//            Table table23 = new Table(true, 2, SectorType.OUTDOOR, 23);
+//			Table table24 = new Table(true, 4, SectorType.OUTDOOR, 24);
+//
+//			//7 mesas sector primer piso
+//			Table table25 = new Table(true, 2, SectorType.FIRST_FLOOR, 25);
+//			Table table26 = new Table(true, 4, SectorType.FIRST_FLOOR, 26);
+//			Table table27 = new Table(true, 6, SectorType.FIRST_FLOOR, 27);
+//			Table table28 = new Table(true, 8, SectorType.FIRST_FLOOR, 28);
+//			Table table29 = new Table(true, 3, SectorType.FIRST_FLOOR, 29);
+//			Table table30 = new Table(true, 5, SectorType.FIRST_FLOOR, 30);
+//			Table table31 = new Table(true, 7, SectorType.FIRST_FLOOR, 31);
+//			tableRepository.saveAll(List.of(table1, table2, table3, table4,table5,
+//					table6, table7, table8, table9, table10, table11, table12, table13,
+//					table14, table15, table16, table17, table18, table19, table20,
+//					table21, table22, table23, table24, table25, table26, table27,
+//					table28, table29, table30, table31));
+//
+//
+//
+//			tableRepository.save(table2);
+//
+//			// Creación de reservas (ClientTable)
+//			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
+//			clientTableRepository.save(reservation1);
+////			clientLuz.addClientTable(reservation1);
+//			clientRepository.save(clientLuz);
+//			//table1.addClientTable(reservation1);
+//			tableRepository.save(table1);
+//			clientTableRepository.save(reservation1);
+//
+//			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientMaria, table2);
+//			clientTableRepository.save(reservation2);
+////			clientMaria.addClientTable(reservation2);
+//			clientRepository.save(clientMaria);
+//			//table2.addClientTable(reservation2);
+//			tableRepository.save(table2);
+//			clientTableRepository.save(reservation2);
+//
+//
+//			// Creación de productos
 			// Hamburguesas
 			Product product1 = new Product("Oklahoma", 8.99, Category.BURGER, "Juicy burger with caramelized onions and cheddar cheese.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749502/oklahoma1_kyqed5.png");
 			Product product2 = new Product("American", 7.49, Category.BURGER, "Classic American burger with lettuce, tomato, and mayonnaise.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749543/american1_haeqpf.png");
@@ -160,7 +163,7 @@ public class VoyagerRestauranteApplication {
 			Product product15 = new Product("Chocolate Cake Slice", 4.99, Category.DESSERT, "A slice of rich chocolate cake with layers of creamy frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753898/postre2PS_bfbigw.png");
 			Product product16 = new Product("Strawberry Cake Slice", 4.99, Category.DESSERT, "A slice of light and fruity strawberry cake with whipped cream.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753896/postre5PS_nychtd.png");
 			Product product17 = new Product("Strawberry Pie", 5.49, Category.DESSERT, "Delicious strawberry pie with a flaky crust.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753896/postre4PS_u6i2ja.png");
-
+//
 			// Guardar productos en la base de datos
 			productRepository.saveAll(List.of(
 					// Hamburguesas
@@ -175,8 +178,8 @@ public class VoyagerRestauranteApplication {
 					// Postres
 					product13, product14, product15, product16, product17
 			));
-			System.out.println(clientLuz);
-			System.out.println(clientMaria);
+//			System.out.println(clientLuz);
+//			System.out.println(clientMaria);
 		};
 	}
 }
