@@ -158,7 +158,7 @@ public class VoyagerRestauranteApplication {
 			Product product12 = new Product("Fanta Can", 1.49, Category.DRINK, "Orange flavored soda in a can.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727757753/lataFantaPS_abr5jv.png");
 
 			// Postres
-			Product product13 = new Product("Chocolate Cupcake", 2.99, Category.DESSERT, "Rich chocolate cupcake with creamy frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753895/postre1PS_cka425.png");
+			Product product13 = new Product("Chocolate Cupcaka", 2.99, Category.DESSERT, "Rich chocolate cupcake with creamy frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753895/postre1PS_cka425.png");
 			Product product14 = new Product("Strawberry Cupcake", 2.99, Category.DESSERT, "Light and fluffy cupcake with strawberry frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753897/postre3PS_u9fzfd.png");
 			Product product15 = new Product("Chocolate Cake Slice", 4.99, Category.DESSERT, "A slice of rich chocolate cake with layers of creamy frosting.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753898/postre2PS_bfbigw.png");
 			Product product16 = new Product("Strawberry Cake Slice", 4.99, Category.DESSERT, "A slice of light and fruity strawberry cake with whipped cream.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727753896/postre5PS_nychtd.png");
