@@ -4,6 +4,7 @@ import mindhub.VoyagerRestaurante.dtos.ClientTableDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.ClientTable;
 import mindhub.VoyagerRestaurante.models.Table;
+import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.ClientTableService;
 import mindhub.VoyagerRestaurante.services.TableService;
@@ -30,6 +31,9 @@ public class ClientTableController {
     @Autowired
     private ClientTableService clientTableService;
 
+    @Autowired
+    private JwtUtilService jwtUtilService;
+
     // Crear una nueva reserva de mesa (ClientTable)
     @PostMapping("/create")
     public ResponseEntity<?> createClientTable(Authentication authentication, @RequestBody ClientTableDTO clientTableDTO) {
@@ -38,6 +42,9 @@ public class ClientTableController {
 
         // Obtener el cliente autenticado
         Client authenticatedClient = clientService.findByEmail(email);
+        if (authenticatedClient == null) {
+            return ResponseEntity.badRequest().body("Client not found");
+        }
 
         // Obtener los clientes por sus IDs
         Set<Client> clients = clientTableDTO.clientIds().stream()
@@ -56,8 +63,9 @@ public class ClientTableController {
         }
 
         // Extraer el cliente autenticado desde el token
-        String emailClient = authenticatedClient.getEmail();
-        Client cliente = clientService.findByEmail(email);
+        String emaill = authenticatedClient.getEmail();
+        Client client = clientService.findByEmail(email);
+
 
         Table table = optionalTable.get();
 
@@ -84,12 +92,12 @@ public class ClientTableController {
 
         // Asignar la mesa y los clientes
         clientTable.setTable(table);
-        clients.forEach(client -> clientTable.setClient(client));
+        clients.forEach(clientt -> clientTable.setClient(client));
 
         // Marcar la mesa como ocupada (false = reservada)
         table.setState(false);
 
-        clientTable.setClient(cliente); // El cliente autenticado
+        clientTable.setClient(client); // El cliente autenticado
         clientTable.setTable(table); // La mesa elegida
         clientTable.setInitialDate(LocalDateTime.now()); // Fecha de inicio de la reserva
         clientTable.setFinalDate(LocalDateTime.now().plusHours(2)); // Ejemplo de duración de la reserva

@@ -33,33 +33,36 @@ public class VoyagerRestauranteApplication {
 		return (args) -> {
 
 
-			//DireccionLuz
-			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-			adressRepository.save(adressLuz);
-
 			// ClienteLuz
 			Client clientLuz = new Client("Luz", "Mieres", "luzmieres@gmail.com", passwordEncoder.encode("Luz1234."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
 //			clientRepository.save(clientLuz);
-
-
-
-			// Asignar la dirección al cliente
-			adressLuz.addClients(clientLuz);
 			clientRepository.save(clientLuz); // Asegúrate de guardar el cliente nuevamente
 //			adressRepository.save(adressLuz);
 
+
+			//DireccionLuz
+			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
+			clientLuz.addAddress(adressLuz);
+			adressRepository.save(adressLuz);
 
 			// ClienteMaria
 			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
 			clientRepository.save(clientMaria);
 
 			//Direcciones
-			Adress adress1 = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-			adressRepository.save(adress1);
+			Adress adress1Maria = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
 
+			Adress adress2Maria = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
+			clientMaria.addAddress(adress1Maria);
+			clientMaria.addAddress(adress2Maria);
 
-			Adress adress2 = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
-			adressRepository.save(adress2);
+			adressRepository.save(adress1Maria);
+			adressRepository.save(adress2Maria);
+
+			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY);
+			order1.setAdress(adressLuz);
+			clientLuz.addOrder(order1);
+			orderRepository.save(order1);
 
 			// Asignar la dirección a Maria
 //			clientMaria.addAdress(adressMaria);
