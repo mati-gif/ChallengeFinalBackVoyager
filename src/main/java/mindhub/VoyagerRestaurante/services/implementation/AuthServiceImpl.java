@@ -147,9 +147,9 @@ public class AuthServiceImpl implements AuthService {
     public Client register(RegisterDTO registerDTO) {
 
         // 1. Validar los datos del DTO de registro
-//        validateRegisterDto(registerDTO);
+        validateRegisterDto(registerDTO);
         //2.Verificar si el email ya existe en la base de datos.
-//        validateEmail(registerDTO);
+        validateEmail(registerDTO);
         // 3. Crear y guardar un nuevo cliente
         Client client = saveClient(createClient(registerDTO));
         // 4. Crear y guardar una nueva cuenta para el cliente
