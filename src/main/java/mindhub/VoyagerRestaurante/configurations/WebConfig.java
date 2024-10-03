@@ -39,7 +39,7 @@ public class WebConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 // Rutas públicas permitidas
-                                .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
+                                .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**", "/api/clients").permitAll()
 
                                 // Rutas de lectura accesibles a CLIENT y ADMIN
                                 .requestMatchers(HttpMethod.GET, "/api/products/**","/api/orders/**", "/api/reviews/**").permitAll()
@@ -48,6 +48,7 @@ public class WebConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
+
 
                                 // Rutas que requieren autenticación con el rol de CLIENT (para crear cosas específicas)
                                 .requestMatchers(HttpMethod.POST, "/api/orders/create", "/api/clientTables/create","/api/products/purchase" ).permitAll()
