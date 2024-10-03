@@ -1,11 +1,7 @@
 package mindhub.VoyagerRestaurante.models;
 
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Adress {
@@ -22,12 +18,12 @@ public class Adress {
     private int floorNumber;
     private String aparmentNumber;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id", nullable = false)
+    @JsonBackReference
+    private Client client;
 
-    @OneToMany( mappedBy = "adress",fetch = FetchType.EAGER)
-    @JsonManagedReference  // Permite la serialización en el lado de Adress
-    private List<Client> clients = new ArrayList<>();
-
-    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome ,int floorNumber, String aparmentNumber, String zipCode) {
+    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, int floorNumber, String aparmentNumber, String zipCode) {
         this.nameStreet = nameStreet;
         this.betweenStreets = betweenStreets;
         this.streetNumber = streetNumber;
@@ -37,7 +33,7 @@ public class Adress {
         this.zipCode = zipCode;
     }
 
-    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, String zipCode){
+    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, String zipCode) {
         this.nameStreet = nameStreet;
         this.betweenStreets = betweenStreets;
         this.streetNumber = streetNumber;
@@ -45,10 +41,9 @@ public class Adress {
         this.zipCode = zipCode;
     }
 
-    public Adress() {
-    }
+    public Adress() {}
 
-
+    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -113,19 +108,11 @@ public class Adress {
         this.aparmentNumber = aparmentNumber;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public void setClient(Client client) {
+        this.client = client;
     }
-
-    public void addClients(Client client){
-        client.setAdress(this); // Asocia la cuenta al cliente
-        clients.add(client); // Agrega la cuenta al conjunto de cuentas del cliente
-    }
-
 }
-
-

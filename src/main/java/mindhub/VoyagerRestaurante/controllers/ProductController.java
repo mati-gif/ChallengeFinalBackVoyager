@@ -3,6 +3,7 @@ package mindhub.VoyagerRestaurante.controllers;
 import mindhub.VoyagerRestaurante.dtos.PurchaseRequestDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.Order;
+import mindhub.VoyagerRestaurante.models.OrderType;
 import mindhub.VoyagerRestaurante.models.Product;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
@@ -49,8 +50,8 @@ public class ProductController {
             Product product = products.get(i);
             int quantity = purchaseRequestDTO.getQuantities().get(i);
 
-            // Crear y guardar la orden
-            Order order = new Order(LocalDateTime.now(), product.getPriceProduct() * quantity, client);
+//             Crear y guardar la orden
+            Order order = new Order(LocalDateTime.now(), product.getPriceProduct() * quantity, OrderType.DELIVERY);
             order.setProduct(product);
             orderService.saveOrder(order);
 
