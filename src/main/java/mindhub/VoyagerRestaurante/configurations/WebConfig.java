@@ -39,7 +39,11 @@ public class WebConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 // Rutas públicas permitidas
-                                .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**", "/api/clients").permitAll()
+
+                                
+
+                                .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**","/api/clients").permitAll()
+
 
                                 // Rutas de lectura accesibles a CLIENT y ADMIN
                                 .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket").permitAll()

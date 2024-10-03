@@ -1,12 +1,9 @@
 package mindhub.VoyagerRestaurante.models;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 public class Client {
@@ -14,18 +11,18 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
     @ElementCollection
-    @Column(name = "phoneNumber")
     private List<String> phoneNumbers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference  // Ignora la serialización en el lado de Client
-    @JoinColumn(name = "adress_id")// No serializa esta relación en el lado del cliente
+    @JoinColumn(name = "adress_id")
+    @JsonBackReference // Evita la recursividad inversa hacia Adress
     private Adress adress;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -49,11 +46,9 @@ public class Client {
         this.phoneNumbers = phoneNumbers;
     }
 
-    public Client(String s, String string, String email, String encode) {}
-
-
-    public void setId(Long id) {
-        this.id = id;
+    // Getters y setters
+    public Long getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -64,12 +59,12 @@ public class Client {
         this.firstName = firstName;
     }
 
-    public List<ClientTable> getClientTables() {
-        return clientTables;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setClientTables(List<ClientTable> clientTables) {
-        this.clientTables = clientTables;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -78,14 +73,6 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -104,10 +91,6 @@ public class Client {
         this.phoneNumbers = phoneNumbers;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Adress getAdress() {
         return adress;
     }
@@ -115,53 +98,4 @@ public class Client {
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<ReviewClientProduct> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<ReviewClientProduct> reviews) {
-        this.reviews = reviews;
-    }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phoneNumbers=" + phoneNumbers +
-                '}';
-    }
-
-    public void addClientTable(ClientTable clientTable){
-        this.clientTables.add(clientTable);
-        clientTable.setClient(this);
-    }
-
-    public void addOrder(Order order) {
-        this.orders.add(order);
-        order.setClient(this);
-    }
-
-    public void addReview(ReviewClientProduct review) {
-        this.reviews.add(review);
-        review.setClient(this);
-    }
-
-    // Método para agregar una dirección
-    public void addAdress(Adress adress) {
-        this.adress = adress;
-    }
-
 }

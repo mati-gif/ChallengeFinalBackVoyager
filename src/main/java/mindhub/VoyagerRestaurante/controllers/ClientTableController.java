@@ -57,6 +57,11 @@ public class ClientTableController {
             return ResponseEntity.badRequest().body("Table not found");
         }
 
+        // Extraer el cliente autenticado desde el token
+        String email = jwtUtilService.extractUsername(jwtToken);
+        Client client = clientService.findByEmail(email);
+
+
         Table table = optionalTable.get();
 
         // Verificar si la mesa ya ha sido reservada o si está ocupada
@@ -76,6 +81,7 @@ public class ClientTableController {
 
         // Crear la nueva reserva
         ClientTable clientTable = new ClientTable();
+
         clientTable.setInitialDate(clientTableDTO.reservationStart()); // Fecha de inicio
         clientTable.setFinalDate(clientTableDTO.reservationStart().plusMinutes(90)); // Fecha de fin (+1 hora 30 minutos)
 
@@ -85,6 +91,12 @@ public class ClientTableController {
 
         // Marcar la mesa como ocupada (false = reservada)
         table.setState(false);
+
+        clientTable.setClient(client); // El cliente autenticado
+        clientTable.setTable(table); // La mesa elegida
+        clientTable.setInitialDate(LocalDateTime.now()); // Fecha de inicio de la reserva
+        clientTable.setFinalDate(LocalDateTime.now().plusHours(2)); // Ejemplo de duración de la reserva
+
 
         // Guardar la reserva
         ClientTable newClientTable = clientTableService.saveClientTable(clientTable);

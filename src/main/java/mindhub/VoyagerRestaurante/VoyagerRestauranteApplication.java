@@ -30,9 +30,23 @@ public class VoyagerRestauranteApplication {
 									  ReviewClientProductRepository reviewRepository,
 									  OrderRepository orderRepository) {
 		return (args) -> {
+
+
+			//DireccionLuz
+			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
+			adressRepository.save(adressLuz);
+
 			// ClienteLuz
 			Client clientLuz = new Client("Luz", "Mieres", "luzmieres@gmail.com", passwordEncoder.encode("Luz1234."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
-			clientRepository.save(clientLuz);
+//			clientRepository.save(clientLuz);
+
+
+
+			// Asignar la dirección al cliente
+			adressLuz.addClients(clientLuz);
+			clientRepository.save(clientLuz); // Asegúrate de guardar el cliente nuevamente
+//			adressRepository.save(adressLuz);
+
 
 			// ClienteMaria
 			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
@@ -42,8 +56,14 @@ public class VoyagerRestauranteApplication {
 			Adress adress1 = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
 			adressRepository.save(adress1);
 
+
 			Adress adress2 = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
 			adressRepository.save(adress2);
+
+			// Asignar la dirección a Maria
+//			clientMaria.addAdress(adressMaria);
+//			clientRepository.save(clientMaria); // Asegúrate de guardar el cliente nuevamente
+
 
 
 			// Creación de mesas
@@ -88,6 +108,27 @@ public class VoyagerRestauranteApplication {
 					table14, table15, table16, table17, table18, table19, table20,
 					table21, table22, table23, table24, table25, table26, table27,
 					table28, table29, table30, table31));
+
+
+
+			tableRepository.save(table2);
+
+			// Creación de reservas (ClientTable)
+			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
+			clientTableRepository.save(reservation1);
+//			clientLuz.addClientTable(reservation1);
+			clientRepository.save(clientLuz);
+			//table1.addClientTable(reservation1);
+			tableRepository.save(table1);
+			clientTableRepository.save(reservation1);
+
+			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientMaria, table2);
+			clientTableRepository.save(reservation2);
+//			clientMaria.addClientTable(reservation2);
+			clientRepository.save(clientMaria);
+			//table2.addClientTable(reservation2);
+			tableRepository.save(table2);
+			clientTableRepository.save(reservation2);
 
 
 			// Creación de productos
