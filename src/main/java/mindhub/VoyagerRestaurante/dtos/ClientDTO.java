@@ -1,9 +1,12 @@
 package mindhub.VoyagerRestaurante.dtos;
 
+import mindhub.VoyagerRestaurante.models.Adress;
 import mindhub.VoyagerRestaurante.models.Client;
+import mindhub.VoyagerRestaurante.models.Order;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ClientDTO {
 
@@ -12,6 +15,8 @@ public class ClientDTO {
     private String lastName;
     private String email;
     private List<String> phoneNumbers;
+    private List<AddressDTO> addressDTOS;
+    private List<Order> order;
 
     public ClientDTO(Client client) {
         this.id = client.getId();
@@ -19,6 +24,8 @@ public class ClientDTO {
         this.lastName = client.getLastName();
         this.email = client.getEmail();
         this.phoneNumbers = client.getPhoneNumbers();
+        this.addressDTOS = client.getAdress().stream().map(adress -> new AddressDTO(adress)).collect(Collectors.toList());
+        this.order = client.getOrders();
     }
 
     public ClientDTO(Optional<Client> byEmail) {

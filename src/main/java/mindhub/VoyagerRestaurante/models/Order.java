@@ -1,13 +1,13 @@
 package mindhub.VoyagerRestaurante.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "\"order\"")  // Usamos comillas dobles para escapar la palabra reservada
+@Table(name = "papa")  // Cambié el nombre de la tabla a "orders"
 public class Order {
 
     @Id
@@ -17,10 +17,14 @@ public class Order {
     private LocalDateTime orderDate;
     private double totalAmount;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)  // Especificar que el enum se mapea como string
+    private OrderType orderType;
+
+    @Enumerated(EnumType.STRING)  // Especificar que el enum se mapea como string
     private OrderStatusType orderStatus;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     @JoinColumn(name = "client_id")
     private Client client;
 
@@ -28,13 +32,17 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne(fetch = FetchType.EAGER)  // Añadí la relación ManyToOne con Adress
+    @JoinColumn(name = "adress_id")
+    private Adress adress;
+
     public Order() {
     }
 
-    public Order(LocalDateTime orderDate, double totalAmount, Client client) {
+    public Order(LocalDateTime orderDate, double totalAmount, OrderType orderType) {
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
-        this.client = client;
+        this.orderType = orderType;
     }
 
     // Getters y setters
@@ -84,5 +92,25 @@ public class Order {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public Adress getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Adress adress) {
+        if (this.orderType == OrderType.DELIVERY) {
+            this.adress = adress;
+        } else {
+            throw new UnsupportedOperationException("Address is only for delivery orders.");
+        }
     }
 }

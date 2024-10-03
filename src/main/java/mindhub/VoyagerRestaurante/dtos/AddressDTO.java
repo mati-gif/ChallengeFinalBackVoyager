@@ -17,7 +17,7 @@ public class AddressDTO {
     private TypeHome typeHome;
     private int floorNumber;
     private String aparmentNumber;
-    private List<ClientDTO> clients;
+//    private List<ClientDTO> clients;
 
     public AddressDTO(Adress adress) {
         this.id = adress.getId();
@@ -28,14 +28,15 @@ public class AddressDTO {
         this.typeHome = adress.getTypeHome();
         this.floorNumber = adress.getFloorNumber();
         this.aparmentNumber = adress.getAparmentNumber();
-        this.clients = converClientsToDto(adress.getClients());
+
+//        this.clients = converClientsToDto(adress.getClients());
     }
 
-    private List<ClientDTO> converClientsToDto(List<Client> clients) {
-        return clients.stream()
-                .map(ClientDTO::new)
-                .collect(Collectors.toList());
-    }
+//    private List<ClientDTO> converClientsToDto(List<Client> clients) {
+//        return clients.stream()
+//                .map(ClientDTO::new)
+//                .collect(Collectors.toList());
+//    }
 
     public Long getId() {
         return id;
@@ -69,7 +70,7 @@ public class AddressDTO {
         return aparmentNumber;
     }
 
-    public List<ClientDTO> getClients() {
-        return clients;
-    }
+//    public List<ClientDTO> getClients() {
+//        return clients;
+//    }
 }

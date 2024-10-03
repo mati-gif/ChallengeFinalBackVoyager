@@ -4,6 +4,7 @@ import mindhub.VoyagerRestaurante.dtos.ClientTableDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.ClientTable;
 import mindhub.VoyagerRestaurante.models.Table;
+import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.ClientTableService;
 import mindhub.VoyagerRestaurante.services.TableService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,6 +31,9 @@ public class ClientTableController {
     @Autowired
     private ClientTableService clientTableService;
 
+    @Autowired
+    private JwtUtilService jwtUtilService;
+
     // Crear una nueva reserva de mesa (ClientTable)
     @PostMapping("/create")
     public ResponseEntity<?> createClientTable(Authentication authentication, @RequestBody ClientTableDTO clientTableDTO) {
@@ -36,8 +41,8 @@ public class ClientTableController {
         String email = authentication.getName();
 
         // Obtener el cliente autenticado
-        Optional<Client> authenticatedClient = clientService.findByEmail(email);
-        if (authenticatedClient.isEmpty()) {
+        Client authenticatedClient = clientService.findByEmail(email);
+        if (authenticatedClient == null) {
             return ResponseEntity.badRequest().body("Client not found");
         }
 
@@ -58,7 +63,7 @@ public class ClientTableController {
         }
 
         // Extraer el cliente autenticado desde el token
-        String email = jwtUtilService.extractUsername(jwtToken);
+        String emaill = authenticatedClient.getEmail();
         Client client = clientService.findByEmail(email);
 
 
@@ -87,7 +92,7 @@ public class ClientTableController {
 
         // Asignar la mesa y los clientes
         clientTable.setTable(table);
-        clients.forEach(client -> clientTable.setClient(client));
+        clients.forEach(clientt -> clientTable.setClient(client));
 
         // Marcar la mesa como ocupada (false = reservada)
         table.setState(false);
