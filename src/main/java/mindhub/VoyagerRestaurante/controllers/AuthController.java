@@ -48,6 +48,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
+            if (loginDTO.email().isBlank()) {
+                return new ResponseEntity<>("Email can not be empty", HttpStatus.BAD_REQUEST);
+            }
+            if (loginDTO.password().isBlank()) {
+                return new ResponseEntity<>("Password can not be empty", HttpStatus.BAD_REQUEST);
+            }
             String token = authService.loginAndGenerateToken(loginDTO);
             return ResponseEntity.ok(token);
         } catch (IllegalArgumentException e) {
