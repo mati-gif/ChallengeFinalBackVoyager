@@ -121,6 +121,11 @@ public class Adress {
         this.clients = clients;
     }
 
+    public void addClients(Client client){
+        client.setAdress(this); // Asocia la cuenta al cliente
+        clients.add(client); // Agrega la cuenta al conjunto de cuentas del cliente
+    }
+
 }
 
 

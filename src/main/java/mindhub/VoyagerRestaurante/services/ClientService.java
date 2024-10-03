@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.services;
 
+import mindhub.VoyagerRestaurante.dtos.ClientDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import org.apache.catalina.LifecycleState;
 
@@ -15,6 +16,10 @@ public interface ClientService {
 
     void deleteClient(Long id);
 
-    Optional<Client> findByEmail(String email);
+    Client findByEmail(String email);
+
+    List<ClientDTO> getAllClientDto();
+    ClientDTO getClientDto(Client client);
+    List<Client> getAllClient();
 
 }

@@ -37,8 +37,8 @@ public class OrderController {
         String email = jwtUtilService.extractUsername(jwtToken);
 
         // Buscar el cliente autenticado por su email
-        Client client = clientService.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+        Client client = clientService.findByEmail(email);
+//                .orElseThrow(() -> new RuntimeException("Client not found"));
 
         // Obtener todas las órdenes del cliente
         List<Order> orders = orderService.getOrdersByClient(client);
