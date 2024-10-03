@@ -8,6 +8,8 @@ import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.AuthService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -73,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
     // Validar nombre (sin números ni caracteres especiales)
     private void validateName(String name, String fieldName) {
         if (name == null || name.trim().isBlank()) {
-            throw new IllegalArgumentException(fieldName + " cannot be empty or start with a space");
+            throw new IllegalArgumentException(fieldName + " can not be empty or start with a space");
         }
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException(fieldName + " is not valid, only letters are allowed");
@@ -83,11 +85,16 @@ public class AuthServiceImpl implements AuthService {
     // Validar el email
     private void validateEmail(String email) {
         if (email == null || email.trim().isBlank()) {
-            throw new IllegalArgumentException("Email cannot be empty or contain only spaces");
+            throw new IllegalArgumentException("Email can not be empty or contain only spaces");
         }
-        if (!emailPattern.matcher(email).matches()) {
-            throw new IllegalArgumentException("Invalid email format, must contain @ and a valid domain");
-        }
+        if (!email.contains("@")) {  throw new IllegalArgumentException("Invalid email. It must contain an '@' character."); }
+        if (!email.contains(".com") && !email.contains(".net") && !email.contains(".org") &&
+                !email.contains(".co") && !email.contains(".info")) { throw new IllegalArgumentException("Invalid email. Please enter a valid domain extension since '.com', '.net', '.org', '.co' or '.info'.");}
+        if (email.contains("@.")) {  throw new IllegalArgumentException("Invalid email. Please provide a valid domain since 'gmail', 'yahoo', etc., " +
+                "between the characters '@' and the character '.'"); }
+//        if (!emailPattern.matcher(email).matches()) {
+//            throw new IllegalArgumentException("Invalid email format, must contain @ and a valid domain");
+//        }
     }
 
     // Validar contraseña
