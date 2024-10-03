@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,10 +37,7 @@ public class ClientTableController {
         String email = authentication.getName();
 
         // Obtener el cliente autenticado
-        Optional<Client> authenticatedClient = clientService.findByEmail(email);
-        if (authenticatedClient.isEmpty()) {
-            return ResponseEntity.badRequest().body("Client not found");
-        }
+        Client authenticatedClient = clientService.findByEmail(email);
 
         // Obtener los clientes por sus IDs
         Set<Client> clients = clientTableDTO.clientIds().stream()
@@ -58,9 +56,8 @@ public class ClientTableController {
         }
 
         // Extraer el cliente autenticado desde el token
-        String email = jwtUtilService.extractUsername(jwtToken);
-        Client client = clientService.findByEmail(email);
-
+        String emailClient = authenticatedClient.getEmail();
+        Client cliente = clientService.findByEmail(email);
 
         Table table = optionalTable.get();
 
@@ -92,7 +89,7 @@ public class ClientTableController {
         // Marcar la mesa como ocupada (false = reservada)
         table.setState(false);
 
-        clientTable.setClient(client); // El cliente autenticado
+        clientTable.setClient(cliente); // El cliente autenticado
         clientTable.setTable(table); // La mesa elegida
         clientTable.setInitialDate(LocalDateTime.now()); // Fecha de inicio de la reserva
         clientTable.setFinalDate(LocalDateTime.now().plusHours(2)); // Ejemplo de duración de la reserva
