@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.services;
 
+import mindhub.VoyagerRestaurante.dtos.AllProductsDTO;
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
 import mindhub.VoyagerRestaurante.models.Product;
 
@@ -18,4 +19,6 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     List<Product> getProductsByIds(List<Long> ids);
+
+    List<AllProductsDTO> getALLAllProductsDTO();
 }

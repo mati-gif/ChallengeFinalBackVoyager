@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.services.implementation;
 
+import mindhub.VoyagerRestaurante.dtos.AllProductsDTO;
 import mindhub.VoyagerRestaurante.dtos.ClientDTO;
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
 import mindhub.VoyagerRestaurante.models.Product;
@@ -31,6 +32,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public  List<ProductDTO> getAllProductsDTO(){return getAllProducts().stream()
             .map(ProductDTO::new)
+            .collect(Collectors.toList());}
+
+    @Override
+    public  List<AllProductsDTO> getALLAllProductsDTO(){return getAllProducts().stream()
+            .map(AllProductsDTO::new)
             .collect(Collectors.toList());}
 
     @Override
