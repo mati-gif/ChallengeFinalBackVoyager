@@ -77,6 +77,9 @@ public class AuthServiceImpl implements AuthService {
         if (name == null || name.trim().isBlank()) {
             throw new IllegalArgumentException(fieldName + " can not be empty or start with a space");
         }
+        if (name.length() < 2) {
+            throw new IllegalArgumentException(fieldName + " too short. Enter at least 2 characters");
+        }
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException(fieldName + " is not valid, only letters are allowed");
         }
@@ -100,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
     // Validar contraseña
     private void validatePassword(String password) {
         if (password == null || password.trim().isBlank()) {
-            throw new IllegalArgumentException("Password cannot be empty or contain only spaces");
+            throw new IllegalArgumentException("Password can not be empty or contain only spaces");
         }
         if (!passwordPattern.matcher(password).matches()) {
             throw new IllegalArgumentException("Password must contain at least 8 characters, including uppercase, lowercase, number, and special character");

@@ -27,7 +27,10 @@ public class AuthController {
         try {
             // Intentar login y generar token
             String token = authService.login(loginDTO);
-            return ResponseEntity.ok(token);
+            Client client = clientService.findByEmail(loginDTO.email());
+            String fullName = client.getFirstName() + " " + client.getLastName();
+            String[] data = {token, fullName};
+            return ResponseEntity.ok(data);
         } catch (IllegalArgumentException e) {
             // Devolver mensaje de error en caso de fallas
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
