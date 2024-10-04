@@ -18,6 +18,7 @@ public class OrderDTO {
     private OrderStatusType orderStatus;
     private List<ProductDTO> products;
 
+
     // Constructor que acepta un objeto Order
     public OrderDTO(Order order) {
         this.id = order.getId();
@@ -25,10 +26,8 @@ public class OrderDTO {
         this.totalAmount = order.getTotalAmount();
         this.orderType = order.getOrderType();
         this.orderStatus = order.getOrderStatus();
-
         // Mapeamos los productos asociados a la orden
-        this.products = order.getOrderProducts().stream()
-                .map(orderProduct -> new ProductDTO(orderProduct.getProduct(), orderProduct.getQuantities()))
+        this.products = order.getOrderProducts().stream().map(orderProduct -> new ProductDTO(orderProduct.getProduct(), orderProduct.getQuantities()))
                 .collect(Collectors.toList());
     }
 
@@ -49,11 +48,13 @@ public class OrderDTO {
         return orderType;
     }
 
+
     public OrderStatusType getOrderStatus() {
         return orderStatus;
     }
 
     public List<ProductDTO> getProducts() {
         return products;
+
     }
 }

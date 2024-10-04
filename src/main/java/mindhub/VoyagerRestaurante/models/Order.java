@@ -42,10 +42,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(LocalDateTime orderDate, double totalAmount, OrderType orderType) {
+    public Order(LocalDateTime orderDate, double totalAmount, OrderType orderType, OrderStatusType orderStatusType) {
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.orderType = orderType;
+        this.orderStatus = orderStatusType;
     }
 
     // Getters y setters

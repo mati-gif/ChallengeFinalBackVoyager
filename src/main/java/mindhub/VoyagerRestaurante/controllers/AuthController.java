@@ -41,4 +41,14 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/current")//metodo para obtener el usuario logueado(es decir autenticado).
+    public ResponseEntity<?> getClient(Authentication authentication){
+
+        Client client = clientService.findByEmail(authentication.getName());
+        return new ResponseEntity<>(clientService.getClientDto(client),HttpStatus.OK);
+
+    }
 }
+
+
