@@ -39,7 +39,7 @@ public class VoyagerRestauranteApplication {
 
 			// Dirección Luz (asignar cliente antes de guardar)
 			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-			adressLuz.setClient(clientLuz);  // Asignar cliente antes de guardar
+
 			adressRepository.save(adressLuz);
 
 			// ClienteMaria
@@ -48,14 +48,12 @@ public class VoyagerRestauranteApplication {
 
 			// Direcciones Maria (asignar cliente antes de guardar)
 			Adress adress1Maria = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-			adress1Maria.setClient(clientMaria);  // Asignar cliente antes de guardar
+
 			Adress adress2Maria = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
-			adress2Maria.setClient(clientMaria);  // Asignar cliente antes de guardar
+
 
 			adressRepository.save(adress1Maria);
 			adressRepository.save(adress2Maria);
-
-
 
 			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY, OrderStatusType.DELIVERED);
 
@@ -70,41 +68,41 @@ public class VoyagerRestauranteApplication {
 
 			// Creación de mesas
             //15 mesas sector planta baja
-            Table table1 = new Table(true, 2, SectorType.GROUND_FLOOR, 1);
-            Table table2 = new Table(true, 4, SectorType.GROUND_FLOOR, 2);
-            Table table3 = new Table(true, 6, SectorType.GROUND_FLOOR, 3);
-            Table table4 = new Table(true, 8, SectorType.GROUND_FLOOR, 4);
-            Table table5 = new Table(true, 3, SectorType.GROUND_FLOOR, 5);
-            Table table6 = new Table(true, 5, SectorType.GROUND_FLOOR, 6);
-            Table table7 = new Table(true, 7, SectorType.GROUND_FLOOR, 7);
-            Table table8 = new Table(true, 2, SectorType.GROUND_FLOOR, 8);
-            Table table9 = new Table(true, 4, SectorType.GROUND_FLOOR, 9);
-            Table table10 = new Table(true, 6, SectorType.GROUND_FLOOR, 10);
-            Table table11 = new Table(true, 8, SectorType.GROUND_FLOOR, 11);
-            Table table12 = new Table(true, 3, SectorType.GROUND_FLOOR, 12);
-            Table table13 = new Table(true, 5, SectorType.GROUND_FLOOR, 13);
-            Table table14 = new Table(true, 7, SectorType.GROUND_FLOOR, 14);
-            Table table15 = new Table(true, 2, SectorType.GROUND_FLOOR, 15);
+            Table table1 = new Table(2, SectorType.GROUND_FLOOR, 1, TableStatus.FREE);
+            Table table2 = new Table(4, SectorType.GROUND_FLOOR, 2, TableStatus.FREE);
+            Table table3 = new Table(6, SectorType.GROUND_FLOOR, 3, TableStatus.FREE);
+            Table table4 = new Table(8, SectorType.GROUND_FLOOR, 4, TableStatus.FREE);
+            Table table5 = new Table(2, SectorType.GROUND_FLOOR, 5, TableStatus.FREE);
+            Table table6 = new Table(4, SectorType.GROUND_FLOOR, 6, TableStatus.FREE);
+            Table table7 = new Table(6, SectorType.GROUND_FLOOR, 7, TableStatus.FREE);
+            Table table8 = new Table(8 ,SectorType.GROUND_FLOOR, 8, TableStatus.FREE);
+            Table table9 = new Table(2, SectorType.GROUND_FLOOR, 9, TableStatus.FREE);
+            Table table10 = new Table(4, SectorType.GROUND_FLOOR, 10, TableStatus.FREE);
+            Table table11 = new Table(6, SectorType.GROUND_FLOOR, 11, TableStatus.FREE);
+            Table table12 = new Table(8, SectorType.GROUND_FLOOR, 12, TableStatus.FREE);
+            Table table13 = new Table(2, SectorType.GROUND_FLOOR, 13, TableStatus.FREE);
+            Table table14 = new Table(4, SectorType.GROUND_FLOOR, 14, TableStatus.FREE);
+            Table table15 = new Table(6, SectorType.GROUND_FLOOR, 15, TableStatus.FREE);
 
             //9 meses sector exterior
-            Table table16 = new Table(true, 2, SectorType.OUTDOOR, 16);
-            Table table17 = new Table(true, 4, SectorType.OUTDOOR, 17);
-            Table table18 = new Table(true, 6, SectorType.OUTDOOR, 18);
-            Table table19 = new Table(true, 8, SectorType.OUTDOOR, 19);
-            Table table20 = new Table(true, 3, SectorType.OUTDOOR, 20);
-            Table table21 = new Table(true, 5, SectorType.OUTDOOR, 21);
-            Table table22 = new Table(true, 7, SectorType.OUTDOOR, 22);
-            Table table23 = new Table(true, 2, SectorType.OUTDOOR, 23);
-			Table table24 = new Table(true, 4, SectorType.OUTDOOR, 24);
+            Table table16 = new Table(2, SectorType.OUTDOOR, 16, TableStatus.FREE);
+            Table table17 = new Table(4, SectorType.OUTDOOR, 17, TableStatus.FREE);
+            Table table18 = new Table(6, SectorType.OUTDOOR, 18, TableStatus.FREE);
+            Table table19 = new Table(8, SectorType.OUTDOOR, 19, TableStatus.FREE);
+            Table table20 = new Table(2, SectorType.OUTDOOR, 20, TableStatus.FREE);
+            Table table21 = new Table(4, SectorType.OUTDOOR, 21, TableStatus.FREE);
+            Table table22 = new Table(6, SectorType.OUTDOOR, 22, TableStatus.FREE);
+            Table table23 = new Table(8, SectorType.OUTDOOR, 23, TableStatus.FREE);
+			Table table24 = new Table(2, SectorType.OUTDOOR, 24, TableStatus.FREE);
 
 			//7 mesas sector primer piso
-			Table table25 = new Table(true, 2, SectorType.FIRST_FLOOR, 25);
-			Table table26 = new Table(true, 4, SectorType.FIRST_FLOOR, 26);
-			Table table27 = new Table(true, 6, SectorType.FIRST_FLOOR, 27);
-			Table table28 = new Table(true, 8, SectorType.FIRST_FLOOR, 28);
-			Table table29 = new Table(true, 3, SectorType.FIRST_FLOOR, 29);
-			Table table30 = new Table(true, 5, SectorType.FIRST_FLOOR, 30);
-			Table table31 = new Table(true, 7, SectorType.FIRST_FLOOR, 31);
+			Table table25 = new Table(2, SectorType.FIRST_FLOOR, 25, TableStatus.FREE);
+			Table table26 = new Table(4, SectorType.FIRST_FLOOR, 26, TableStatus.FREE);
+			Table table27 = new Table(6, SectorType.FIRST_FLOOR, 27, TableStatus.FREE);
+			Table table28 = new Table(8, SectorType.FIRST_FLOOR, 28, TableStatus.FREE);
+			Table table29 = new Table(2, SectorType.FIRST_FLOOR, 29, TableStatus.FREE);
+			Table table30 = new Table(4, SectorType.FIRST_FLOOR, 30, TableStatus.FREE);
+			Table table31 = new Table(6, SectorType.FIRST_FLOOR, 31, TableStatus.FREE);
 			tableRepository.saveAll(List.of(table1, table2, table3, table4,table5,
 					table6, table7, table8, table9, table10, table11, table12, table13,
 					table14, table15, table16, table17, table18, table19, table20,

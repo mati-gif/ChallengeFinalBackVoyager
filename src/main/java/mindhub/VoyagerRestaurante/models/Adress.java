@@ -3,6 +3,9 @@ package mindhub.VoyagerRestaurante.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Adress {
 
@@ -24,9 +27,8 @@ public class Adress {
     @Column(nullable = true)  // Permitir que este campo sea nulo
     private String aparmentNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    @OneToMany(mappedBy = "adress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ClientAdress> clientAdress = new HashSet<>();
 
     // Constructor para HOUSE
     public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, String zipCode) {
@@ -77,12 +79,12 @@ public class Adress {
         this.aparmentNumber = aparmentNumber;
     }
 
-    public Client getClient() {
-        return client;
+    public Set<ClientAdress> getClientAdress() {
+        return clientAdress;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientAdress(Set<ClientAdress> clientAdress) {
+        this.clientAdress = clientAdress;
     }
 
     public Long getId() {
@@ -119,5 +121,10 @@ public class Adress {
 
     public void setStreetNumber(int streetNumber) {
         this.streetNumber = streetNumber;
+    }
+
+    public void addClientAddress(ClientAdress clientAdress) {
+        clientAdress.setAdress(this);
+        this.clientAdress.add(clientAdress);
     }
 }

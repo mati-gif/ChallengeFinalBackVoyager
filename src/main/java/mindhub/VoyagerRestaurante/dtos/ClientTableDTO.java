@@ -1,8 +1,16 @@
 package mindhub.VoyagerRestaurante.dtos;
 
 import mindhub.VoyagerRestaurante.models.SectorType;
+import mindhub.VoyagerRestaurante.models.TableStatus;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
-public record ClientTableDTO(Set<Long> clientIds, Long tableId, SectorType sectorType, LocalDateTime reservationStart) {}
+public record ClientTableDTO(
+        Long tableId,
+        int tableNumber,
+        int capacity,
+        SectorType sector,
+        TableStatus state,
+        LocalDateTime reservationStart,
+        LocalDateTime reservationEnd) {
+}

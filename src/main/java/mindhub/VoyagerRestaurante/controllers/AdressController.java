@@ -1,10 +1,13 @@
 package mindhub.VoyagerRestaurante.controllers;
 
 import mindhub.VoyagerRestaurante.dtos.AddressDTO;
+import mindhub.VoyagerRestaurante.dtos.ClientAdressDTO;
 import mindhub.VoyagerRestaurante.models.Adress;
 import mindhub.VoyagerRestaurante.models.Client;
+import mindhub.VoyagerRestaurante.models.ClientAdress;
 import mindhub.VoyagerRestaurante.models.TypeHome;
 import mindhub.VoyagerRestaurante.repositories.AdressRepository;
+import mindhub.VoyagerRestaurante.repositories.ClientAdressRepository;
 import mindhub.VoyagerRestaurante.repositories.ClientRepository;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +16,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/address")
 public class AdressController {
+
+    @Autowired
+    private ClientAdressRepository clientAdressRepository;
 
     @Autowired
     private AdressRepository adressRepository;
@@ -30,7 +37,7 @@ public class AdressController {
 
     // Método para crear una dirección asociada al cliente logueado usando el token
     @PostMapping("/create")
-    public ResponseEntity<?> createAddress(@RequestHeader("Authorization") String token, @RequestBody AddressDTO addressDTO) {
+    public ResponseEntity<?> createAddress(@RequestHeader("Authorization") String token, @RequestBody ClientAdressDTO clientAdressDTO) {
         // Extraer el token sin el prefijo "Bearer "
         String jwtToken = token.substring(7);
 
@@ -44,55 +51,66 @@ public class AdressController {
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
         }
 
-        // Validar que si el TypeHome es HOUSE, no se requiera el número de piso ni departamento
         Adress newAdress;
 
-        if (addressDTO.getTypeHome() == TypeHome.HOUSE) {
+        // Validar que si el TypeHome es HOUSE, no se requiera el número de piso ni departamento
+        if (clientAdressDTO.getTypeHome() == TypeHome.HOUSE) {
             // Validar que los campos de floorNumber y apartmentNumber no sean enviados para una casa
-            if (addressDTO.getFloorNumber() != null || addressDTO.getAparmentNumber() != null) {
+            if (clientAdressDTO.getFloorNumber() != null || clientAdressDTO.getAparmentNumber() != null) {
                 return new ResponseEntity<>("Floor number and apartment number should not be provided for a HOUSE", HttpStatus.BAD_REQUEST);
             }
 
             newAdress = new Adress(
-                    addressDTO.getNameStreet(),
-                    addressDTO.getBetweenStreets(),
-                    addressDTO.getStreetNumber(),
-                    addressDTO.getTypeHome(),
-                    addressDTO.getZipCode()
+                    clientAdressDTO.getNameStreet(),
+                    clientAdressDTO.getBetweenStreets(),
+                    clientAdressDTO.getStreetNumber(),
+                    clientAdressDTO.getTypeHome(),
+                    clientAdressDTO.getZipCode()
             );
 
-        } else if (addressDTO.getTypeHome() == TypeHome.APARTMENT) {
+        } else if (clientAdressDTO.getTypeHome() == TypeHome.APARTMENT) {
             // Validar que los campos de piso y departamento estén presentes para APARTMENT
-            if (addressDTO.getFloorNumber() == null || addressDTO.getAparmentNumber() == null) {
+            if (clientAdressDTO.getFloorNumber() == null || clientAdressDTO.getAparmentNumber() == null) {
                 return new ResponseEntity<>("Floor number and apartment number are required for an APARTMENT", HttpStatus.BAD_REQUEST);
             }
 
             newAdress = new Adress(
-                    addressDTO.getNameStreet(),
-                    addressDTO.getBetweenStreets(),
-                    addressDTO.getStreetNumber(),
-                    addressDTO.getTypeHome(),
-                    addressDTO.getFloorNumber(),
-                    addressDTO.getAparmentNumber(),
-                    addressDTO.getZipCode()
+                    clientAdressDTO.getNameStreet(),
+                    clientAdressDTO.getBetweenStreets(),
+                    clientAdressDTO.getStreetNumber(),
+                    clientAdressDTO.getTypeHome(),
+                    clientAdressDTO.getFloorNumber(),
+                    clientAdressDTO.getAparmentNumber(),
+                    clientAdressDTO.getZipCode()
             );
-
         } else {
             return new ResponseEntity<>("Invalid TypeHome", HttpStatus.BAD_REQUEST);
         }
 
-        // Asignar la dirección al cliente autenticado
-        newAdress.setClient(client);
+        // Guardar la dirección primero
         adressRepository.save(newAdress);
 
-        return new ResponseEntity<>("Address created successfully", HttpStatus.CREATED);
+        // Crear la relación entre cliente y dirección
+        ClientAdress clientAdress = new ClientAdress();
+        clientAdress.setAdress(newAdress);
+        clientAdress.setClient(client);
+
+        // Guardar la relación
+        clientAdressRepository.save(clientAdress);
+
+        // Crear y devolver el DTO de la nueva dirección
+        ClientAdressDTO createdAdressDTO = new ClientAdressDTO(clientAdress);
+        return new ResponseEntity<>(createdAdressDTO, HttpStatus.CREATED);
     }
+
 
     // Método para obtener todas las direcciones
     @GetMapping("/all")
-    public List<AddressDTO> getAllAddresses() {
-        List<Adress> addresses = adressRepository.findAll();
-        return addresses.stream().map(AddressDTO::new).collect(Collectors.toList());
+    public List<ClientAdressDTO> getAllAddresses() {
+        List<ClientAdress> addresses = clientAdressRepository.findAll();
+        return addresses.stream()
+                .map(ClientAdressDTO::new) // Cambiado para mapear correctamente ClientAdress a ClientAdressDTO
+                .collect(Collectors.toList());
     }
 
     // Método para obtener la dirección del cliente autenticado
@@ -112,16 +130,16 @@ public class AdressController {
         }
 
         // Obtener la dirección del cliente
-        List<Adress> addresses = adressRepository.findByClient(client);
+        List<ClientAdress> clientAdresses = clientAdressRepository.findByClient(client);
 
-        if (addresses.isEmpty()) {
+        if (clientAdresses.isEmpty()) {
             return new ResponseEntity<>("No addresses found for this client", HttpStatus.NOT_FOUND);
         }
 
-        List<AddressDTO> addressDTOs = addresses.stream()
-                .map(AddressDTO::new)
+        List<ClientAdressDTO> clientAdressDTOS = clientAdresses.stream()
+                .map(ClientAdressDTO::new) // Cambiado para mapear correctamente ClientAdress a ClientAdressDTO
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(addressDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(clientAdressDTOS, HttpStatus.OK);
     }
 }
