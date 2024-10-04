@@ -48,12 +48,11 @@ public class AdressController {
         Adress newAdress;
 
         if (addressDTO.getTypeHome() == TypeHome.HOUSE) {
-            // Validar que los campos de floorNumber y apartmentNumber no sean enviados
-            if (addressDTO.getFloorNumber() != 0 || addressDTO.getAparmentNumber() != null) {
+            // Validar que los campos de floorNumber y apartmentNumber no sean enviados para una casa
+            if (addressDTO.getFloorNumber() != null || addressDTO.getAparmentNumber() != null) {
                 return new ResponseEntity<>("Floor number and apartment number should not be provided for a HOUSE", HttpStatus.BAD_REQUEST);
             }
 
-            // Crear la dirección para una casa
             newAdress = new Adress(
                     addressDTO.getNameStreet(),
                     addressDTO.getBetweenStreets(),
@@ -61,13 +60,13 @@ public class AdressController {
                     addressDTO.getTypeHome(),
                     addressDTO.getZipCode()
             );
+
         } else if (addressDTO.getTypeHome() == TypeHome.APARTMENT) {
             // Validar que los campos de piso y departamento estén presentes para APARTMENT
-            if (addressDTO.getFloorNumber() == 0 || addressDTO.getAparmentNumber() == null) {
+            if (addressDTO.getFloorNumber() == null || addressDTO.getAparmentNumber() == null) {
                 return new ResponseEntity<>("Floor number and apartment number are required for an APARTMENT", HttpStatus.BAD_REQUEST);
             }
 
-            // Crear la dirección para un apartamento
             newAdress = new Adress(
                     addressDTO.getNameStreet(),
                     addressDTO.getBetweenStreets(),
@@ -77,8 +76,9 @@ public class AdressController {
                     addressDTO.getAparmentNumber(),
                     addressDTO.getZipCode()
             );
+
         } else {
-            return new ResponseEntity<>("Invalid TypeHome value", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid TypeHome", HttpStatus.BAD_REQUEST);
         }
 
         // Asignar la dirección al cliente autenticado

@@ -15,7 +15,7 @@ public class ClientDTO {
     private String email;
     private List<String> phoneNumbers;
     private List<ClientAdressDTO> address;
-    private List<Order> order;
+    private List<OrderDTO> orders; // Changed to orders for consistency
 
     public ClientDTO(Client client) {
         this.id = client.getId();
@@ -24,10 +24,11 @@ public class ClientDTO {
         this.email = client.getEmail();
         this.phoneNumbers = client.getPhoneNumbers();
         this.address = client.getClientAdress().stream().map((ClientAdressDTO::new)).collect(Collectors.toList());
-        this.order = client.getOrders();
+        this.orders = client.getOrders().stream().map(OrderDTO::new).collect(Collectors.toList());
     }
 
     public ClientDTO(Optional<Client> byEmail) {
+
     }
 
     public Long getId() {
@@ -42,11 +43,22 @@ public class ClientDTO {
         return lastName;
     }
 
+
+
+    public String getEmail() {
+        return email;
+    }
+
+
     public List<String> getPhoneNumbers() {
         return phoneNumbers;
     }
 
-    public String getEmail() {
-        return email;
+    public List<ClientAdressDTO> getAddress() {
+        return address;
+    }
+
+    public List<OrderDTO> getOrders() {
+        return orders;
     }
 }

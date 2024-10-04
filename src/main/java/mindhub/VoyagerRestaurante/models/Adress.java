@@ -84,4 +84,40 @@ public class Adress {
     public void setClient(Client client) {
         this.client = client;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNameStreet() {
+        return nameStreet;
+    }
+
+    public void setNameStreet(String nameStreet) {
+        this.nameStreet = nameStreet;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getBetweenStreets() {
+        return betweenStreets;
+    }
+
+    public void setBetweenStreets(String betweenStreets) {
+        this.betweenStreets = betweenStreets;
+    }
+
+    public int getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(int streetNumber) {
+        this.streetNumber = streetNumber;
+    }
 }

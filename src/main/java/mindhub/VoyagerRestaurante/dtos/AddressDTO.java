@@ -10,7 +10,7 @@ public class AddressDTO {
     private String betweenStreets;
     private int streetNumber;
     private TypeHome typeHome;
-    private int floorNumber;
+    private Integer floorNumber;  // Cambiado a Integer para permitir null
     private String aparmentNumber;
 
     // Constructor por defecto necesario para la deserialización de JSON
@@ -25,8 +25,12 @@ public class AddressDTO {
         this.betweenStreets = adress.getBetweenStreets();
         this.streetNumber = adress.getStreetNumber();
         this.typeHome = adress.getTypeHome();
-        this.floorNumber = adress.getFloorNumber();
-        this.aparmentNumber = adress.getAparmentNumber();
+
+        // Solo asignamos el número de piso y número de apartamento si es un APARTMENT
+        if (adress.getTypeHome() == TypeHome.APARTMENT) {
+            this.floorNumber = adress.getFloorNumber();
+            this.aparmentNumber = adress.getAparmentNumber();
+        }
     }
 
     // Getters y setters
@@ -78,11 +82,11 @@ public class AddressDTO {
         this.typeHome = typeHome;
     }
 
-    public int getFloorNumber() {
+    public Integer getFloorNumber() {
         return floorNumber;
     }
 
-    public void setFloorNumber(int floorNumber) {
+    public void setFloorNumber(Integer floorNumber) {
         this.floorNumber = floorNumber;
     }
 

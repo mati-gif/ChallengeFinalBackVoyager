@@ -55,9 +55,10 @@ public class VoyagerRestauranteApplication {
 			adressRepository.save(adress1Maria);
 			adressRepository.save(adress2Maria);
 
-			// Órdenes para Luz
-			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY);
-			order1.setAdress(adressLuz);
+
+
+			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY, OrderStatusType.DELIVERED);
+
 			clientLuz.addOrder(order1);
 			orderRepository.save(order1);
 

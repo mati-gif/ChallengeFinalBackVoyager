@@ -2,10 +2,7 @@ package mindhub.VoyagerRestaurante.controllers;
 
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
 import mindhub.VoyagerRestaurante.dtos.PurchaseRequestDTO;
-import mindhub.VoyagerRestaurante.models.Client;
-import mindhub.VoyagerRestaurante.models.Order;
-import mindhub.VoyagerRestaurante.models.OrderType;
-import mindhub.VoyagerRestaurante.models.Product;
+import mindhub.VoyagerRestaurante.models.*;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.OrderService;
@@ -63,6 +60,7 @@ public class ProductController {
 //        // Retornar el total de la compra
 //        return ResponseEntity.ok("Purchase successful. Total amount: " + totalAmount);
 //    }
+
     // Crear un nuevo producto
     @PostMapping("/create")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
