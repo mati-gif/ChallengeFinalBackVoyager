@@ -6,8 +6,10 @@ import mindhub.VoyagerRestaurante.services.ClientTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ClientTableServiceImpl implements ClientTableService {
@@ -21,17 +23,8 @@ public class ClientTableServiceImpl implements ClientTableService {
     }
 
     @Override
-    public List<ClientTable> getAllClientTables() {
-        return clientTableRepository.findAll();
-    }
-
-    @Override
-    public Optional<ClientTable> getClientTableById(Long id) {
-        return clientTableRepository.findById(id);
-    }
-
-    @Override
-    public void deleteClientTable(Long id) {
-        clientTableRepository.deleteById(id);
+    public Set<ClientTable> getAllClientTables() {
+        return new HashSet<>(clientTableRepository.findAll());
     }
 }
+

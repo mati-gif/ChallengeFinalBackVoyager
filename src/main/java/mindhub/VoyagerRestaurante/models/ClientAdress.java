@@ -20,8 +20,11 @@ public class ClientAdress {
     public ClientAdress() {
     }
 
+    public Long getId() {
+        return id;
+    }
 
-    // Getters y setters
+
     public Client getClient() {
         return client;
     }

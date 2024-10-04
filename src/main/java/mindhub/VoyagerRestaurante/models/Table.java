@@ -1,24 +1,24 @@
 package mindhub.VoyagerRestaurante.models;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@jakarta.persistence.Table(name = "\"table\"")  // Usamos comillas dobles para escapar la palabra reservada
+@jakarta.persistence.Table(name = "tables")  // Usamos comillas dobles para escapar la palabra reservada
 public class Table {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int tableNumber;
-    private boolean state;
+
+    @Enumerated(EnumType.STRING)
+    private TableStatus state;
     private int capacity;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SectorType sectorType;
 
     @OneToMany(mappedBy = "table", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -26,22 +26,22 @@ public class Table {
 
     public Table() {}
 
-    public Table(boolean state, int capacity, SectorType sectorType, int tableNumber) {
-        this.state = state;
+    public Table(int capacity, SectorType sectorType, int tableNumber, TableStatus state) {
         this.capacity = capacity;
         this.sectorType = sectorType;
         this.tableNumber = tableNumber;
+        this.state = state;
     }
 
     public long getId() {
         return id;
     }
 
-    public boolean isState() {
+    public TableStatus getState() {
         return state;
     }
 
-    public void setState(boolean state) {
+    public void setState(TableStatus state) {
         this.state = state;
     }
 
