@@ -1,8 +1,6 @@
 package mindhub.VoyagerRestaurante.dtos;
 
-import mindhub.VoyagerRestaurante.models.Adress;
 import mindhub.VoyagerRestaurante.models.Client;
-import mindhub.VoyagerRestaurante.models.ClientAdress;
 import mindhub.VoyagerRestaurante.models.Order;
 
 import java.util.List;
@@ -25,12 +23,12 @@ public class ClientDTO {
         this.lastName = client.getLastName();
         this.email = client.getEmail();
         this.phoneNumbers = client.getPhoneNumbers();
-        this.address = client.getClientAdress().stream()
-                .map(ClientAdressDTO::new)
-                .collect(Collectors.toList());
-        this.orders = client.getOrders().stream() // Changed to orders for consistency
-                .map(OrderDTO::new)
-                .collect(Collectors.toList());
+        this.address = client.getClientAdress().stream().map((ClientAdressDTO::new)).collect(Collectors.toList());
+        this.orders = client.getOrders().stream().map(OrderDTO::new).collect(Collectors.toList());
+    }
+
+    public ClientDTO(Optional<Client> byEmail) {
+
     }
 
     public Long getId() {
@@ -45,9 +43,12 @@ public class ClientDTO {
         return lastName;
     }
 
+
+
     public String getEmail() {
         return email;
     }
+
 
     public List<String> getPhoneNumbers() {
         return phoneNumbers;

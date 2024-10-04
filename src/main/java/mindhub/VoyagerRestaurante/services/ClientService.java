@@ -2,6 +2,7 @@ package mindhub.VoyagerRestaurante.services;
 
 import mindhub.VoyagerRestaurante.dtos.ClientDTO;
 import mindhub.VoyagerRestaurante.dtos.RegisterDTO;
+import mindhub.VoyagerRestaurante.models.Adress;
 import mindhub.VoyagerRestaurante.models.Client;
 import org.apache.catalina.LifecycleState;
 
@@ -23,5 +24,6 @@ public interface ClientService {
     ClientDTO getClientDto(Client client);
     List<Client> getAllClient();
     Client createNewClient(RegisterDTO registerDTO);
+    Adress getAddressById(Long addressId);
 
 }
