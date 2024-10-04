@@ -35,30 +35,27 @@ public class VoyagerRestauranteApplication {
 
 			// ClienteLuz
 			Client clientLuz = new Client("Luz", "Mieres", "luzmieres@gmail.com", passwordEncoder.encode("Luz1234."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
-//			clientRepository.save(clientLuz);
-			clientRepository.save(clientLuz); // Asegúrate de guardar el cliente nuevamente
-//			adressRepository.save(adressLuz);
+			clientRepository.save(clientLuz);
 
-
-			//DireccionLuz
+			// Dirección Luz (asignar cliente antes de guardar)
 			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-//			clientLuz.addAddress(adressLuz);
+			adressLuz.setClient(clientLuz);  // Asignar cliente antes de guardar
 			adressRepository.save(adressLuz);
 
 			// ClienteMaria
 			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
 			clientRepository.save(clientMaria);
 
-			//Direcciones
+			// Direcciones Maria (asignar cliente antes de guardar)
 			Adress adress1Maria = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
-
+			adress1Maria.setClient(clientMaria);  // Asignar cliente antes de guardar
 			Adress adress2Maria = new Adress("Toledo", "Irigoyen and Florencio Varela", 564, TypeHome.APARTMENT, 2, "1B", "ZP2346");
-//			clientMaria.addAddress(adress1Maari);
-//			clientMaria.addAddress(adress2Maria);
+			adress2Maria.setClient(clientMaria);  // Asignar cliente antes de guardar
 
 			adressRepository.save(adress1Maria);
 			adressRepository.save(adress2Maria);
 
+			// Órdenes para Luz
 			Order order1 = new Order(LocalDateTime.now(), 500, OrderType.DELIVERY);
 			order1.setAdress(adressLuz);
 			clientLuz.addOrder(order1);

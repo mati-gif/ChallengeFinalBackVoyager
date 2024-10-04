@@ -44,17 +44,15 @@ public class WebConfig {
 
                                 .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
 
-
-                                // Rutas de lectura accesibles a CLIENT y ADMIN
-                                .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket").hasRole("CLIENT")
-
-                                // Rutas de escritura (creación, actualización, eliminación) solo accesibles a ADMIN
-                                .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/orders/**", "/api/reviews/**","/api/clients").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/products/**", "/api/orders/**", "/api/reviews/**").hasRole("ADMIN")
-
                                 // Rutas que requieren autenticación con el rol de CLIENT (para crear cosas específicas)
-                                .requestMatchers(HttpMethod.POST, "/api/orders/create", "/api/clientTables/create","/api/products/purchase").hasRole("CLIENT")
+                                .requestMatchers(HttpMethod.POST, "/api/orders/create", "/api/clientTables/create","/api/products/purchase" ,"/api/addresses/create").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/auth/current", "/api/orders/my-orders").permitAll()
+                                // Rutas de lectura accesibles a CLIENT y ADMIN
+                                .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket", "/api/addresses/", "/api/addresses/me", "/api/addresses/all").permitAll()
+                                // Rutas de escritura (creación, actualización, eliminación) solo accesibles a ADMIN
+                                .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/orders/**", "/api/reviews/**","/api/clients", "/api/addresses/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
 
                                 // Cualquier otra ruta requiere autenticación
                                 .anyRequest().authenticated()

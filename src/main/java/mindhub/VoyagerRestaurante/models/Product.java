@@ -1,7 +1,6 @@
 package mindhub.VoyagerRestaurante.models;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +15,17 @@ public class Product {
     private Double priceProduct;
 
     @Enumerated(EnumType.STRING)
-    private Category category; // Supongo que tienes un enum Category
+    private Category category; // Enum que define las categorías del producto
 
     private String details;
 
     private String img;
 
-    // String imagen
-
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ReviewClientProduct> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    private List<Order> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<OrderProduct> orderProducts = new ArrayList<>(); // Relación con OrderProduct
 
     public Product() {
     }
@@ -98,21 +95,17 @@ public class Product {
         this.reviews = reviews;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 
-    public void addReview(ReviewClientProduct review) {
-        this.reviews.add(review);
-        review.setProduct(this);
-    }
-
-    public void addOrder(Order order){
-        this.orders.add(order);
-        order.setProduct(this);
+    // Método para añadir una relación con OrderProduct
+    public void addOrderProduct(OrderProduct orderProduct) {
+        this.orderProducts.add(orderProduct);
+        orderProduct.setProduct(this); // Asociar este producto a OrderProduct
     }
 }

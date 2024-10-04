@@ -2,7 +2,9 @@ package mindhub.VoyagerRestaurante.services.implementation;
 
 import mindhub.VoyagerRestaurante.dtos.ClientDTO;
 import mindhub.VoyagerRestaurante.dtos.RegisterDTO;
+import mindhub.VoyagerRestaurante.models.Adress;
 import mindhub.VoyagerRestaurante.models.Client;
+import mindhub.VoyagerRestaurante.repositories.AdressRepository;
 import mindhub.VoyagerRestaurante.repositories.ClientRepository;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AdressRepository adressRepository;
 
     @Override
     public Client saveClient(Client client) {
@@ -80,6 +84,12 @@ public class ClientServiceImpl implements ClientService {
 
         // Crea un nuevo objeto Client con los datos proporcionados
         return new Client(registerDTO.firstName(), registerDTO.lastName(), registerDTO.email(), encodedPassword, registerDTO.phoneNumbers()) ;
+    }
+
+    @Override
+    public Adress getAddressById(Long addressId) {
+        return adressRepository.findById(addressId)
+                .orElseThrow(() -> new IllegalArgumentException("Address not found"));
     }
 
 }

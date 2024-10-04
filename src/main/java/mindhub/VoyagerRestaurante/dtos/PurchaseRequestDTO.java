@@ -1,16 +1,22 @@
 package mindhub.VoyagerRestaurante.dtos;
 
+import mindhub.VoyagerRestaurante.models.OrderType;
+
 import java.util.List;
 
 public class PurchaseRequestDTO {
     private List<Long> productIds;  // IDs de los productos que el cliente desea comprar
-    private List<Integer> quantities;  // Cantidad de cada producto
+    private List<Integer> quantities;  // Cantidades de cada producto
+    private OrderType orderType;  // Tipo de orden (DELIVERY, TAKEOUT, DINNER_IN)
+    private Long addressId;  // ID de la dirección (solo si es DELIVERY)
 
     public PurchaseRequestDTO() {}
 
-    public PurchaseRequestDTO(List<Long> productIds, List<Integer> quantities) {
+    public PurchaseRequestDTO(List<Long> productIds, List<Integer> quantities, OrderType orderType, Long addressId) {
         this.productIds = productIds;
         this.quantities = quantities;
+        this.orderType = orderType;
+        this.addressId = addressId;
     }
 
     public List<Long> getProductIds() {
@@ -27,5 +33,21 @@ public class PurchaseRequestDTO {
 
     public void setQuantities(List<Integer> quantities) {
         this.quantities = quantities;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
     }
 }
