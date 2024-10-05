@@ -125,10 +125,10 @@ public class Client {
         this.orders.add(order);
     }
 
-//    public void addClientTable (ClientTable clientTable){
-//        clientTable.setClient(this);
-//        clientTables.add(clientTable);
-//    }
+    public void addClientTable (ClientTable clientTable){
+        clientTable.setClient(this);
+        clientTables.add(clientTable);
+    }
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)

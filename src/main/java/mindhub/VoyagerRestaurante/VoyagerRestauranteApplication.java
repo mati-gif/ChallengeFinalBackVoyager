@@ -74,6 +74,7 @@ public class VoyagerRestauranteApplication {
 			// Creación de mesas
             //15 mesas sector planta baja
             Table table1 = new Table(2, SectorType.GROUND_FLOOR, 1, TableStatus.FREE);
+			table1.setLocalDateTime(LocalDateTime.now());
             Table table2 = new Table(4, SectorType.GROUND_FLOOR, 2, TableStatus.FREE);
             Table table3 = new Table(6, SectorType.GROUND_FLOOR, 3, TableStatus.FREE);
             Table table4 = new Table(8, SectorType.GROUND_FLOOR, 4, TableStatus.FREE);

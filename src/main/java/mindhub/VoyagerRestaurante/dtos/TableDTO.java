@@ -4,12 +4,15 @@ import mindhub.VoyagerRestaurante.models.SectorType;
 import mindhub.VoyagerRestaurante.models.Table;
 import mindhub.VoyagerRestaurante.models.TableStatus;
 
+import java.time.LocalDateTime;
+
 public class TableDTO {
     private Long id;
     private int tableNumber;
     private int seats;
     private SectorType sector;
     private TableStatus status;
+    private LocalDateTime localDateTime;
 
     public TableDTO(Table table) {
         this.id = table.getId();
@@ -17,6 +20,11 @@ public class TableDTO {
         this.sector = table.getSectorType();
         this.seats = table.getCapacity();
         this.status = table.getState();
+        this.localDateTime = table.getLocalDateTime();
+    }
+
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
     public Long getId() {
