@@ -47,8 +47,13 @@ public class ClientTableController {
             return ResponseEntity.badRequest().body("Client not found");
         }
 
+        // Verificar que el ID de la mesa no sea nulo antes de buscar la mesa
+        if (clientTableDTO.getTableId() == null) {
+            return ResponseEntity.badRequest().body("Table ID cannot be null");
+        }
+
         // Obtener la mesa por su ID
-        Optional<Table> optionalTable = tableService.getTableById(clientTableDTO.tableId());
+        Optional<Table> optionalTable = tableService.getTableById(clientTableDTO.getTableId());
         if (optionalTable.isEmpty()) {
             return ResponseEntity.badRequest().body("Table not found");
         }
@@ -64,8 +69,8 @@ public class ClientTableController {
         ClientTable clientTable = new ClientTable();
         clientTable.setClient(authenticatedClient);
         clientTable.setTable(table);
-        clientTable.setInitialDate(clientTableDTO.reservationStart());
-        clientTable.setFinalDate(clientTableDTO.reservationStart().plusMinutes(90)); // Duración de 90 minutos
+        clientTable.setInitialDate(clientTableDTO.getReservationStart());
+        clientTable.setFinalDate(clientTableDTO.getReservationStart().plusMinutes(90)); // Duración de 90 minutos
 
         // Cambiar el estado de la mesa a RESERVED
         table.setState(TableStatus.RESERVED);
@@ -82,12 +87,13 @@ public class ClientTableController {
                 newClientTable.getTable().getSectorType(),
                 newClientTable.getTable().getState(),
                 newClientTable.getInitialDate(),
-                newClientTable.getFinalDate()  // Fecha de fin después de añadir 90 minutos
+                newClientTable.getFinalDate()
         );
 
         // Respuesta con los detalles de la reserva
         return ResponseEntity.ok(responseDTO);
     }
+
 
     // Obtener las reservas del cliente autenticado
     @GetMapping("/myReservations")

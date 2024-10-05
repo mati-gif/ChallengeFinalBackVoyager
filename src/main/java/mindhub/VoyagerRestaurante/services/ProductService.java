@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.services;
 
+import mindhub.VoyagerRestaurante.dtos.AllProductsDTO;
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
 import mindhub.VoyagerRestaurante.models.Product;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 public interface ProductService {
     Product saveProduct(Product product);
 
-      List<ProductDTO> getAllProductsDTO();
+    List<ProductDTO> getAllProductsDTO();
 
     List<Product> getAllProducts();
 
@@ -18,4 +19,6 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     List<Product> getProductsByIds(List<Long> ids);
+
+    List<AllProductsDTO> getALLAllProductsDTO();
 }

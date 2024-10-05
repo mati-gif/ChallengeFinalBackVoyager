@@ -45,6 +45,10 @@ public class OrderController {
         // Buscar el cliente autenticado por su email
         Client client = clientService.findByEmail(email);
 
+        if (client == null) {
+            return ResponseEntity.badRequest().body(null); // Error si el cliente no existe
+        }
+
         // Validar si los productos existen en la base de datos
         List<Product> products = productService.getProductsByIds(purchaseRequestDTO.getProductIds());
         if (products.isEmpty()) {
@@ -57,7 +61,12 @@ public class OrderController {
             if (purchaseRequestDTO.getAddressId() == null) {
                 return ResponseEntity.badRequest().body(null); // Dirección requerida
             }
-            address = clientService.getAddressById(purchaseRequestDTO.getAddressId()).getNameStreet();
+            // Buscar la dirección del cliente
+            Adress deliveryAddress = clientService.getAddressById(purchaseRequestDTO.getAddressId());
+            if (deliveryAddress == null) {
+                return ResponseEntity.badRequest().body(null); // Dirección no encontrada
+            }
+            address = deliveryAddress.getNameStreet();
         }
 
         // Crear la instancia de Order y asociar los productos
@@ -96,6 +105,9 @@ public class OrderController {
         // Si es una orden de tipo DELIVERY, asignar la dirección
         if (purchaseRequestDTO.getOrderType() == OrderType.DELIVERY) {
             Adress deliveryAddress = clientService.getAddressById(purchaseRequestDTO.getAddressId());
+            if (deliveryAddress == null) {
+                return ResponseEntity.badRequest().body(null); // Dirección no encontrada
+            }
             newOrder.setAdress(deliveryAddress);
         }
 

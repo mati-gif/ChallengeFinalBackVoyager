@@ -16,6 +16,7 @@ public class ClientDTO {
     private List<String> phoneNumbers;
     private List<ClientAdressDTO> address;
     private List<OrderDTO> orders;
+    private List<ClientTableDTO> reservas;
 
     public ClientDTO(Client client) {
         this.id = client.getId();
@@ -23,9 +24,9 @@ public class ClientDTO {
         this.lastName = client.getLastName();
         this.email = client.getEmail();
         this.phoneNumbers = client.getPhoneNumbers();
-        // Modificación aquí, asegurando que el constructor de ClientAdressDTO reciba un ClientAdress, no Adress
         this.address = client.getClientAdress().stream().map(ClientAdressDTO::new).collect(Collectors.toList());
         this.orders = client.getOrders().stream().map(OrderDTO::new).collect(Collectors.toList());
+        this.reservas = client.getClientTables().stream().map(ClientTableDTO::new).collect(Collectors.toList()); // Esto ya funciona correctamente
     }
 
     public ClientDTO(Optional<Client> byEmail) {
@@ -59,5 +60,9 @@ public class ClientDTO {
 
     public List<OrderDTO> getOrders() {
         return orders;
+    }
+
+    public List<ClientTableDTO> getReservas() {
+        return reservas;
     }
 }

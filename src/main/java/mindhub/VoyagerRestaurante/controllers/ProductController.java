@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.controllers;
 
+import mindhub.VoyagerRestaurante.dtos.AllProductsDTO;
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
 import mindhub.VoyagerRestaurante.dtos.PurchaseRequestDTO;
 import mindhub.VoyagerRestaurante.models.*;
@@ -70,8 +71,8 @@ public class ProductController {
 
     // Obtener todos los productos
     @GetMapping("/")
-    public List<ProductDTO> getAllProducts() {
-        return productService.getAllProductsDTO();
+    public List<AllProductsDTO> getAllProducts() {
+        return productService.getALLAllProductsDTO();
     }
 
     // Obtener un producto por ID
