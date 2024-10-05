@@ -1,9 +1,12 @@
 package mindhub.VoyagerRestaurante.controllers;
 
+import mindhub.VoyagerRestaurante.dtos.TableApplicationDTO;
+import mindhub.VoyagerRestaurante.dtos.TableDTO;
 import mindhub.VoyagerRestaurante.models.Table;
 import mindhub.VoyagerRestaurante.services.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +21,15 @@ public class TableController {
 
     // Crear una nueva mesa
     @PostMapping("/create")
-    public ResponseEntity<Table> createTable(@RequestBody Table table) {
-        Table newTable = tableService.saveTable(table);
-        return ResponseEntity.ok(newTable);
+    public ResponseEntity<?> createTable(@RequestBody TableApplicationDTO tableApplicationDTO, Authentication authentication) {
+        return tableService.saveTableE(tableApplicationDTO, authentication);
+
     }
 
     // Obtener todas las mesas
     @GetMapping("/")
-    public List<Table> getAllTables() {
-        return tableService.getAllTables();
+    public List<TableDTO> getAllTables() {
+        return tableService.getAllTablesDTO();
     }
 
     // Obtener una mesa por ID
