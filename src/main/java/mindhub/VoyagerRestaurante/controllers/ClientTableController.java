@@ -80,15 +80,16 @@ public class ClientTableController {
         ClientTable newClientTable = clientTableService.saveClientTable(clientTable);
 
         // Crear un DTO con los detalles de la reserva y la mesa
-        ClientTableDTO responseDTO = new ClientTableDTO(
-                newClientTable.getTable().getId(),
-                newClientTable.getTable().getTableNumber(),
-                newClientTable.getTable().getCapacity(),
-                newClientTable.getTable().getSectorType(),
-                newClientTable.getTable().getState(),
-                newClientTable.getInitialDate(),
-                newClientTable.getFinalDate()
-        );
+//        ClientTableDTO responseDTO = new ClientTableDTO(
+//                newClientTable.getTable().getId(),
+//                newClientTable.getTable().getTableNumber(),
+//                newClientTable.getTable().getCapacity(),
+//                newClientTable.getTable().getSectorType(),
+//                newClientTable.getTable().getState(),
+//                newClientTable.getInitialDate(),
+//                newClientTable.getFinalDate()
+//        );
+        ClientTableDTO responseDTO = new ClientTableDTO(clientTable);
 
         // Respuesta con los detalles de la reserva
         return ResponseEntity.ok(responseDTO);
@@ -106,16 +107,18 @@ public class ClientTableController {
 
         Set<ClientTableDTO> clientReservations = client.getClientTables()
                 .stream()
-                .map(reservation -> new ClientTableDTO(
-                        reservation.getTable().getId(),
-                        reservation.getTable().getTableNumber(),
-                        reservation.getTable().getCapacity(),
-                        reservation.getTable().getSectorType(),
-                        reservation.getTable().getState(),
-                        reservation.getInitialDate(),
-                        reservation.getFinalDate()  // Añadir fecha de fin
-                ))
+                .map(reservation -> new ClientTableDTO(reservation))
                 .collect(Collectors.toSet());
+//                .map(reservation -> new ClientTableDTO(
+//                        reservation.getTable().getId(),
+//                        reservation.getTable().getTableNumber(),
+//                        reservation.getTable().getCapacity(),
+//                        reservation.getTable().getSectorType(),
+//                        reservation.getTable().getState(),
+//                        reservation.getInitialDate(),
+//                        reservation.getFinalDate()  // Añadir fecha de fin
+//                ))
+//                .collect(Collectors.toSet());
 
         return ResponseEntity.ok(clientReservations);
     }
@@ -126,16 +129,18 @@ public class ClientTableController {
     public ResponseEntity<?> getAllReservations() {
         Set<ClientTableDTO> allReservations = clientTableService.getAllClientTables()
                 .stream()
-                .map(reservation -> new ClientTableDTO(
-                        reservation.getTable().getId(),
-                        reservation.getTable().getTableNumber(),
-                        reservation.getTable().getCapacity(),
-                        reservation.getTable().getSectorType(),
-                        reservation.getTable().getState(),
-                        reservation.getInitialDate(),
-                        reservation.getFinalDate()  // Añadir fecha de fin
-                ))
+                .map(reservation -> new ClientTableDTO(reservation))
                 .collect(Collectors.toSet());
+//                .map(reservation -> new ClientTableDTO(
+//                        reservation.getTable().getId(),
+//                        reservation.getTable().getTableNumber(),
+//                        reservation.getTable().getCapacity(),
+//                        reservation.getTable().getSectorType(),
+//                        reservation.getTable().getState(),
+//                        reservation.getInitialDate(),
+//                        reservation.getFinalDate()  // Añadir fecha de fin
+//                ))
+//                .collect(Collectors.toSet());
 
         return ResponseEntity.ok(allReservations);
     }
