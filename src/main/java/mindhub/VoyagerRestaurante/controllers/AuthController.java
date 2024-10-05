@@ -19,7 +19,7 @@ public class AuthController {
     private AuthService authService;
 
     @Autowired
-    ClientService clientService;
+    private ClientService clientService;
 
     // Endpoint para iniciar sesión y generar un token JWT.
     @PostMapping("/login")
@@ -49,6 +49,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @GetMapping("/current")//metodo para obtener el usuario logueado(es decir autenticado).
     public ResponseEntity<?> getClient(Authentication authentication){
 

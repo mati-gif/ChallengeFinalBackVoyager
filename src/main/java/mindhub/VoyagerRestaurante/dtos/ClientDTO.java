@@ -1,8 +1,6 @@
 package mindhub.VoyagerRestaurante.dtos;
 
-import mindhub.VoyagerRestaurante.models.Adress;
 import mindhub.VoyagerRestaurante.models.Client;
-import mindhub.VoyagerRestaurante.models.ClientAdress;
 import mindhub.VoyagerRestaurante.models.Order;
 
 import java.util.List;
@@ -17,7 +15,7 @@ public class ClientDTO {
     private String email;
     private List<String> phoneNumbers;
     private List<ClientAdressDTO> address;
-    private List<OrderDTO> orders; // Changed to orders for consistency
+    private List<OrderDTO> orders;
 
     public ClientDTO(Client client) {
         this.id = client.getId();
@@ -25,14 +23,16 @@ public class ClientDTO {
         this.lastName = client.getLastName();
         this.email = client.getEmail();
         this.phoneNumbers = client.getPhoneNumbers();
-        this.address = client.getClientAdress().stream()
-                .map(ClientAdressDTO::new)
-                .collect(Collectors.toList());
-        this.orders = client.getOrders().stream() // Changed to orders for consistency
-                .map(OrderDTO::new)
-                .collect(Collectors.toList());
+        // Modificación aquí, asegurando que el constructor de ClientAdressDTO reciba un ClientAdress, no Adress
+        this.address = client.getClientAdress().stream().map(ClientAdressDTO::new).collect(Collectors.toList());
+        this.orders = client.getOrders().stream().map(OrderDTO::new).collect(Collectors.toList());
     }
 
+    public ClientDTO(Optional<Client> byEmail) {
+        // Este constructor opcional necesita implementación si se utiliza en algún lugar
+    }
+
+    // Getters
     public Long getId() {
         return id;
     }

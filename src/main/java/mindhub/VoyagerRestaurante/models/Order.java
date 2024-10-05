@@ -1,10 +1,13 @@
 package mindhub.VoyagerRestaurante.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")  // Cambié el nombre de la tabla a "orders"
@@ -29,13 +32,12 @@ public class Order {
     private Client client;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "adress_id")
     private Adress adress;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference  // Para manejar la relación bidireccional con OrderProduct
+    private List<OrderProduct> orderProducts = new ArrayList<>();  // Relación con OrderProduct
 
     public Order() {
     }
@@ -88,14 +90,6 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public OrderType getOrderType() {
         return orderType;
     }
@@ -114,5 +108,19 @@ public class Order {
         } else {
             throw new UnsupportedOperationException("Address is only for delivery orders.");
         }
+    }
+
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
+    // Método para añadir un producto a la orden
+    public void addOrderProduct(OrderProduct orderProduct) {
+        orderProduct.setOrder(this);  // Asociar el producto a esta orden
+        this.orderProducts.add(orderProduct);  // Añadirlo a la lista
     }
 }

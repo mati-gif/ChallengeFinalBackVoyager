@@ -4,6 +4,7 @@ import mindhub.VoyagerRestaurante.dtos.ClientTableDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.ClientTable;
 import mindhub.VoyagerRestaurante.models.Table;
+import mindhub.VoyagerRestaurante.models.TableStatus;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.ClientTableService;
@@ -46,67 +47,91 @@ public class ClientTableController {
             return ResponseEntity.badRequest().body("Client not found");
         }
 
-        // Obtener los clientes por sus IDs
-        Set<Client> clients = clientTableDTO.clientIds().stream()
-                .map(clientService::getClientById)
-                .flatMap(Optional::stream)
-                .collect(Collectors.toSet());
-
-        if (clients.size() != clientTableDTO.clientIds().size()) {
-            return ResponseEntity.badRequest().body("Some clients not found");
-        }
-
         // Obtener la mesa por su ID
         Optional<Table> optionalTable = tableService.getTableById(clientTableDTO.tableId());
         if (optionalTable.isEmpty()) {
             return ResponseEntity.badRequest().body("Table not found");
         }
 
-        // Extraer el cliente autenticado desde el token
-        String emaill = authenticatedClient.getEmail();
-        Client client = clientService.findByEmail(email);
-
-
         Table table = optionalTable.get();
 
-        // Verificar si la mesa ya ha sido reservada o si está ocupada
-        if (!table.isState()) {
-            return ResponseEntity.badRequest().body("Table is already reserved");
-        }
-
-        // Verificar que la capacidad de la mesa sea suficiente
-        if (clients.size() > table.getCapacity()) {
-            return ResponseEntity.badRequest().body("Too many clients for this table's capacity");
-        }
-
-        // Verificar que el sector seleccionado coincida con el sector de la mesa
-        if (table.getSectorType() != clientTableDTO.sectorType()) {
-            return ResponseEntity.badRequest().body("Sector mismatch");
+        // Verificar si la mesa está libre
+        if (table.getState() != TableStatus.FREE) {
+            return ResponseEntity.badRequest().body("Table is already reserved or busy");
         }
 
         // Crear la nueva reserva
         ClientTable clientTable = new ClientTable();
-
-        clientTable.setInitialDate(clientTableDTO.reservationStart()); // Fecha de inicio
-        clientTable.setFinalDate(clientTableDTO.reservationStart().plusMinutes(90)); // Fecha de fin (+1 hora 30 minutos)
-
-        // Asignar la mesa y los clientes
+        clientTable.setClient(authenticatedClient);
         clientTable.setTable(table);
-        clients.forEach(clientt -> clientTable.setClient(client));
+        clientTable.setInitialDate(clientTableDTO.reservationStart());
+        clientTable.setFinalDate(clientTableDTO.reservationStart().plusMinutes(90)); // Duración de 90 minutos
 
-        // Marcar la mesa como ocupada (false = reservada)
-        table.setState(false);
-
-        clientTable.setClient(client); // El cliente autenticado
-        clientTable.setTable(table); // La mesa elegida
-        clientTable.setInitialDate(LocalDateTime.now()); // Fecha de inicio de la reserva
-        clientTable.setFinalDate(LocalDateTime.now().plusHours(2)); // Ejemplo de duración de la reserva
-
+        // Cambiar el estado de la mesa a RESERVED
+        table.setState(TableStatus.RESERVED);
+        tableService.saveTable(table);
 
         // Guardar la reserva
         ClientTable newClientTable = clientTableService.saveClientTable(clientTable);
 
-        // Crear una respuesta con los detalles de la reserva
-        return ResponseEntity.ok(newClientTable);
+        // Crear un DTO con los detalles de la reserva y la mesa
+        ClientTableDTO responseDTO = new ClientTableDTO(
+                newClientTable.getTable().getId(),
+                newClientTable.getTable().getTableNumber(),
+                newClientTable.getTable().getCapacity(),
+                newClientTable.getTable().getSectorType(),
+                newClientTable.getTable().getState(),
+                newClientTable.getInitialDate(),
+                newClientTable.getFinalDate()  // Fecha de fin después de añadir 90 minutos
+        );
+
+        // Respuesta con los detalles de la reserva
+        return ResponseEntity.ok(responseDTO);
     }
+
+    // Obtener las reservas del cliente autenticado
+    @GetMapping("/myReservations")
+    public ResponseEntity<?> getClientReservations(Authentication authentication) {
+        String email = authentication.getName();
+        Client client = clientService.findByEmail(email);
+        if (client == null) {
+            return ResponseEntity.badRequest().body("Client not found");
+        }
+
+        Set<ClientTableDTO> clientReservations = client.getClientTables()
+                .stream()
+                .map(reservation -> new ClientTableDTO(
+                        reservation.getTable().getId(),
+                        reservation.getTable().getTableNumber(),
+                        reservation.getTable().getCapacity(),
+                        reservation.getTable().getSectorType(),
+                        reservation.getTable().getState(),
+                        reservation.getInitialDate(),
+                        reservation.getFinalDate()  // Añadir fecha de fin
+                ))
+                .collect(Collectors.toSet());
+
+        return ResponseEntity.ok(clientReservations);
+    }
+
+
+    // Obtener todas las reservas
+    @GetMapping("/allReservations")
+    public ResponseEntity<?> getAllReservations() {
+        Set<ClientTableDTO> allReservations = clientTableService.getAllClientTables()
+                .stream()
+                .map(reservation -> new ClientTableDTO(
+                        reservation.getTable().getId(),
+                        reservation.getTable().getTableNumber(),
+                        reservation.getTable().getCapacity(),
+                        reservation.getTable().getSectorType(),
+                        reservation.getTable().getState(),
+                        reservation.getInitialDate(),
+                        reservation.getFinalDate()  // Añadir fecha de fin
+                ))
+                .collect(Collectors.toSet());
+
+        return ResponseEntity.ok(allReservations);
+    }
+
 }

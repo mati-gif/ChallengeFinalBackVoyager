@@ -17,18 +17,32 @@ public class Adress {
     private String zipCode;
     private String betweenStreets;
     private int streetNumber;
+
+    @Enumerated(EnumType.STRING)  // Mapear el enum como String
     private TypeHome typeHome;
-    private int floorNumber;
+
+    @Column(nullable = true)  // Permitir que este campo sea nulo
+    private Integer floorNumber;
+
+    @Column(nullable = true)  // Permitir que este campo sea nulo
     private String aparmentNumber;
-
-    @OneToMany(mappedBy = "adress", fetch = FetchType.EAGER)
-    private Set<Order> orders = new HashSet<>();
-
 
     @OneToMany(mappedBy = "adress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ClientAdress> clientAdress = new HashSet<>();
 
-    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, int floorNumber, String aparmentNumber, String zipCode) {
+    // Constructor para HOUSE
+    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, String zipCode) {
+        this.nameStreet = nameStreet;
+        this.betweenStreets = betweenStreets;
+        this.streetNumber = streetNumber;
+        this.typeHome = typeHome;
+        this.zipCode = zipCode;
+        this.floorNumber = null;  // Para una casa, no tiene sentido tener piso o departamento
+        this.aparmentNumber = null;
+    }
+
+    // Constructor para APARTMENT
+    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, Integer floorNumber, String aparmentNumber, String zipCode) {
         this.nameStreet = nameStreet;
         this.betweenStreets = betweenStreets;
         this.streetNumber = streetNumber;
@@ -38,36 +52,47 @@ public class Adress {
         this.zipCode = zipCode;
     }
 
-    public Adress(String nameStreet, String betweenStreets, int streetNumber, TypeHome typeHome, String zipCode) {
-        this.nameStreet = nameStreet;
-        this.betweenStreets = betweenStreets;
-        this.streetNumber = streetNumber;
-        this.typeHome = typeHome;
-        this.zipCode = zipCode;
-    }
-
     public Adress() {
     }
 
-    // Getters y setters
-    public Long getId() {
-        return id;
+    public TypeHome getTypeHome() {
+        return typeHome;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTypeHome(TypeHome typeHome) {
+        this.typeHome = typeHome;
     }
 
-    public String getNameStreet() {
-        return nameStreet;
+    public Integer getFloorNumber() {
+        return floorNumber;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
+    public void setFloorNumber(Integer floorNumber) {
+        this.floorNumber = floorNumber;
+    }
+
+    public String getAparmentNumber() {
+        return aparmentNumber;
+    }
+
+    public void setAparmentNumber(String aparmentNumber) {
+        this.aparmentNumber = aparmentNumber;
     }
 
     public Set<ClientAdress> getClientAdress() {
         return clientAdress;
+    }
+
+    public void setClientAdress(Set<ClientAdress> clientAdress) {
+        this.clientAdress = clientAdress;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNameStreet() {
+        return nameStreet;
     }
 
     public void setNameStreet(String nameStreet) {
@@ -98,47 +123,8 @@ public class Adress {
         this.streetNumber = streetNumber;
     }
 
-    public int getFloorNumber() {
-        return floorNumber;
-    }
-
-    public void setFloorNumber(int floorNumber) {
-        this.floorNumber = floorNumber;
-    }
-
-    public TypeHome getTypeHome() {
-        return typeHome;
-    }
-
-    public void setTypeHome(TypeHome typeHome) {
-        this.typeHome = typeHome;
-    }
-
-    public String getAparmentNumber() {
-        return aparmentNumber;
-    }
-
-    public void setAparmentNumber(String aparmentNumber) {
-        this.aparmentNumber = aparmentNumber;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
-
-    public void setClientAdress(Set<ClientAdress> clientAdress) {
-        this.clientAdress = clientAdress;
-    }
-
-    public void addClientAdress(ClientAdress clientAdress) {
+    public void addClientAddress(ClientAdress clientAdress) {
         clientAdress.setAdress(this);
         this.clientAdress.add(clientAdress);
     }
-
-    public void addOrder(Order order){
-        order.setAdress(this);
-        this.orders.add(order);
-    }
-
-
 }
