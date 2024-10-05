@@ -13,6 +13,7 @@ public class ClientTableDTO {
     private SectorType sector;
     private TableStatus status;
     private Long tableId;  // Este es el ID de la mesa
+    private Long clientId;
     private LocalDateTime reservationStart;
     private LocalDateTime reservationEnd;
 
@@ -21,7 +22,9 @@ public class ClientTableDTO {
 
     // Constructor que acepta un ClientTable
     public ClientTableDTO(ClientTable clientTable) {
-        this.id = clientTable.getTable().getId();
+        this.id = clientTable.getId();
+        this.tableId = clientTable.getTable().getId();
+        this.clientId = clientTable.getClient().getId();
         this.tableNumber = clientTable.getTable().getTableNumber();
         this.seats = clientTable.getTable().getCapacity();
         this.sector = clientTable.getTable().getSectorType();
@@ -31,15 +34,15 @@ public class ClientTableDTO {
     }
 
     // Constructor que acepta parámetros individuales (el que estás intentando usar)
-    public ClientTableDTO(Long id, int tableNumber, int seats, SectorType sector, TableStatus status, LocalDateTime reservationStart, LocalDateTime reservationEnd) {
-        this.id = id;
-        this.tableNumber = tableNumber;
-        this.seats = seats;
-        this.sector = sector;
-        this.status = status;
-        this.reservationStart = reservationStart;
-        this.reservationEnd = reservationEnd;
-    }
+//    public ClientTableDTO(Long id, int tableNumber, int seats, SectorType sector, TableStatus status, LocalDateTime reservationStart, LocalDateTime reservationEnd) {
+//        this.id = id;
+//        this.tableNumber = tableNumber;
+//        this.seats = seats;
+//        this.sector = sector;
+//        this.status = status;
+//        this.reservationStart = reservationStart;
+//        this.reservationEnd = reservationEnd;
+//    }
 
     // Getters y setters
     public Long getId() {

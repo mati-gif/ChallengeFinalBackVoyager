@@ -2,6 +2,7 @@ package mindhub.VoyagerRestaurante.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,13 @@ public class Table {
     @Enumerated(EnumType.STRING)
     private TableStatus state;
     private int capacity;
+    private LocalDateTime localDateTime;
 
     @Enumerated(EnumType.STRING)
     private SectorType sectorType;
 
-    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
     private List<ClientTable> clientTables = new ArrayList<>();//LISTA DE RESERVAS
 
     public Table() {}
@@ -32,6 +35,14 @@ public class Table {
         this.tableNumber = tableNumber;
         this.state = state;
     }
+
+//    public Table(int tableNumber, TableStatus state, int capacity, LocalDateTime localDateTime, SectorType sectorType) {
+//        this.tableNumber = tableNumber;
+//        this.state = state;
+//        this.capacity = capacity;
+//        this.localDateTime = localDateTime;
+//        this.sectorType = sectorType;
+//    }
 
     public long getId() {
         return id;
@@ -51,6 +62,14 @@ public class Table {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public SectorType getSectorType() {
