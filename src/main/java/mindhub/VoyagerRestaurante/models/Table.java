@@ -23,7 +23,8 @@ public class Table {
     @Enumerated(EnumType.STRING)
     private SectorType sectorType;
 
-    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
     private List<ClientTable> clientTables = new ArrayList<>();//LISTA DE RESERVAS
 
     public Table() {}

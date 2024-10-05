@@ -36,11 +36,14 @@ public class TableServiceImpl implements TableService {
     public ResponseEntity<?> saveTableE(TableApplicationDTO tableApplicationDTO, Authentication authentication) {
         Table table = tableRepository.findById(tableApplicationDTO.id()).orElseThrow();
         Client client = clientRepository.findByEmail(authentication.getName());
-        ClientTable clientTable= new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), client, table);
+//        ClientTable clientTable= new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), client, table);
+        // Convertir el String en un LocalDateTime --> "2024-10-10T22:00:00"
+        LocalDateTime dateTime = LocalDateTime.parse("");
+        ClientTable clientTable = new ClientTable(tableApplicationDTO.localDateTime());
         client.addClientTable(clientTable);
         table.addClientTable(clientTable);
         clientTableRepository.save(clientTable);
-        return  new ResponseEntity<>("OK", HttpStatus.OK);
+        return  new ResponseEntity<>("Successful reservation.", HttpStatus.OK);
     }
 
     @Override

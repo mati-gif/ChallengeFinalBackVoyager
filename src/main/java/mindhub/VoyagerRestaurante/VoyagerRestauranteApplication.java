@@ -115,26 +115,43 @@ public class VoyagerRestauranteApplication {
 					table21, table22, table23, table24, table25, table26, table27,
 					table28, table29, table30, table31));
 
+//			tableRepository.save(table2);
+
+			ClientTable clientTable1ForLuz = new ClientTable(LocalDateTime.now());
+			clientLuz.addClientTable(clientTable1ForLuz);
+			table1.addClientTable(clientTable1ForLuz);
+			clientTableRepository.save(clientTable1ForLuz);
 
 
-			tableRepository.save(table2);
+			ClientTable clientTableForLuzOtherHour = new ClientTable(LocalDateTime.now().plusHours(3));
+			clientLuz.addClientTable((clientTableForLuzOtherHour));
+			table1.addClientTable(clientTableForLuzOtherHour);
+			clientTableRepository.save(clientTableForLuzOtherHour);
+
+			// 2024-10-05T12:00:00
+			// Convertir el String en un LocalDateTime
+			LocalDateTime dateTime = LocalDateTime.parse("2024-10-10T22:00:00");
+			ClientTable clientTableForLuzNight = new ClientTable(dateTime);
+			clientLuz.addClientTable(clientTableForLuzNight);
+			table1.addClientTable(clientTableForLuzNight);
+			clientTableRepository.save(clientTableForLuzNight);
 
 			// Creación de reservas (ClientTable)
-			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
-			clientTableRepository.save(reservation1);
+//			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
+//			clientTableRepository.save(reservation1);
 //			clientLuz.addClientTable(reservation1);
-			clientRepository.save(clientLuz);
+//			clientRepository.save(clientLuz);
 			//table1.addClientTable(reservation1);
-			tableRepository.save(table1);
-			clientTableRepository.save(reservation1);
+//			tableRepository.save(table1);
+//			clientTableRepository.save(reservation1);
 
-			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientMaria, table2);
-			clientTableRepository.save(reservation2);
+//			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientMaria, table2);
+//			clientTableRepository.save(reservation2);
 //			clientMaria.addClientTable(reservation2);
-			clientRepository.save(clientMaria);
+//			clientRepository.save(clientMaria);
 			//table2.addClientTable(reservation2);
-			tableRepository.save(table2);
-			clientTableRepository.save(reservation2);
+//			tableRepository.save(table2);
+//			clientTableRepository.save(reservation2);
 
 
 			// Creación de productos

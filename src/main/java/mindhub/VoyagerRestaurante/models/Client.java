@@ -26,7 +26,8 @@ public class Client {
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ClientAdress> clientAdress = new HashSet<>();
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     @JsonBackReference  // No serializará la relación inversa cuando serialices un Client
     private List<ClientTable> clientTables = new ArrayList<>();
 
@@ -127,7 +128,7 @@ public class Client {
 
     public void addClientTable (ClientTable clientTable){
         clientTable.setClient(this);
-        clientTables.add(clientTable);
+        this.clientTables.add(clientTable);
     }
 
 //    @Id
