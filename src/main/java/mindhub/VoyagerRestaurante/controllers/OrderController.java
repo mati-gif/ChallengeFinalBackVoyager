@@ -8,6 +8,7 @@ import mindhub.VoyagerRestaurante.models.*;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.OrderService;
+import mindhub.VoyagerRestaurante.services.PaymentService;
 import mindhub.VoyagerRestaurante.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,10 @@ public class OrderController {
     @Autowired
     private JwtUtilService jwtUtilService;
 
-    // Método para crear una orden y retornar el ticket al cliente autenticado
+    @Autowired
+    private PaymentService paymentService;  // Servicio para comunicarse con homebanking
+
+    // Método para crear una orden y realizar el pago
     @PostMapping("/create")
     public ResponseEntity<OrderTicketDTO> createOrder(@RequestHeader("Authorization") String token, @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
         // Extraer el token sin el prefijo "Bearer "
@@ -113,6 +117,13 @@ public class OrderController {
 
         // Guardar la orden en la base de datos
         orderService.saveOrder(newOrder);
+
+        // Iniciar el pago a través del sistema de homebanking
+        boolean paymentSuccess = paymentService.initiatePayment(newOrder, client);
+
+        if (!paymentSuccess) {
+            return ResponseEntity.badRequest().body(null); // Error en el proceso de pago
+        }
 
         // Crear el DTO del ticket de la compra
         OrderTicketDTO orderTicketDTO;
