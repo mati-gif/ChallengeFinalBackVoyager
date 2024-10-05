@@ -1,6 +1,7 @@
 package mindhub.VoyagerRestaurante.controllers;
 
 import mindhub.VoyagerRestaurante.dtos.AllProductsDTO;
+import mindhub.VoyagerRestaurante.dtos.ProductCreateDTO;
 import mindhub.VoyagerRestaurante.dtos.ProductDTO;
 import mindhub.VoyagerRestaurante.dtos.PurchaseRequestDTO;
 import mindhub.VoyagerRestaurante.models.*;
@@ -9,6 +10,7 @@ import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.OrderService;
 import mindhub.VoyagerRestaurante.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -64,8 +66,10 @@ public class ProductController {
 
     // Crear un nuevo producto
     @PostMapping("/create")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product newProduct = productService.saveProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductCreateDTO productCreateDTO) {
+
+        Product newProduct = new Product(productCreateDTO.nameProduct(),productCreateDTO.priceProduct(),productCreateDTO.category(),productCreateDTO.details(),productCreateDTO.img());
+        productService.saveProduct(newProduct);
         return ResponseEntity.ok(newProduct);
     }
 
@@ -81,6 +85,11 @@ public class ProductController {
         Optional<Product> product = productService.getProductById(id);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+
+
+
 
     // Eliminar un producto por ID
     @DeleteMapping("/delete/{id}")
