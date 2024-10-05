@@ -4,6 +4,7 @@ import mindhub.VoyagerRestaurante.models.Category;
 import mindhub.VoyagerRestaurante.models.Product;
 
 public class AllProductsDTO {
+
     private long id;
     private String nameProduct;
     private double priceProduct;
@@ -64,3 +65,4 @@ public class AllProductsDTO {
         this.category = category;
     }
 }
+
