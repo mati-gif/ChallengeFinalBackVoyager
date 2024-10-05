@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ProductService {
     Product saveProduct(Product product);
 
-      List<ProductDTO> getAllProductsDTO();
+    List<ProductDTO> getAllProductsDTO();
 
     List<Product> getAllProducts();
 
@@ -22,3 +22,4 @@ public interface ProductService {
 
     List<AllProductsDTO> getALLAllProductsDTO();
 }
+

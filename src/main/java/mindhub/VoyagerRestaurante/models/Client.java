@@ -100,6 +100,7 @@ public class Client {
         return clientTables;
     }
 
+
     public List<ReviewClientProduct> getReviews() {
         return reviews;
     }

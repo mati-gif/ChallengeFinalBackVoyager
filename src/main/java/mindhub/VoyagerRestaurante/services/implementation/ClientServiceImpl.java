@@ -22,10 +22,10 @@ public class ClientServiceImpl implements ClientService {
     private ClientRepository clientRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private AdressRepository adressRepository;
 
     @Autowired
-    private AdressRepository adressRepository;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Client saveClient(Client client) {
@@ -86,9 +86,9 @@ public class ClientServiceImpl implements ClientService {
         return new Client(registerDTO.firstName(), registerDTO.lastName(), registerDTO.email(), encodedPassword, registerDTO.phoneNumbers()) ;
     }
 
-    @Override
-    public Adress getAddressById(Long addressId) {
-        return adressRepository.findById(addressId)
+    // Método para obtener una dirección por ID
+    public Adress getAddressById(Long id) {
+        return adressRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Address not found"));
     }
 

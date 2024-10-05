@@ -4,6 +4,8 @@ import mindhub.VoyagerRestaurante.models.Category;
 import mindhub.VoyagerRestaurante.models.Product;
 
 public class AllProductsDTO {
+
+    private long id;
     private String nameProduct;
     private double priceProduct;
     private Category category;
@@ -11,6 +13,7 @@ public class AllProductsDTO {
     private String img;
 
     public AllProductsDTO(Product product) {
+        this.id = product.getId();
         this.nameProduct = product.getNameProduct();
         this.priceProduct = product.getPriceProduct();
         this.category = product.getCategory();
@@ -46,6 +49,10 @@ public class AllProductsDTO {
         return img;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setImg(String img) {
         this.img = img;
     }
@@ -58,3 +65,4 @@ public class AllProductsDTO {
         this.category = category;
     }
 }
+
