@@ -48,7 +48,7 @@ public class VoyagerRestauranteApplication {
 			clientAdressRepository.save(clientAdress);
 
 			// ClienteMaria
-			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
+			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@admin.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
 			clientRepository.save(clientMaria);
 
 			// Direcciones Maria (asignar cliente antes de guardar)
