@@ -55,7 +55,8 @@ public class WebConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
 
                                 // Cualquier otra ruta requiere autenticación
-                                .anyRequest().authenticated()
+//                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
 
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
