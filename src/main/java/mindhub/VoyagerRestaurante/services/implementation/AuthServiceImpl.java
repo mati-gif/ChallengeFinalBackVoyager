@@ -127,7 +127,10 @@ public class AuthServiceImpl implements AuthService {
     public String login(LoginDTO loginDTO) {
         // Validar email y contraseña en login
         validateEmail(loginDTO.email());
-        validatePassword(loginDTO.password());
+//        validatePassword(loginDTO.password());
+        if (loginDTO.password() == null || loginDTO.password().trim().isBlank()) {
+            throw new IllegalArgumentException("Password can not be empty or contain only spaces");
+        }
 
         // Verificar si el email existe en la base de datos y obtener el cliente
         Client client = clientRepository.findByEmail(loginDTO.email());

@@ -40,13 +40,14 @@ public class WebConfig {
                         authorize
                                 // Rutas públicas permitidas
 
-                                
+
+
+                                .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket").permitAll()
 
                                 .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**","/api/clients").permitAll()
 
 
                                 // Rutas de lectura accesibles a CLIENT y ADMIN
-                                .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket").permitAll()
 
                                 // Rutas de escritura (creación, actualización, eliminación) solo accesibles a ADMIN
                                 .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
