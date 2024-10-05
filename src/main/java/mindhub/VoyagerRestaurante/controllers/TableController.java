@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.controllers;
 
+import mindhub.VoyagerRestaurante.dtos.TableDTO;
 import mindhub.VoyagerRestaurante.models.Table;
 import mindhub.VoyagerRestaurante.services.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class TableController {
 
     // Obtener todas las mesas
     @GetMapping("/")
-    public List<Table> getAllTables() {
-        return tableService.getAllTables();
+    public List<TableDTO> getAllTables() {
+        return tableService.getAllTablesDTO();
     }
 
     // Obtener una mesa por ID

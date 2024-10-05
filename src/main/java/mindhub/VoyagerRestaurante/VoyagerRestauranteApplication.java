@@ -29,7 +29,7 @@ public class VoyagerRestauranteApplication {
 									  ClientTableRepository clientTableRepository,
 									  ProductRepository productRepository,
 									  ReviewClientProductRepository reviewRepository,
-									  OrderRepository orderRepository) {
+									  OrderRepository orderRepository, ClientAdressRepository clientAdressRepository) {
 		return (args) -> {
 
 
@@ -41,6 +41,11 @@ public class VoyagerRestauranteApplication {
 			Adress adressLuz = new Adress("General Hornos", "Rafaela and Yatay", 123, TypeHome.HOUSE, "ZP1234");
 
 			adressRepository.save(adressLuz);
+
+			ClientAdress clientAdress = new ClientAdress();
+			clientLuz.addClientAdress(clientAdress);
+			adressLuz.addClientAddress(clientAdress);
+			clientAdressRepository.save(clientAdress);
 
 			// ClienteMaria
 			Client clientMaria = new Client("Maria", "Gonzalez", "maria.gonzalez@example.com", passwordEncoder.encode("Maria123."), new ArrayList<>(List.of("+54911-2345-6778", "+54911-5678-3456")));
