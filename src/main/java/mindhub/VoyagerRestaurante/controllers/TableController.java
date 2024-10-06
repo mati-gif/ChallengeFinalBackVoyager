@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.controllers;
 
+import mindhub.VoyagerRestaurante.dtos.DTOTableRecord;
 import mindhub.VoyagerRestaurante.dtos.TableApplicationDTO;
 import mindhub.VoyagerRestaurante.dtos.TableDTO;
 import mindhub.VoyagerRestaurante.models.Table;
@@ -21,8 +22,8 @@ public class TableController {
 
     // Crear una nueva mesa
     @PostMapping("/create")
-    public ResponseEntity<?> createTable(@RequestBody TableApplicationDTO tableApplicationDTO, Authentication authentication) {
-        return tableService.saveTableE(tableApplicationDTO, authentication);
+    public ResponseEntity<?> createTable(@RequestBody DTOTableRecord dtoTableRecord, Authentication authentication) {
+        return tableService.creatNewTable(authentication, dtoTableRecord);
 
     }
 

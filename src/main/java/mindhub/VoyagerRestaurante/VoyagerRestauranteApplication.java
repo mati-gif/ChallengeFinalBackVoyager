@@ -90,68 +90,77 @@ public class VoyagerRestauranteApplication {
             Table table14 = new Table(4, SectorType.GROUND_FLOOR, 14, TableStatus.FREE);
             Table table15 = new Table(6, SectorType.GROUND_FLOOR, 15, TableStatus.FREE);
 
-            //9 meses sector exterior
-            Table table16 = new Table(2, SectorType.OUTDOOR, 16, TableStatus.FREE);
-            Table table17 = new Table(4, SectorType.OUTDOOR, 17, TableStatus.FREE);
-            Table table18 = new Table(6, SectorType.OUTDOOR, 18, TableStatus.FREE);
-            Table table19 = new Table(8, SectorType.OUTDOOR, 19, TableStatus.FREE);
-            Table table20 = new Table(2, SectorType.OUTDOOR, 20, TableStatus.FREE);
-            Table table21 = new Table(4, SectorType.OUTDOOR, 21, TableStatus.FREE);
-            Table table22 = new Table(6, SectorType.OUTDOOR, 22, TableStatus.FREE);
-            Table table23 = new Table(8, SectorType.OUTDOOR, 23, TableStatus.FREE);
-			Table table24 = new Table(2, SectorType.OUTDOOR, 24, TableStatus.FREE);
+
 
 			//7 mesas sector primer piso
-			Table table25 = new Table(2, SectorType.FIRST_FLOOR, 25, TableStatus.FREE);
-			Table table26 = new Table(4, SectorType.FIRST_FLOOR, 26, TableStatus.FREE);
-			Table table27 = new Table(6, SectorType.FIRST_FLOOR, 27, TableStatus.FREE);
-			Table table28 = new Table(8, SectorType.FIRST_FLOOR, 28, TableStatus.FREE);
-			Table table29 = new Table(2, SectorType.FIRST_FLOOR, 29, TableStatus.FREE);
-			Table table30 = new Table(4, SectorType.FIRST_FLOOR, 30, TableStatus.FREE);
-			Table table31 = new Table(6, SectorType.FIRST_FLOOR, 31, TableStatus.FREE);
+			Table table16 = new Table(2, SectorType.FIRST_FLOOR, 25, TableStatus.FREE);
+			Table table17 = new Table(4, SectorType.FIRST_FLOOR, 26, TableStatus.FREE);
+			Table table18 = new Table(6, SectorType.FIRST_FLOOR, 27, TableStatus.FREE);
+			Table table19 = new Table(8, SectorType.FIRST_FLOOR, 28, TableStatus.FREE);
+			Table table20 = new Table(2, SectorType.FIRST_FLOOR, 29, TableStatus.FREE);
+			Table table21 = new Table(4, SectorType.FIRST_FLOOR, 30, TableStatus.FREE);
+			Table table22 = new Table(6, SectorType.FIRST_FLOOR, 31, TableStatus.FREE);
+
+
+            //9 meses sector exterior
+            Table table23 = new Table(2, SectorType.OUTDOOR, 16, TableStatus.FREE);
+            Table table24 = new Table(4, SectorType.OUTDOOR, 17, TableStatus.FREE);
+            Table table25 = new Table(6, SectorType.OUTDOOR, 18, TableStatus.FREE);
+            Table table26 = new Table(8, SectorType.OUTDOOR, 19, TableStatus.FREE);
+            Table table27 = new Table(2, SectorType.OUTDOOR, 20, TableStatus.FREE);
+            Table table28 = new Table(4, SectorType.OUTDOOR, 21, TableStatus.FREE);
+            Table table29 = new Table(6, SectorType.OUTDOOR, 22, TableStatus.FREE);
+            Table table30 = new Table(8, SectorType.OUTDOOR, 23, TableStatus.FREE);
+			Table table31 = new Table(2, SectorType.OUTDOOR, 24, TableStatus.FREE);
+
+
 			tableRepository.saveAll(List.of(table1, table2, table3, table4,table5,
 					table6, table7, table8, table9, table10, table11, table12, table13,
 					table14, table15, table16, table17, table18, table19, table20,
 					table21, table22, table23, table24, table25, table26, table27,
 					table28, table29, table30, table31));
 
-//			tableRepository.save(table2);
 
-			ClientTable clientTable1ForLuz = new ClientTable(LocalDateTime.now());
+
+			//----------------------------------------------------------------------ASIGNAR MESAS PARA CLIENTE LUZ-----------------------------
+			ClientTable clientTable1ForLuz = new ClientTable(LocalDateTime.parse("2024-10-06T18:00:00"));
 			clientLuz.addClientTable(clientTable1ForLuz);
 			table1.addClientTable(clientTable1ForLuz);
 			clientTableRepository.save(clientTable1ForLuz);
 
 
-			ClientTable clientTableForLuzOtherHour = new ClientTable(LocalDateTime.now().plusHours(3));
+			ClientTable clientTableForLuzOtherHour = new ClientTable(LocalDateTime.parse("2024-10-06T20:00:00"));
 			clientLuz.addClientTable((clientTableForLuzOtherHour));
 			table1.addClientTable(clientTableForLuzOtherHour);
 			clientTableRepository.save(clientTableForLuzOtherHour);
 
 			// 2024-10-05T12:00:00
-			// Convertir el String en un LocalDateTime
-			LocalDateTime dateTime = LocalDateTime.parse("2024-10-10T22:00:00");
+			//------------------------------------------------------------------------------------------------------------------- Convertir el String en un LocalDateTime
+			LocalDateTime dateTime = LocalDateTime.parse("2024-10-10T00:00:00");
+			//------------------------------------------------------------------------------------------------------------------- Convertir el String en un LocalDateTime
+
 			ClientTable clientTableForLuzNight = new ClientTable(dateTime);
 			clientLuz.addClientTable(clientTableForLuzNight);
-			table1.addClientTable(clientTableForLuzNight);
+			table2.addClientTable(clientTableForLuzNight);
 			clientTableRepository.save(clientTableForLuzNight);
 
-			// Creación de reservas (ClientTable)
-//			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
-//			clientTableRepository.save(reservation1);
-//			clientLuz.addClientTable(reservation1);
-//			clientRepository.save(clientLuz);
-			//table1.addClientTable(reservation1);
-//			tableRepository.save(table1);
-//			clientTableRepository.save(reservation1);
+			//----------------------------------------------------------------------ASIGNAR MESAS PARA CLIENTE LUZ-----------------------------
 
-//			ClientTable reservation2 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientMaria, table2);
-//			clientTableRepository.save(reservation2);
-//			clientMaria.addClientTable(reservation2);
-//			clientRepository.save(clientMaria);
-			//table2.addClientTable(reservation2);
-//			tableRepository.save(table2);
-//			clientTableRepository.save(reservation2);
+
+
+			//----------------------------------------------------------------------ASIGNAR MESAS PARA CLIENTE MARIA-----------------------------
+			ClientTable clientTable1ForMaria = new ClientTable(LocalDateTime.parse("2024-10-10T00:00:00"));
+			clientMaria.addClientTable(clientTable1ForMaria);
+			table1.addClientTable(clientTable1ForMaria);
+			clientTableRepository.save(clientTable1ForMaria);
+
+			ClientTable clientTable2ForMaria = new ClientTable(LocalDateTime.parse("2024-10-10T22:00:00"));
+			clientMaria.addClientTable(clientTable2ForMaria);
+			table2.addClientTable(clientTable2ForMaria);
+			clientTableRepository.save(clientTable2ForMaria);
+			//----------------------------------------------------------------------ASIGNAR MESAS PARA CLIENTE MARIA-----------------------------
+
+
 
 
 			// Creación de productos

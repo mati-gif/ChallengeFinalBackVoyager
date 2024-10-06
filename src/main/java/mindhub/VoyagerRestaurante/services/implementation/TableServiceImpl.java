@@ -1,15 +1,11 @@
 package mindhub.VoyagerRestaurante.services.implementation;
 
-import mindhub.VoyagerRestaurante.dtos.ClientTableDTO;
-import mindhub.VoyagerRestaurante.dtos.ProductDTO;
-import mindhub.VoyagerRestaurante.dtos.TableApplicationDTO;
-import mindhub.VoyagerRestaurante.dtos.TableDTO;
-import mindhub.VoyagerRestaurante.models.Client;
-import mindhub.VoyagerRestaurante.models.ClientTable;
-import mindhub.VoyagerRestaurante.models.Table;
+import mindhub.VoyagerRestaurante.dtos.*;
+import mindhub.VoyagerRestaurante.models.*;
 import mindhub.VoyagerRestaurante.repositories.ClientRepository;
 import mindhub.VoyagerRestaurante.repositories.ClientTableRepository;
 import mindhub.VoyagerRestaurante.repositories.TableRepository;
+import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +27,8 @@ public class TableServiceImpl implements TableService {
     private ClientTableRepository clientTableRepository;
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private ClientService clientService;
 
     @Override
     public ResponseEntity<?> saveTableE(TableApplicationDTO tableApplicationDTO, Authentication authentication) {
@@ -38,12 +36,32 @@ public class TableServiceImpl implements TableService {
         Client client = clientRepository.findByEmail(authentication.getName());
 //        ClientTable clientTable= new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), client, table);
         // Convertir el String en un LocalDateTime --> "2024-10-10T22:00:00"
-        LocalDateTime dateTime = LocalDateTime.parse("");
-        ClientTable clientTable = new ClientTable(tableApplicationDTO.localDateTime());
+        LocalDateTime dateTime = LocalDateTime.parse(tableApplicationDTO.localDateTime());
+        ClientTable clientTable = new ClientTable(dateTime);
         client.addClientTable(clientTable);
         table.addClientTable(clientTable);
         clientTableRepository.save(clientTable);
         return  new ResponseEntity<>("Successful reservation.", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> creatNewTable(Authentication authentication, DTOTableRecord dtoTableRecord) {
+        Client client = clientService.findByEmail(authentication.getName());
+        if (client == null) {
+            return new ResponseEntity<>("You need be logged.",HttpStatus.FORBIDDEN);
+        }
+        SectorType sectorType = SectorType.GROUND_FLOOR;
+        if (dtoTableRecord.sectorType().equalsIgnoreCase("GROUND_FLOOR")) {
+            sectorType = SectorType.GROUND_FLOOR;
+        }
+        if (dtoTableRecord.sectorType().equalsIgnoreCase("FIRST_FLOOR")) {
+            sectorType = SectorType.FIRST_FLOOR;
+        }
+        if (dtoTableRecord.sectorType().equalsIgnoreCase("OUTDOOR")) {
+            sectorType = SectorType.OUTDOOR;
+        }
+        Table newTable = new Table(dtoTableRecord.cpacity(), sectorType, dtoTableRecord.cpacity(), TableStatus.FREE);
+        return new ResponseEntity<>("Table created", HttpStatus.OK);
     }
 
     @Override

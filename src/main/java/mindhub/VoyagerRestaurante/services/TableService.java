@@ -1,6 +1,7 @@
 package mindhub.VoyagerRestaurante.services;
 
 import mindhub.VoyagerRestaurante.dtos.ClientTableDTO;
+import mindhub.VoyagerRestaurante.dtos.DTOTableRecord;
 import mindhub.VoyagerRestaurante.dtos.TableApplicationDTO;
 import mindhub.VoyagerRestaurante.dtos.TableDTO;
 import mindhub.VoyagerRestaurante.models.Table;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public interface TableService {
     Table saveTable(Table table);
     ResponseEntity<?> saveTableE(TableApplicationDTO tableApplicationDTO, Authentication authentication);
+    ResponseEntity<?> creatNewTable(Authentication authentication, DTOTableRecord dtoTableRecord);
 
     List<Table> getAllTables();
 

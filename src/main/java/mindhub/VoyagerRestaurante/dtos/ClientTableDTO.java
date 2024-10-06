@@ -57,6 +57,10 @@ public class ClientTableDTO {
         return seats;
     }
 
+    public Long getClientId() {
+        return clientId;
+    }
+
     public SectorType getSector() {
         return sector;
     }
