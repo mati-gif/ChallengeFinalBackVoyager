@@ -1,5 +1,6 @@
 package mindhub.VoyagerRestaurante.controllers;
 
+import mindhub.VoyagerRestaurante.dtos.ClientReservDTO;
 import mindhub.VoyagerRestaurante.dtos.ClientTableDTO;
 import mindhub.VoyagerRestaurante.models.Client;
 import mindhub.VoyagerRestaurante.models.ClientTable;
@@ -10,6 +11,7 @@ import mindhub.VoyagerRestaurante.services.ClientService;
 import mindhub.VoyagerRestaurante.services.ClientTableService;
 import mindhub.VoyagerRestaurante.services.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -37,62 +39,51 @@ public class ClientTableController {
 
     // Crear una nueva reserva de mesa (ClientTable)
     @PostMapping("/create")
-    public ResponseEntity<?> createClientTable(Authentication authentication, @RequestBody ClientTableDTO clientTableDTO) {
-        // Obtener el email del usuario autenticado
-        String email = authentication.getName();
+    public ResponseEntity<?> createClientTable(Authentication authentication, @RequestBody ClientReservDTO clientReservDTO) {
+        try {
+            // Obtener el email del usuario autenticado
+            String email = authentication.getName();
 
-        // Obtener el cliente autenticado
-        Client authenticatedClient = clientService.findByEmail(email);
-        if (authenticatedClient == null) {
-            return ResponseEntity.badRequest().body("Client not found");
+            // Obtener el cliente autenticado
+            Client authenticatedClient = clientService.findByEmail(email);
+            if (authenticatedClient == null) {
+                return ResponseEntity.badRequest().body("Client not found");
+            }
+
+            // Verificar que el ID de la mesa no sea nulo antes de buscar la mesa
+            if (clientReservDTO.tableId() == null) {
+                return ResponseEntity.badRequest().body("Table ID cannot be null");
+            }
+
+            // Obtener la mesa por su ID
+            Optional<Table> optionalTable = tableService.getTableById(clientReservDTO.tableId());
+            if (optionalTable.isEmpty()) {
+                return ResponseEntity.badRequest().body("Table not found");
+            }
+
+            Table table = optionalTable.get();
+
+            // Verificar si la mesa está libre
+            if (table.getState() != TableStatus.FREE) {
+                return ResponseEntity.badRequest().body("Table is already reserved or busy");
+            }
+
+            // Crear la nueva reserva
+            ClientTable clientTable = new ClientTable(LocalDateTime.parse(clientReservDTO.initialReservTime()));
+            authenticatedClient.addClientTable(clientTable);
+            table.addClientTable(clientTable);
+
+            // Guardar la reserva
+            clientTableService.saveClientTable(clientTable);
+
+            // Retornar una respuesta exitosa con el objeto de reserva
+            return ResponseEntity.status(HttpStatus.CREATED).body("Reservation created successfully");
+
+        } catch (Exception e) {
+            // Manejar la excepción y devolver un mensaje de error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while creating the reservation: " + e.getMessage());
         }
-
-        // Verificar que el ID de la mesa no sea nulo antes de buscar la mesa
-        if (clientTableDTO.getTableId() == null) {
-            return ResponseEntity.badRequest().body("Table ID cannot be null");
-        }
-
-        // Obtener la mesa por su ID
-        Optional<Table> optionalTable = tableService.getTableById(clientTableDTO.getTableId());
-        if (optionalTable.isEmpty()) {
-            return ResponseEntity.badRequest().body("Table not found");
-        }
-
-        Table table = optionalTable.get();
-
-        // Verificar si la mesa está libre
-        if (table.getState() != TableStatus.FREE) {
-            return ResponseEntity.badRequest().body("Table is already reserved or busy");
-        }
-
-        // Crear la nueva reserva
-        ClientTable clientTable = new ClientTable();
-        clientTable.setClient(authenticatedClient);
-        clientTable.setTable(table);
-        clientTable.setInitialDate(clientTableDTO.getReservationStart());
-        clientTable.setFinalDate(clientTableDTO.getReservationStart().plusMinutes(90)); // Duración de 90 minutos
-
-        // Cambiar el estado de la mesa a RESERVED
-        table.setState(TableStatus.RESERVED);
-        tableService.saveTable(table);
-
-        // Guardar la reserva
-        ClientTable newClientTable = clientTableService.saveClientTable(clientTable);
-
-        // Crear un DTO con los detalles de la reserva y la mesa
-//        ClientTableDTO responseDTO = new ClientTableDTO(
-//                newClientTable.getTable().getId(),
-//                newClientTable.getTable().getTableNumber(),
-//                newClientTable.getTable().getCapacity(),
-//                newClientTable.getTable().getSectorType(),
-//                newClientTable.getTable().getState(),
-//                newClientTable.getInitialDate(),
-//                newClientTable.getFinalDate()
-//        );
-        ClientTableDTO responseDTO = new ClientTableDTO(clientTable);
-
-        // Respuesta con los detalles de la reserva
-        return ResponseEntity.ok(responseDTO);
     }
 
 

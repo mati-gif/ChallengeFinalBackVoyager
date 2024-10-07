@@ -7,12 +7,12 @@ import java.util.List;
 public class PurchaseRequestDTO {
     private List<Long> productIds;  // IDs de los productos que el cliente desea comprar
     private List<Integer> quantities;  // Cantidades de cada producto
-    private OrderType orderType;  // Tipo de orden (DELIVERY, TAKEOUT, DINNER_IN)
+    private String orderType;  // Tipo de orden (DELIVERY, TAKEOUT, DINNER_IN)
     private Long addressId;  // ID de la dirección (solo si es DELIVERY)
 
     public PurchaseRequestDTO() {}
 
-    public PurchaseRequestDTO(List<Long> productIds, List<Integer> quantities, OrderType orderType, Long addressId) {
+    public PurchaseRequestDTO(List<Long> productIds, List<Integer> quantities, String orderType, Long addressId) {
         this.productIds = productIds;
         this.quantities = quantities;
         this.orderType = orderType;
@@ -35,11 +35,11 @@ public class PurchaseRequestDTO {
         this.quantities = quantities;
     }
 
-    public OrderType getOrderType() {
+    public String getOrderType() {
         return orderType;
     }
 
-    public void setOrderType(OrderType orderType) {
+    public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
 
