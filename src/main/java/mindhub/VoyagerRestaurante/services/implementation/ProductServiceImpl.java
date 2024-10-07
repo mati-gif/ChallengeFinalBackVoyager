@@ -53,4 +53,17 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductsByIds(List<Long> ids) {
         return productRepository.findAllById(ids); // Obtener los productos usando los IDs
     }
+
+    @Override
+    public AllProductsDTO saveUpdatedProduct(Product product) {
+
+        Product updatedProduct = productRepository.save(product);
+        return new  AllProductsDTO(updatedProduct);
+}
+
+        @Override
+        public Product getProductByIdd(Long id) {
+            return productRepository.findById(id).orElse(null);
+
+        }
 }

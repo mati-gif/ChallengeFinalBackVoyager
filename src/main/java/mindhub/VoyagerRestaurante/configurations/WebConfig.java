@@ -51,7 +51,7 @@ public class WebConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket", "/api/address/", "/api/address/me", "/api/address/all").permitAll()
                                 // Rutas de escritura (creación, actualización, eliminación) solo accesibles a ADMIN
                                 .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/products/create","/api/orders/**", "/api/reviews/**","/api/clients", "/api/addres/**").permitAll()
-                                .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**","/api/products/update").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
 
                                 // Cualquier otra ruta requiere autenticación

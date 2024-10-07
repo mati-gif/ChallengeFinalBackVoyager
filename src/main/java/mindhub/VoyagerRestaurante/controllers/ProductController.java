@@ -1,9 +1,6 @@
 package mindhub.VoyagerRestaurante.controllers;
 
-import mindhub.VoyagerRestaurante.dtos.AllProductsDTO;
-import mindhub.VoyagerRestaurante.dtos.ProductCreateDTO;
-import mindhub.VoyagerRestaurante.dtos.ProductDTO;
-import mindhub.VoyagerRestaurante.dtos.PurchaseRequestDTO;
+import mindhub.VoyagerRestaurante.dtos.*;
 import mindhub.VoyagerRestaurante.models.*;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
@@ -12,10 +9,8 @@ import mindhub.VoyagerRestaurante.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,9 +81,112 @@ public class ProductController {
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    //Modificar la propiedad nameProduct(nombre del producto)
+    @PatchMapping("/nameProduct")
+    public ResponseEntity<?> updateNameProduct(@RequestParam String nameProduct,@RequestParam Long id) {
+
+        Optional<Product> product = productService.getProductById(id);
+
+        if(product == null){
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+        product.get().setNameProduct(nameProduct);
+
+        AllProductsDTO updatedProduct = productService.saveUpdatedProduct(product.get());
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+    @PatchMapping("/priceProduct")
+    public ResponseEntity<?> updatePriceProduct(@RequestParam double priceProduct,@RequestParam Long id) {
+
+        Optional<Product> product = productService.getProductById(id);
+
+        if(product == null){
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+        product.get().setPriceProduct(priceProduct);
+
+        AllProductsDTO updatedProduct = productService.saveUpdatedProduct(product.get());
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+    @PatchMapping("/category")
+    public ResponseEntity<?> updateCategory(@RequestParam Category category,@RequestParam Long id) {
+
+        Optional<Product> product = productService.getProductById(id);
+
+        if(product == null){
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+        product.get().setCategory(category);
+
+        AllProductsDTO updatedProduct = productService.saveUpdatedProduct(product.get());
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+    @PatchMapping("/details")
+    public ResponseEntity<?> updateDetails(@RequestParam String details,@RequestParam Long id) {
+
+        Optional<Product> product = productService.getProductById(id);
+
+        if(product == null){
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+        product.get().setDetails(details);
+
+        AllProductsDTO updatedProduct = productService.saveUpdatedProduct(product.get());
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+    @PatchMapping("/img")
+    public ResponseEntity<?> updateImg(@RequestBody ModifyImgProductDTO modifyImgProductDTO) {
+
+        Optional<Product> product = productService.getProductById(modifyImgProductDTO.id());
+
+        if(product == null){
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+        product.get().setImg(modifyImgProductDTO.img());
+
+        AllProductsDTO updatedProduct = productService.saveUpdatedProduct(product.get());
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
 
 
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateProduct(@RequestBody ModifyAllProductDTO allProductsDTO) {
+        Product product = productService.getProductByIdd(allProductsDTO.id());
+        if(product == null){
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+
+
+        if(allProductsDTO.nameProduct() != null){
+
+            product.setNameProduct(allProductsDTO.nameProduct());
+        }
+        if(allProductsDTO.priceProduct() != null){
+            product.setPriceProduct(allProductsDTO.priceProduct());
+
+        }
+        if (allProductsDTO.category() != null) {
+            product.setCategory(allProductsDTO.category());
+
+        }
+        if(allProductsDTO.details() != null){
+            product.setDetails(allProductsDTO.details());
+
+        }
+        if(allProductsDTO.img() != null){
+            product.setImg(allProductsDTO.img());
+
+        }
+
+        AllProductsDTO updatedProduct = productService.saveUpdatedProduct(product);
+
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
 
 
     // Eliminar un producto por ID

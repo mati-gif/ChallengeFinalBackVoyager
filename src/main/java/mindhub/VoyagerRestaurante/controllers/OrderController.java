@@ -61,22 +61,19 @@ public class OrderController {
 
         // Verificar el tipo de orden (si es DELIVERY, se necesita la dirección)
         String address = null;
-        if (purchaseRequestDTO.getOrderType() == OrderType.DELIVERY) {
-            if (purchaseRequestDTO.getAddressId() == null) {
-                return ResponseEntity.badRequest().body(null); // Dirección requerida
-            }
-            // Buscar la dirección del cliente
-            Adress deliveryAddress = clientService.getAddressById(purchaseRequestDTO.getAddressId());
-            if (deliveryAddress == null) {
-                return ResponseEntity.badRequest().body(null); // Dirección no encontrada
-            }
-            address = deliveryAddress.getNameStreet();
+
+        OrderType orderType;
+        try {
+            orderType = OrderType.valueOf(purchaseRequestDTO.getOrderType().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Error si el tipo de orden no es válido
         }
+
 
         // Crear la instancia de Order y asociar los productos
         Order newOrder = new Order();
         newOrder.setClient(client); // Asociar al cliente autenticado
-        newOrder.setOrderType(purchaseRequestDTO.getOrderType()); // Establecer el tipo de orden
+        newOrder.setOrderType(orderType); // Establecer el tipo de orden
         newOrder.setOrderStatus(OrderStatusType.IN_PROCESS); // Establecer el estado de la orden a IN_PROCESS
         newOrder.setOrderDate(LocalDateTime.now()); // Establecer la fecha actual de la orden
 
@@ -107,7 +104,7 @@ public class OrderController {
         newOrder.setTotalAmount(totalAmount[0]);
 
         // Si es una orden de tipo DELIVERY, asignar la dirección
-        if (purchaseRequestDTO.getOrderType() == OrderType.DELIVERY) {
+        if (orderType == OrderType.DELIVERY) {
             Adress deliveryAddress = clientService.getAddressById(purchaseRequestDTO.getAddressId());
             if (deliveryAddress == null) {
                 return ResponseEntity.badRequest().body(null); // Dirección no encontrada
@@ -127,7 +124,7 @@ public class OrderController {
 
         // Crear el DTO del ticket de la compra
         OrderTicketDTO orderTicketDTO;
-        if (purchaseRequestDTO.getOrderType() == OrderType.DELIVERY) {
+        if (orderType == OrderType.DELIVERY) {
             orderTicketDTO = new OrderTicketDTO(productDTOList, "DELIVERY", address, totalAmount[0]);
         } else {
             orderTicketDTO = new OrderTicketDTO(productDTOList, purchaseRequestDTO.getOrderType().toString(), totalAmount[0]);
@@ -173,4 +170,9 @@ public class OrderController {
         // Retornar la lista de órdenes en formato DTO
         return ResponseEntity.ok(orderDTOs);
     }
+
+
+
+
+
 }
