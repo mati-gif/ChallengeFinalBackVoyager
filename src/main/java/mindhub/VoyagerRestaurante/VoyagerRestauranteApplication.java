@@ -73,68 +73,57 @@ public class VoyagerRestauranteApplication {
 
 			// Creación de mesas
             //15 mesas sector planta baja
-            Table table1 = new Table(2, SectorType.GROUND_FLOOR, 1, TableStatus.FREE);
-			table1.setLocalDateTime(LocalDateTime.now());
-            Table table2 = new Table(4, SectorType.GROUND_FLOOR, 2, TableStatus.FREE);
-            Table table3 = new Table(6, SectorType.GROUND_FLOOR, 3, TableStatus.FREE);
-            Table table4 = new Table(8, SectorType.GROUND_FLOOR, 4, TableStatus.FREE);
-            Table table5 = new Table(2, SectorType.GROUND_FLOOR, 5, TableStatus.FREE);
-            Table table6 = new Table(4, SectorType.GROUND_FLOOR, 6, TableStatus.FREE);
-            Table table7 = new Table(6, SectorType.GROUND_FLOOR, 7, TableStatus.FREE);
-            Table table8 = new Table(8 ,SectorType.GROUND_FLOOR, 8, TableStatus.FREE);
-            Table table9 = new Table(2, SectorType.GROUND_FLOOR, 9, TableStatus.FREE);
-            Table table10 = new Table(4, SectorType.GROUND_FLOOR, 10, TableStatus.FREE);
-            Table table11 = new Table(6, SectorType.GROUND_FLOOR, 11, TableStatus.FREE);
-            Table table12 = new Table(8, SectorType.GROUND_FLOOR, 12, TableStatus.FREE);
-            Table table13 = new Table(2, SectorType.GROUND_FLOOR, 13, TableStatus.FREE);
-            Table table14 = new Table(4, SectorType.GROUND_FLOOR, 14, TableStatus.FREE);
-            Table table15 = new Table(6, SectorType.GROUND_FLOOR, 15, TableStatus.FREE);
+			Table table1 = new Table(2, SectorType.GROUND_FLOOR, 1, TableStatus.FREE);
+			Table table2 = new Table(6, SectorType.GROUND_FLOOR, 2, TableStatus.FREE);
+			Table table3 = new Table(4, SectorType.GROUND_FLOOR, 3, TableStatus.FREE);
+			Table table4 = new Table(4, SectorType.GROUND_FLOOR, 4, TableStatus.FREE);
+			Table table5 = new Table(4, SectorType.GROUND_FLOOR, 5, TableStatus.FREE);
+			Table table6 = new Table(4, SectorType.GROUND_FLOOR, 6, TableStatus.FREE);
+			Table table7 = new Table(4, SectorType.GROUND_FLOOR, 7, TableStatus.FREE);
+			Table table8 = new Table(4, SectorType.GROUND_FLOOR, 8, TableStatus.FREE);
+			Table table9 = new Table(4, SectorType.GROUND_FLOOR, 9, TableStatus.FREE);
+			Table table10 = new Table(4, SectorType.GROUND_FLOOR, 10, TableStatus.FREE);
+			Table table11 = new Table(4, SectorType.GROUND_FLOOR, 11, TableStatus.FREE);
+			Table table12 = new Table(4, SectorType.GROUND_FLOOR, 12, TableStatus.FREE);
+			Table table13 = new Table(4, SectorType.GROUND_FLOOR, 13, TableStatus.FREE);
+			Table table14 = new Table(4, SectorType.GROUND_FLOOR, 14, TableStatus.FREE);
+			Table table15 = new Table(6, SectorType.GROUND_FLOOR, 15, TableStatus.FREE);
+			Table table16 = new Table(8, SectorType.FIRST_FLOOR, 16, TableStatus.FREE);
+			Table table17 = new Table(6, SectorType.FIRST_FLOOR, 17, TableStatus.FREE);
+			Table table18 = new Table(6, SectorType.FIRST_FLOOR, 18, TableStatus.FREE);
+			Table table19 = new Table(6, SectorType.FIRST_FLOOR, 19, TableStatus.FREE);
+			Table table20 = new Table(4, SectorType.FIRST_FLOOR, 20, TableStatus.FREE);
+			Table table21 = new Table(2, SectorType.FIRST_FLOOR, 21, TableStatus.FREE);
+			Table table22 = new Table(4, SectorType.FIRST_FLOOR, 22, TableStatus.FREE);
 
-            //9 meses sector exterior
-            Table table16 = new Table(2, SectorType.OUTDOOR, 16, TableStatus.FREE);
-            Table table17 = new Table(4, SectorType.OUTDOOR, 17, TableStatus.FREE);
-            Table table18 = new Table(6, SectorType.OUTDOOR, 18, TableStatus.FREE);
-            Table table19 = new Table(8, SectorType.OUTDOOR, 19, TableStatus.FREE);
-            Table table20 = new Table(2, SectorType.OUTDOOR, 20, TableStatus.FREE);
-            Table table21 = new Table(4, SectorType.OUTDOOR, 21, TableStatus.FREE);
-            Table table22 = new Table(6, SectorType.OUTDOOR, 22, TableStatus.FREE);
-            Table table23 = new Table(8, SectorType.OUTDOOR, 23, TableStatus.FREE);
-			Table table24 = new Table(2, SectorType.OUTDOOR, 24, TableStatus.FREE);
-
-			//7 mesas sector primer piso
-			Table table25 = new Table(2, SectorType.FIRST_FLOOR, 25, TableStatus.FREE);
-			Table table26 = new Table(4, SectorType.FIRST_FLOOR, 26, TableStatus.FREE);
-			Table table27 = new Table(6, SectorType.FIRST_FLOOR, 27, TableStatus.FREE);
-			Table table28 = new Table(8, SectorType.FIRST_FLOOR, 28, TableStatus.FREE);
-			Table table29 = new Table(2, SectorType.FIRST_FLOOR, 29, TableStatus.FREE);
-			Table table30 = new Table(4, SectorType.FIRST_FLOOR, 30, TableStatus.FREE);
-			Table table31 = new Table(6, SectorType.FIRST_FLOOR, 31, TableStatus.FREE);
 			tableRepository.saveAll(List.of(table1, table2, table3, table4,table5,
 					table6, table7, table8, table9, table10, table11, table12, table13,
 					table14, table15, table16, table17, table18, table19, table20,
-					table21, table22, table23, table24, table25, table26, table27,
-					table28, table29, table30, table31));
+					table21, table22));
 
 //			tableRepository.save(table2);
 
-			ClientTable clientTable1ForLuz = new ClientTable(LocalDateTime.now());
+			ClientTable clientTable1ForLuz = new ClientTable(LocalDateTime.of(2024, 10, 5, 21, 0)); // 5 de octubre 2024, 20:00
 			clientLuz.addClientTable(clientTable1ForLuz);
-			table1.addClientTable(clientTable1ForLuz);
+			table2.addClientTable(clientTable1ForLuz);
 			clientTableRepository.save(clientTable1ForLuz);
 
+			ClientTable clientTable2ForLuz = new ClientTable(LocalDateTime.of(2024, 10, 5, 21, 0)); // 5 de octubre 2024, 20:00
+			clientLuz.addClientTable(clientTable2ForLuz);
+			table5.addClientTable(clientTable2ForLuz);
+			clientTableRepository.save(clientTable2ForLuz);
 
-			ClientTable clientTableForLuzOtherHour = new ClientTable(LocalDateTime.now().plusHours(3));
-			clientLuz.addClientTable((clientTableForLuzOtherHour));
-			table1.addClientTable(clientTableForLuzOtherHour);
-			clientTableRepository.save(clientTableForLuzOtherHour);
+			ClientTable clientTable3ForLuz = new ClientTable(LocalDateTime.of(2024, 10, 8, 5, 5	));
+			clientLuz.addClientTable(clientTable3ForLuz);
+			table3.addClientTable(clientTable3ForLuz);
+			clientTableRepository.save(clientTable3ForLuz);
 
-			// 2024-10-05T12:00:00
-			// Convertir el String en un LocalDateTime
-			LocalDateTime dateTime = LocalDateTime.parse("2024-10-10T22:00:00");
-			ClientTable clientTableForLuzNight = new ClientTable(dateTime);
-			clientLuz.addClientTable(clientTableForLuzNight);
-			table1.addClientTable(clientTableForLuzNight);
-			clientTableRepository.save(clientTableForLuzNight);
+			ClientTable clientTable4ForLuz = new ClientTable(LocalDateTime.of(2024, 10, 8, 22, 00));
+			clientLuz.addClientTable(clientTable4ForLuz);
+			table4.addClientTable(clientTable4ForLuz);
+			clientTableRepository.save(clientTable4ForLuz);
+
+
 
 			// Creación de reservas (ClientTable)
 //			ClientTable reservation1 = new ClientTable(LocalDateTime.now(), LocalDateTime.now().plusHours(1), clientLuz, table1);
