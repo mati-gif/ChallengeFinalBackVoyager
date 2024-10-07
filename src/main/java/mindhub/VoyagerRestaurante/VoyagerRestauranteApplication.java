@@ -147,8 +147,8 @@ public class VoyagerRestauranteApplication {
 			// Hamburguesas
 			Product product1 = new Product("Oklahoma", 8.99, Category.BURGER, "Juicy burger with caramelized onions and cheddar cheese.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749502/oklahoma1_kyqed5.png");
 			Product product2 = new Product("American", 7.49, Category.BURGER, "Classic American burger with lettuce, tomato, and mayonnaise.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749543/american1_haeqpf.png");
-			Product product3 = new Product("Voyager", 9.99, Category.BURGER, "Gourmet burger with avocado, bacon, and special sauce.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749532/cheeseBuger1_trckvo.png");
-			Product product4 = new Product("Cheeseburger", 10.49, Category.BURGER, "Delicious burger with double cheese and fresh onion.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727749479/voyager1_wqem9z.png");
+			Product product3 = new Product("Voyager", 9.99, Category.BURGER, "Gourmet burger with avocado, bacon, and special sauce.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1728332864/cheesBurguerReplace_kdz6og.png");
+			Product product4 = new Product("Cheeseburger", 10.49, Category.BURGER, "Delicious burger with double cheese and fresh onion.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1728332864/voyagger1Replace_mdlqf7.png");
 			Product product5 = new Product("Veggie Burger", 8.99, Category.BURGER, "Vegetarian burger with chickpeas and avocado sauce.", "https://res.cloudinary.com/dhojn5eon/image/upload/v1727723685/big-sandwich-hamburger-burger-with-beef-red-onion-tomato-fried-bacon_lthzrk.jpg");
 
 			// Frituras
