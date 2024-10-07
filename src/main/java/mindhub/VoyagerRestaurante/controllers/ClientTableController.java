@@ -54,40 +54,7 @@ public class ClientTableController {
             return ResponseEntity.badRequest().body("Table not found");
         }
 
-//        // Verificar si la mesa está libre
-//        if (table.getState() != TableStatus.FREE) {
-//            return ResponseEntity.badRequest().body("Table is already reserved or busy");
-//        }
-
         return tableService.saveTableE(tableApplicationDTO, authentication);
-        // Crear la nueva reserva
-//        ClientTable clientTable = new ClientTable();
-//        clientTable.setClient(authenticatedClient);
-//        clientTable.setTable(table);
-//        clientTable.setInitialDate(clientTableDTO.getReservationStart());
-//        clientTable.setFinalDate(clientTableDTO.getReservationStart().plusMinutes(90)); // Duración de 90 minutos
-//
-//        // Cambiar el estado de la mesa a RESERVED
-//        table.setState(TableStatus.RESERVED);
-//        tableService.saveTable(table);
-//
-//        // Guardar la reserva
-//        ClientTable newClientTable = clientTableService.saveClientTable(clientTable);
-
-        // Crear un DTO con los detalles de la reserva y la mesa
-//        ClientTableDTO responseDTO = new ClientTableDTO(
-//                newClientTable.getTable().getId(),
-//                newClientTable.getTable().getTableNumber(),
-//                newClientTable.getTable().getCapacity(),
-//                newClientTable.getTable().getSectorType(),
-//                newClientTable.getTable().getState(),
-//                newClientTable.getInitialDate(),
-//                newClientTable.getFinalDate()
-//        );
-//        ClientTableDTO responseDTO = new ClientTableDTO(clientTable);
-//
-//        // Respuesta con los detalles de la reserva
-//        return ResponseEntity.ok(responseDTO);
     }
 
 
