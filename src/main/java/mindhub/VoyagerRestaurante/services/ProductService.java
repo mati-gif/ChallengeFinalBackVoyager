@@ -21,5 +21,9 @@ public interface ProductService {
     List<Product> getProductsByIds(List<Long> ids);
 
     List<AllProductsDTO> getALLAllProductsDTO();
+
+    AllProductsDTO saveUpdatedProduct(Product product);
+
+    Product getProductByIdd(Long id);
 }
 
