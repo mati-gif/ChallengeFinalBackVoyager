@@ -3,6 +3,7 @@ package mindhub.VoyagerRestaurante.dtos;
 public class PaymentRequestDTO {
     private Long orderId;
     private double amount;
+    private CardDetailsDTO cardDetailsDTO; // Asegurarnos de que el DTO incluye los detalles de la tarjeta
 
     // Getters y Setters
     public Long getOrderId() {
@@ -20,5 +21,12 @@ public class PaymentRequestDTO {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-}
 
+    public CardDetailsDTO getCardDetailsDTO() {
+        return cardDetailsDTO;
+    }
+
+    public void setCardDetailsDTO(CardDetailsDTO cardDetailsDTO) {
+        this.cardDetailsDTO = cardDetailsDTO;
+    }
+}

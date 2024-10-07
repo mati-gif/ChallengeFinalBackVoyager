@@ -38,5 +38,10 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrdersByClient(Client client) {
         return orderRepository.findByClient(client);
     }
+
+    @Override
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId).orElse(null);
+    }
 }
 

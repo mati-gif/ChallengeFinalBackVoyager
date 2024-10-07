@@ -1,9 +1,7 @@
 package mindhub.VoyagerRestaurante.controllers;
 
-import mindhub.VoyagerRestaurante.dtos.OrderDTO;
-import mindhub.VoyagerRestaurante.dtos.OrderTicketDTO;
-import mindhub.VoyagerRestaurante.dtos.ProductDTO;
-import mindhub.VoyagerRestaurante.dtos.PurchaseRequestDTO;
+
+import mindhub.VoyagerRestaurante.dtos.*;
 import mindhub.VoyagerRestaurante.models.*;
 import mindhub.VoyagerRestaurante.serviceSecurity.JwtUtilService;
 import mindhub.VoyagerRestaurante.services.ClientService;
@@ -11,6 +9,7 @@ import mindhub.VoyagerRestaurante.services.OrderService;
 import mindhub.VoyagerRestaurante.services.PaymentService;
 import mindhub.VoyagerRestaurante.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +36,9 @@ public class OrderController {
     @Autowired
     private PaymentService paymentService;  // Servicio para comunicarse con homebanking
 
-    // Método para crear una orden y realizar el pago
+    // Método para crear una orden
     @PostMapping("/create")
-    public ResponseEntity<OrderTicketDTO> createOrder(@RequestHeader("Authorization") String token, @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
+    public ResponseEntity<CreateOrderDTO> createOrder(@RequestHeader("Authorization") String token, @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
         // Extraer el token sin el prefijo "Bearer "
         String jwtToken = token.substring(7);
 
@@ -60,82 +59,94 @@ public class OrderController {
         }
 
         // Verificar el tipo de orden (si es DELIVERY, se necesita la dirección)
-        String address = null;
         if (purchaseRequestDTO.getOrderType() == OrderType.DELIVERY) {
             if (purchaseRequestDTO.getAddressId() == null) {
                 return ResponseEntity.badRequest().body(null); // Dirección requerida
             }
-            // Buscar la dirección del cliente
             Adress deliveryAddress = clientService.getAddressById(purchaseRequestDTO.getAddressId());
             if (deliveryAddress == null) {
                 return ResponseEntity.badRequest().body(null); // Dirección no encontrada
             }
-            address = deliveryAddress.getNameStreet();
         }
 
         // Crear la instancia de Order y asociar los productos
         Order newOrder = new Order();
-        newOrder.setClient(client); // Asociar al cliente autenticado
-        newOrder.setOrderType(purchaseRequestDTO.getOrderType()); // Establecer el tipo de orden
-        newOrder.setOrderStatus(OrderStatusType.IN_PROCESS); // Establecer el estado de la orden a IN_PROCESS
-        newOrder.setOrderDate(LocalDateTime.now()); // Establecer la fecha actual de la orden
+        newOrder.setClient(client);
+        newOrder.setOrderType(purchaseRequestDTO.getOrderType());
+        newOrder.setOrderStatus(OrderStatusType.IN_PROCESS);
+        newOrder.setOrderDate(LocalDateTime.now());
 
-        // Calcular el total de la compra
         final double[] totalAmount = {0};
 
-        // Crear la lista de productos y calcular el totalAmount
-        List<ProductDTO> productDTOList = products.stream()
-                .map(product -> {
-                    int quantity = purchaseRequestDTO.getQuantities().get(purchaseRequestDTO.getProductIds().indexOf(product.getId()));
-                    totalAmount[0] += product.getPriceProduct() * quantity;
+        // Asociar los productos con la orden y calcular el total
+        products.forEach(product -> {
+            int quantity = purchaseRequestDTO.getQuantities().get(purchaseRequestDTO.getProductIds().indexOf(product.getId()));
+            totalAmount[0] += product.getPriceProduct() * quantity;
 
-                    // Crear y asociar OrderProduct (entidad intermedia) con la orden
-                    OrderProduct orderProduct = new OrderProduct();
-                    orderProduct.setOrder(newOrder); // Asociar a la nueva orden
-                    orderProduct.setProduct(product); // Asociar al producto
-                    orderProduct.setQuantities(quantity); // Establecer la cantidad
-                    orderProduct.setTotalAmount(product.getPriceProduct() * quantity); // Calcular el total por producto
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setOrder(newOrder);
+            orderProduct.setProduct(product);
+            orderProduct.setQuantities(quantity);
+            orderProduct.setTotalAmount(product.getPriceProduct() * quantity);
 
-                    newOrder.getOrderProducts().add(orderProduct); // Añadir el OrderProduct a la lista de la orden
+            newOrder.getOrderProducts().add(orderProduct);
+        });
 
-                    // Crear el ProductDTO para el ticket
-                    return new ProductDTO(product, quantity);
-                })
-                .collect(Collectors.toList());
-
-        // Asignar el totalAmount calculado a la orden
+        // Asignar el total a la orden
         newOrder.setTotalAmount(totalAmount[0]);
-
-        // Si es una orden de tipo DELIVERY, asignar la dirección
-        if (purchaseRequestDTO.getOrderType() == OrderType.DELIVERY) {
-            Adress deliveryAddress = clientService.getAddressById(purchaseRequestDTO.getAddressId());
-            if (deliveryAddress == null) {
-                return ResponseEntity.badRequest().body(null); // Dirección no encontrada
-            }
-            newOrder.setAdress(deliveryAddress);
-        }
 
         // Guardar la orden en la base de datos
         orderService.saveOrder(newOrder);
 
-        // Iniciar el pago a través del sistema de homebanking
-        boolean paymentSuccess = paymentService.initiatePayment(newOrder, client);
+        // Crear una instancia de CreateOrderDTO y asignar valores
+        CreateOrderDTO createOrderDTO = new CreateOrderDTO(); // Instanciar el DTO
+        createOrderDTO.setOrderId(newOrder.getId()); // Usar métodos de instancia
+        createOrderDTO.setAmount(totalAmount[0]);
 
-        if (!paymentSuccess) {
-            return ResponseEntity.badRequest().body(null); // Error en el proceso de pago
-        }
-
-        // Crear el DTO del ticket de la compra
-        OrderTicketDTO orderTicketDTO;
-        if (purchaseRequestDTO.getOrderType() == OrderType.DELIVERY) {
-            orderTicketDTO = new OrderTicketDTO(productDTOList, "DELIVERY", address, totalAmount[0]);
-        } else {
-            orderTicketDTO = new OrderTicketDTO(productDTOList, purchaseRequestDTO.getOrderType().toString(), totalAmount[0]);
-        }
-
-        // Retornar el ticket con los productos, tipo de orden y el total
-        return ResponseEntity.ok(orderTicketDTO);
+        // Retornar el DTO necesario para el pago
+        return ResponseEntity.ok(createOrderDTO);
     }
+
+
+    @PostMapping("/initiate-payment")
+    public ResponseEntity<PaymentResponseDTO> initiatePayment(
+            @RequestHeader("Authorization") String token,  // Recibe el token desde el header
+            @RequestBody PaymentRequestDTO paymentRequestDTO) {
+
+        // Extraer el token sin el prefijo "Bearer "
+        String jwtToken = token.substring(7);
+
+        // Obtener el email del cliente desde el token
+        String email = jwtUtilService.extractUsername(jwtToken);
+
+        // Buscar el cliente autenticado por su email
+        Client client = clientService.findByEmail(email);
+
+        if (client == null) {
+            return ResponseEntity.badRequest().body(null); // Error si el cliente no existe
+        }
+
+        // Buscar la orden por su ID
+        Order order = orderService.getOrderById(paymentRequestDTO.getOrderId());
+        if (order == null) {
+            return ResponseEntity.badRequest().body(null); // Error si la orden no existe
+        }
+
+        // Validar que la orden pertenezca al cliente autenticado
+        if (!order.getClient().getId().equals(client.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Error si la orden no pertenece al cliente autenticado
+        }
+
+        // Iniciar el pago a través del sistema de homebanking usando PaymentService
+        PaymentResponseDTO paymentResponse = paymentService.initiatePayment(order, paymentRequestDTO.getCardDetailsDTO());
+
+        if (paymentResponse.isSuccess()) {
+            return ResponseEntity.ok(paymentResponse);
+        } else {
+            return ResponseEntity.badRequest().body(paymentResponse);
+        }
+    }
+
 
     // Obtener todas las órdenes
     @GetMapping("/")

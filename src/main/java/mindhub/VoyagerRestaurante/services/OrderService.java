@@ -9,4 +9,5 @@ public interface OrderService {
     List<Order> getAllOrders();    // Método para obtener todas las órdenes
     void deleteOrder(Long id);     // Método para eliminar una orden por su ID
     List<Order> getOrdersByClient(Client client);  // Método para obtener órdenes por cliente
+    Order getOrderById(Long orderId);
 }

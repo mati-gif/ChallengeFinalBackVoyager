@@ -17,14 +17,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
-@Configuration  // Agregamos la anotación para marcar esta clase como de configuración
+@Configuration
 public class WebConfig {
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter; // Filtro personalizado para manejar la autenticación JWT.
+    private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    private CorsConfigurationSource corsConfigurationSource; // Fuente de configuración para CORS (Cross-Origin Resource Sharing).
+    private CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -39,16 +39,26 @@ public class WebConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 // Rutas públicas permitidas
-
-                                
-
                                 .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
 
                                 // Rutas que requieren autenticación con el rol de CLIENT (para crear cosas específicas)
-                                .requestMatchers(HttpMethod.POST, "/api/orders/create", "/api/clientTables/create","/api/products/purchase" ,"/api/address/create").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/auth/current", "/api/orders/my-orders", "/api/adress/me").permitAll()
+                                .requestMatchers(HttpMethod.POST,
+                                        "/api/orders/create",  // Crear una orden
+                                        "/api/clientTables/create",  // Crear una mesa de cliente
+                                        "/api/products/purchase",  // Comprar productos
+                                        "/api/address/create",  // Crear una dirección
+                                        "/api/payments/pay-order",
+                                        "api/orders/create/initiate-payment"// Pagar una orden (agregado)
+                                ).permitAll()
+
                                 // Rutas de lectura accesibles a CLIENT y ADMIN
-                                .requestMatchers(HttpMethod.GET, "/api/products/", "/api/products/**","/api/orders/","/api/orders/**", "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**", "/api/reviews/","/api/reviews/**", "/api/auth/current", "/api/orders/ticket", "/api/address/", "/api/address/me", "/api/address/all").permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                        "/api/products/", "/api/products/**", "/api/orders/", "/api/orders/**",
+                                        "/api/tables/", "/ap/tables/**", "/api/clientTables/", "/api/clientTables/**",
+                                        "/api/reviews/", "/api/reviews/**", "/api/auth/current",
+                                        "/api/orders/ticket", "/api/address/", "/api/address/me", "/api/address/all"
+                                ).permitAll()
+
                                 // Rutas de escritura (creación, actualización, eliminación) solo accesibles a ADMIN
                                 .requestMatchers(HttpMethod.POST, "/api/products/**", "/api/products/create","/api/orders/**", "/api/reviews/**","/api/clients", "/api/addres/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/api/products/**", "/api/orders/**", "/api/reviews/**").permitAll()
@@ -57,7 +67,6 @@ public class WebConfig {
                                 // Cualquier otra ruta requiere autenticación
                                 .anyRequest().authenticated()
                 )
-
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
