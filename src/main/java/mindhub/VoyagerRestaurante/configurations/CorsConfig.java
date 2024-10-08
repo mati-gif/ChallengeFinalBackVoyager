@@ -17,7 +17,7 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5175", "http://localhost:5173","http://localhost:5174")); // Elimina el string vacío
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5175", "http://localhost:5173","http://localhost:5174","https://nuevorepofrontentvoyager.onrender.com")); // Elimina el string vacío
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
